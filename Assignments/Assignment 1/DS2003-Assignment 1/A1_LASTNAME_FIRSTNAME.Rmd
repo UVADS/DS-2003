@@ -1,0 +1,82 @@
+---
+title: "Assignment 1 - Getting Started with R (20 pts)"
+author: "FIRST NAME LAST NAME (UVA computing ID)"
+
+output: html_document
+---
+
+**You will submit the html output.**
+
+Note that Reading PASW/SPSS data requires the `read.spss()` function of the *foreign* package (the package should already be installed but you might need to load it using `library(foreign)`, or by checking the box next to the *foreign* package in R Studio). Use `?read.spss` to get some help on the function. 
+
+In order to read the data you need to know where you saved the data set ("inc_real.sav"). Ideally, you save the data in a folder you are going to use. Then you can use the path of the folder to set your working directory (`setwd()`). If you do not know the path of the folder that contains the data, (right)-click on the data file and get the file properties. The file properties contain the path which you can use to set your working directory. Please note that the path can only contain regular slashes ("/") but no back-slashes ("\"). In R studio, you can alternatively set the path via the main menu: Session > Set Working Directory > Choose Directory (then you don’t need the setwd() function to set the directory). Once you set the working directory, everything should work smoothly.
+
+## Question 1 (1 point)
+```{r}
+# Write an equation using addition
+
+```
+
+## Question 1 (1 point)
+```{r}
+# write an equation and assign it to 'x' so 'x' will be equal to 11
+
+```
+
+## Question 2 (1 point)
+```{r}
+# write an equation and save it to 'y' so 'y' will be equal to 7
+
+```
+
+## Question 3 (1 point)
+```{r}
+# write an equation between 'x' and 'y' that gives an output of 100
+## you can be as straight forward or creative as you want (remember PEMDAS)
+
+
+```
+
+## Question 4 (1 point)
+```{r}
+v <- c(25, 11, 6, 27, 4, 2)
+
+# What is the class of 'v'?
+
+```
+
+## Question 5 (1 point)
+```{r}
+# Select the number 6 from the vector 'v'
+
+```
+
+## Question 6 (1 point)
+```{r}
+# What is the number is the 4th position in the vector 'v'?
+
+```
+
+## Question 7 (1 point)
+```{r}
+# Select the first 3 elements of the vector 'v' using c()
+```
+
+## Question 8 (1 point)
+```{r}
+# Select the first 3 elements of the vector 'v' using a :
+
+```
+
+## Question 9 (1 point)
+```{r}
+# Select the first 2 elements and the last element of the vector 'v'
+
+```
+
+## Question 10 (1 point)
+```{r}
+# Using a logical operator, compare the elements in vector 'v' to > 5
+
+```
+

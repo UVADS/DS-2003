@@ -1,0 +1,234 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+## Question 4 (1 point)
+```{r}
+# Check and reset your working directory as needed
+
+# getwd()
+
+# setwd()
+```
+
+## Question 5 (1 point)
+```{r}
+# Read in the file 'inc_real.sav' 
+
+
+```
+
+## Question 6 (1 point)
+```{r}
+# Print the first 6 rows of the data frame
+
+```
+
+## Question 7 (1 point)
+```{r}
+# How many rows and columns does this data frame have?
+## Remember to show your code.
+
+
+# rows:
+# columns: 
+```
+
+## Question 8 (1 point)
+```{r}
+# What are the variable names?
+
+```
+
+## Question 9 (1 point)
+```{r}
+# extract the rows 14-30 for columns 'age' & 'income' using the column names
+```
+
+
+## Question 10 (1 point)
+```{r}
+# extract the rows 14-30 for columns 'age' & 'income' using the column numbers
+
+```
+
+## Question 11 (1 point)
+```{r}
+# extract the rows 113-200 & 303-350 for the column 'edu'
+
+```
+
+## Question 12 (1 point)
+```{r}
+# create a sequence of integers 41-55 using the sequence operator ':'
+
+```
+
+## Question 13 (1 point)
+```{r}
+# create a sequence of integers 3 - 21 by 3's using seq() with argument names
+
+```
+
+## Question 14 (1 point)
+```{r}
+# create a sequence of integers 11 - 99 by 11's using the seq() without argument names
+
+```
+
+## Question 15 (1 point)
+```{r}
+# What is the interval between numbers if you sequence 3-8 with length of 10?
+
+```
+
+## Question 16 (2 point)
+```{r}
+## What are the tertiles for 'income'? Use quantiles() with seq() 
+
+```
+
+## Question 17 (3 points)
+```{r}
+# Generate the following sequences using seq() and rep(). 
+
+#Each sequence should have a length of 20 (i.e., 20 numbers), only the first 12 numbers are shown below.
+
+   # 1 0 1 0 1 0 1 0 1 0 1 0 ….
+   # 1 1 0 0 1 1 0 0 1 1 0 0 ….
+   # 0 3 6 9 0 3 6 9 0 3 6 9 ….
+
+```
+
+## Question 4 (1 point)
+```{r}
+# Check and reset your working directory as needed
+
+getwd()
+
+# setwd()
+
+```
+
+## Question 5 (1 point)
+```{r}
+# Read in the file 'inc_real.sav' 
+
+library(foreign)
+incex <- read.spss('../DS2003-Assignment 1/data/A1_inc_real.sav', to.data.frame = TRUE)
+
+```
+
+## Question 6 (1 point)
+```{r}
+# Print the first 6 rows of the data frame
+
+head(incex)
+
+```
+
+## Question 7 (1 point)
+```{r}
+# How many rows and columns does this data frame have?
+## Remember to show your code.
+
+nrow(incex)
+ncol(incex)
+
+# rows: 1271
+# columns: 8
+```
+
+## Question 8 (1 point)
+```{r}
+# What are the variable names?
+
+names(incex)
+
+```
+
+## Question 9 (1 point)
+```{r}
+# extract the rows 14-30 for columns 'age' & 'income' using the column names
+
+incex[14:30, c('age', 'income')]
+
+```
+
+
+## Question 10 (1 point)
+```{r}
+# extract the rows 14-30 for columns 'age' & 'income' using the column numbers
+
+incex[14:30, c(1, 5)]
+
+```
+
+## Question 11 (1 point)
+```{r}
+# extract the values from rows 113-200 & 303-350 for the column 'edu'
+
+incex$edu[c(113:200, 303:350)]
+
+```
+
+## Question 12 (1 point)
+```{r}
+# create a sequence of integers 41-55 using the sequence operator ':'
+
+41:55
+
+```
+
+## Question 13 (1 point)
+```{r}
+# create a sequence of integers 3 - 21 by 3's using seq() with argument names
+
+seq(from = 3, to = 21, by = 3)
+
+```
+
+## Question 14 (1 point)
+```{r}
+# create a sequence of integers 11 - 99 by 11's using the seq() without argument names
+
+seq(11, 99, 11)
+
+```
+
+## Question 15 (1 point)
+```{r}
+# What is the interval between numbers if you sequence 3-8 with length of 10?
+
+seq(from = 3, to = 8, length = 10)
+#~1.5
+
+```
+
+## Question 16 (2 point)
+```{r}
+## What are the tertiles for 'income'? Use quantiles() with seq() 
+
+quantile(incex$income, probs = seq(0, 1, 0.33))
+
+```
+
+## Question 17 (3 points)
+```{r}
+# Generate the following sequences using seq() and rep(). 
+
+#Each sequence should have a length of 20 (i.e., 20 numbers), only the first 12 numbers are shown below.
+
+   # 1 0 1 0 1 0 1 0 1 0 1 0 ….
+   # 1 1 0 0 1 1 0 0 1 1 0 0 ….
+   # 0 3 6 9 0 3 6 9 0 3 6 9 ….
+
+rep(1:0, times = 10)
+rep(1:0, each = 2, times = 5)
+rep(c(0, 3, 6, 9), times = 5)
+

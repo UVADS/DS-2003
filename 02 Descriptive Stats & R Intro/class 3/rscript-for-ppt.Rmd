@@ -1,0 +1,108 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+  html_notebook: default
+  pdf_document: default
+---
+
+
+```{r}
+mtcars
+
+```
+
+```{r}
+hist(mtcars$mpg)
+```
+
+```{r}
+#mean
+mean(mtcars$mpg)
+```
+
+```{r}
+#median
+median(mtcars$mpg)
+```
+
+```{r}
+#mode -R doesn't not built in mode function
+
+# 1) with function
+
+getmode <- function(x) {
+  uniqv <- unique(x)
+  uniqv[which.max(tabulate(match(x, uniqv)))]
+}
+
+getmode(mtcars$mpg)
+
+#2) using count - the pipe (%>%) is part of the dplyr package
+library(tidyverse)
+mtcars %>% count(mpg, sort = TRUE)
+
+```
+
+```{r}
+# variance
+
+# step-wise
+# 1) subtract each datapoint from the mean
+dist_mpg <- mtcars$mpg - mean(mtcars$mpg)
+
+# 2) square each distance
+dist_mpg_square <- (dist_mpg)^2
+
+# 3) sum the squares
+sum_sq_dist_mpg <- sum(dist_mpg_square)
+
+# 4) divide by total data points minus 1
+sum_sq_dist_mpg/(length(mtcars$mpg) - 1)
+
+
+```
+
+```{r}
+# variance
+var(mtcars$mpg)
+```
+
+```{r}
+# standard deviation
+sd(mtcars$mpg)
+```
+
+```{r}
+# quantiles
+# default to quartiles
+quantile(mtcars$mpg)
+```
+
+```{r}
+# getting a specific quantile
+quantile(mtcars$mpg, probs = 0.11)
+```
+
+```{r}
+# quintiles
+quantile(mtcars$mpg, probs = c(0, .2, .4, .6, .8, 1))
+
+# =
+
+quantile(mtcars$mpg, probs = seq(0, 1, .2))
+```
+
+```{r}
+# range
+range(mtcars$mpg)
+max(mtcars$mpg) - min(mtcars$mpg)
+```
+
+
+```{r}
+# interquartile range (IQR)
+IQR(mtcars$mpg)
+```
+
