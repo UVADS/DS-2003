@@ -1,0 +1,177 @@
+---
+course: "DS2003: Communicating with Data"
+class title: "Lab: ggplot2"
+class number: "9"
+---
+
+```{r}
+# import packages
+
+```
+
+
+```{r}
+# Read in income data
+
+```
+
+```{r}
+# summary of data
+
+```
+
+```{r}
+# change order of factor levels for 'occ' and 'edu' to be low, med, high
+
+```
+
+```{r}
+# change 'sex' variable to male & female
+
+```
+
+## Barplots
+
+```{r}
+# create a bar plot that counts people with low, medium, and high occupation status respectively
+
+```
+
+```{r}
+# Add a title, color, and theme, differentiate by sex, and total count labels over the bars (don't be afraid to google)
+
+
+```
+
+```{r}
+# unstack the bars, which do you think is a better graph?
+# use scale_fill_manual() to set your colors
+
+```
+
+
+```{r}
+# Make the same graph with precomputed data (will need to consider changing default settings)
+
+#pre-computed data
+occ_counted <- df %>% count(occ, name = 'count') 
+occ_counted
+
+```
+
+
+```{r}
+# look up the function after_stat()
+# create the same bar graph using percents on the y axis (use data 'df')
+# update the y axis label
+
+```
+
+
+```{r}
+# stacked plot with frequencies; used data occ_counted)
+
+```
+
+```{r}
+# Try to make this plot better by using position = 'fill'
+# Change your labels appropiately
+
+  
+```
+
+## Histogram
+
+```{r}
+# Draw a histogram with the variable income
+
+```
+
+## Density Plot
+
+```{r}
+# plot a density plot of income
+
+```
+
+# Histogram with Density Plot
+
+```{r}
+# Graph the histogram and density plot together
+
+```
+
+## Histogram with groups
+
+```{r}
+# Create a histogram separated by sex
+
+```
+
+## Boxplot
+
+```{r}
+# create a boxplot for income
+
+```
+
+```{r}
+#Remove everything on the y-axis including the texts and tick marks
+
+```
+
+```{r}
+# Separate by sex
+
+```
+
+## Violin Plot
+
+```{r}
+# Create a violin plot of income separated by sex
+
+```
+
+```{r}
+# overlay the data points and color by education
+
+```
+## Scatterplot
+
+```{r}
+# Create a scatterplot of income vs age
+
+```
+
+
+```{r}
+# It is hard to see the individual data points. Plot two ways to make it easy to see individual points
+
+```
+
+```{r}
+# show 2 ways to differentiate the points by sex
+
+```
+
+## Facets
+```{r}
+# use faceting to separate scatter plot by sex
+
+```
+
+```{r}
+# use faceting to separate by sex and edu using facet_wrap()
+
+```
+
+```{r}
+# use faceting to separate by sex and edu using facet_grid()
+
+```
+
+```{r}
+# With extra time, go back through charts and practice changing colors, themes, labels, etc...
+
+```
+
