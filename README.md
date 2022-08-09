@@ -14,7 +14,7 @@ TA:
 
 ### Section 002 (19026) (T/Th 2:00-3:15p; Clark Hall G004)
 Natalie Kupperman, PhD, ATC
-* Office: Elson 184A (Old Student Health Center)
+* Office: Elson 186A (Old Student Health Center)
 * Email: n-kupperman@virginia.edu
 * Office Hours: Monday 10 - 11:30a
 
