@@ -1,0 +1,141 @@
+---
+title: "Class 13 PPT R Code"
+course: "DS 2003: Communicating with Data"
+class number: 13
+---
+
+```{r}
+# dependencies
+library(ggplot2)
+```
+
+```{r}
+# data
+mtcars
+```
+
+```{r}
+# subset the data
+simple_df <- mtcars[, c('mpg', 'wt')]
+simple_df
+```
+
+
+```{r}
+# plot distribution
+hist(simple_df$mpg)
+```
+
+```{r}
+# Shapiro-Wilk Test
+# if p-value > 0.05, data is though to be normally distributed
+shapiro.test(simple_df$mpg)
+```
+
+```{r}
+# scatter plot of mpg vs wt
+
+ggplot(simple_df, aes(wt, mpg)) +
+  geom_point()
+
+```
+
+```{r}
+# linear regression
+mpg.wt.lm <- lm(mpg ~ wt, data = simple_df)
+
+summary(mpg.wt.lm)
+```
+
+```{r}
+# check for homoscedasticity
+par(mfrow=c(2,2)) # divide the Plots window into the number of rows and columns specified in the brackets
+
+plot(mpg.wt.lm)
+
+par(mfrow=c(1,1)) # change back to one plot
+```
+
+```{r}
+# visualize the results
+library(ggpubr) # use for adding equation to chart
+
+slm.graph<-ggplot(simple_df, aes(wt, mpg))+
+  geom_point() + # add data points
+  geom_smooth(method = "lm", col = "black") + # add regression line
+  stat_regline_equation(label.x = 3.2, label.y = 35) + # add equation
+  theme_minimal() +
+  labs(title = "MPG as a function of car weight",
+      x = "Weight (1,00lb)",
+      y = "MPG")
+
+slm.graph
+
+```
+
+
+## Multiple Linear Regression
+
+```{r}
+# subset data
+multiple_df <- mtcars[, c('mpg', 'wt', 'qsec')]
+multiple_df
+```
+
+```{r}
+# check independence of observations
+cor(multiple_df$wt, multiple_df$qsec)
+```
+
+```{r}
+# scatter plot of mpg vs qsec
+
+ggplot(multiple_df, aes(wt, qsec)) +
+  geom_point()
+
+```
+
+```{r}
+multiple.lm <- lm(mpg ~ wt + qsec, data = multiple_df)
+
+summary(multiple.lm)
+```
+
+```{r}
+par(mfrow=c(2,2))
+plot(multiple.lm)
+par(mfrow=c(1,1))
+```
+
+```{r}
+# visualize the results
+
+multiple.plot <- expand.grid(
+  #sequence between high and low values in qsec data
+  qsec = seq(min(multiple_df$qsec), max(multiple_df$qsec), length.out = 30), 
+  # min, mean, max over which to predict mpg
+  wt = c(min(multiple_df$wt), mean(multiple_df$wt), max(multiple_df$wt)) 
+)
+
+
+
+# predict mpg based on defined linear model
+
+multiple.plot$predicted.y <- predict.lm(multiple.lm, newdata = multiple.plot)
+
+# convert 'wt' variable into a factor for plotting
+multiple.plot$fwt <- as.factor(multiple.plot$wt)
+
+mlm.graph<-ggplot(multiple_df, aes(qsec, mpg)) +
+  geom_point() + # add data points
+  geom_line(data = multiple.plot, aes(x = qsec, y = predicted.y, color = fwt)) +  # add regression lines
+  annotate(geom="text", x=19, y=7, label=" y = 19.75 + (-5.05*weight) + (0.93*qsec)") +
+  theme_minimal() +
+  labs(title = "MPG as a function of car weight and 1/4 mile time",
+      x = "1/4 mile time (s)",
+      y = "MPG",
+      color = "Weight (1000lb)")
+
+mlm.graph
+```
+

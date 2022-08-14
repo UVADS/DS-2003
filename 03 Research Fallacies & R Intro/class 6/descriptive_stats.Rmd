@@ -1,0 +1,388 @@
+---
+course: "DS2003: Communicating with Data"
+class title: "Descriptive Statistics in R"
+class : "6"
+---
+
+# Descriptive Statistics
+
+```{r}
+# using mtcars dataset
+
+head(mtcars)
+
+```
+### There are other well known packages for computing statistics in R (e.g., pysch).  For now we will stick to Base R
+
+## Measures of Center
+
+### MEAN
+```{r}
+# the mean for one variable
+mean(mtcars$mpg)
+```
+
+```{r}
+# the means for all columns in a data frame
+colMeans(mtcars)
+```
+
+```{r}
+# the means for all rows in a data frame
+rowMeans(mtcars)
+```
+
+### MEDIAN
+```{r}
+median(mtcars$mpg)
+```
+
+### In base R there is no built in function to get the median of every column.
+* We can use the apply() function 
+* The apply() function takes a data object, a function to execute, and a specified margin (rows or columns)
+
+```{r}
+colMedians <- apply(mtcars,         # data object
+                    MARGIN = 2,     # operate on columns (specified margin),
+                    FUN = median)   # function to execute
+
+colMedians
+```
+
+```{r}
+# Students: use apply() to get the medians of all rows
+colRows <- apply(mtcars,
+                 MARGIN =1,
+                 FUN = median)
+
+colRows
+```
+
+## Comparing Mean and Median
+
+### HISTOGRAM
+* plot to show freqency distributions
+* commonly used during data exploration
+```{r}
+hist(mtcars$mpg)
+```
+
+### DENSITY PLOT
+* a density plot is a smoothed version of a histogram
+* the y-axis is a probability density (i.e., the probability per unit on the x-axis)
+* the total area under the curve integrates to 1
+```{r}
+# use plot()
+plot(density(mtcars$mpg))
+
+# plot a black line at the mean
+abline(v = mean(mtcars$mpg, lwd = 5))
+
+# plot a red line at the median
+abline(v = median(mtcars$mpg), col = 'red', lwd = 2)
+```
+### Question: What type of skew is seen above?
+
+```{r}
+# combination of histogram and kernel density estimation
+hist(mtcars$mpg, prob = T, xlab = 'mpg', main = 'MPG Distribution')
+lines(density(mtcars$mpg), lwd = 3, col = 'red')
+```
+
+
+```{r}
+data <- rnorm(50)            
+otl <- rnorm(3, mean = 15)     
+data <- c(data, otl)      
+```
+
+```{r}
+# Students: Create a density plot with lines for median and mean for 'data' (generated above)
+
+plot(density(data))                
+
+abline(v=mean(data), lwd=5)        
+
+abline(v=median(data), col="red", lwd=2 )
+```
+### Give 3 bullet points interpreting this plot
+*
+*
+*
+
+## MODE
+### Can be used for categorical or numeric data
+### Not horribly useful in statistics
+```{r}
+# with dpylr
+mtcars %>% count(mpg, sort = TRUE)
+
+```
+
+```{r}
+# with user defined function
+mode_function <- function(data){                         # Define new function
+    data_table <- table(data)                            # Create data table
+    max_index <- which.max(data_table)                   # Find max index
+    if (is.numeric(data)){                               # If input is numeric data
+        return(as.numeric(names(data_table)[max_index])) # Return output as numeric
+    }
+    names(data_table)[max_index]            # Otherwise return output as character
+}
+
+mode_function(mtcars$mpg)
+```
+
+
+```{r}
+# can place user defined function into apply()
+colModes <- apply(mtcars,            
+                 MARGIN=2,               
+                 FUN = mode_function)    # use function mode_function
+
+colModes
+```
+
+## Measures of Spread
+## RANGE
+```{r}
+# Subtract min from max
+max(mtcars$mpg) - min(mtcars$mpg)
+```
+
+```{r}
+# range() gives min and max values
+range(mtcars$mpg)
+```
+
+## QUANTILES
+```{r}
+# use quantile to get quartiles
+quantile(mtcars$mpg)
+```
+
+## Other functions to get quartiles
+```{r}
+#five number summary
+fivenum(mtcars$mpg)
+```
+```{r}
+# Summary() shows the five number summary + the mean
+summary(mtcars$mpg)
+```
+
+```{r}
+quantile(mtcars$mpg,
+        probs = c(0.1,0.9))  # get the 10th and 90th percentiles
+```
+
+```{r}
+quantile(mtcars$mpg, 
+         probs = seq(0, 1, .2)) # get quintiles using sequence function
+```
+
+## INTERQUARTILE RANGE (IQR)
+```{r}
+IQR(mtcars$mpg)
+```
+
+## BOXPLOT
+```{r}
+boxplot(mtcars$mpg)
+```
+
+
+```{r}
+five_num <- fivenum(mtcars$mpg)
+
+boxplot(mtcars$mpg)
+
+text(x=five_num[1], adj=2, labels ="Minimum")
+text(x=five_num[2], adj=2.3, labels ="1st Quartile")
+text(x=five_num[3], adj=3, labels ="Median")
+text(x=five_num[4], adj=2.3, labels ="3rd Quartile")
+text(x=five_num[5], adj=2, labels ="Maximum")
+text(x=five_num[3], adj=c(0.5,-8), labels ="IQR", srt=90, cex=2)
+```
+
+## VARIANCE
+```{r}
+# using var()
+var(mtcars$mpg)
+```
+
+## STANDARD DEVIATION
+```{r}
+sd(mtcars$mpg)
+```
+
+## MEDIAN ABSOLUTE DEVIATION
+### alternative measure of spread based based on the median
+```{r}
+mad(mtcars$mpg)
+```
+
+## DESCRIPTIVE STATISTICS ON SUBSETS
+
+```{r}
+mean(mtcars$mpg[mtcars$cyl == 4])  # mean for a subset
+```
+
+
+```{r}
+# Students: Find the median mpg for cars with horsepower greater than or equal to 120
+median(mtcars$mpg[mtcars$hp >= 120])
+```
+
+## Using tapply()
+### Create group summaries based on factor levels
+```{r}
+
+tapply(mtcars$mpg,     # x
+       mtcars$cyl,     # index (factor)
+       mean)           # function
+```
+
+
+### tapply(incex$income, list(incex$edu, incex$occ), mean)  # by education & occ. status
+
+
+## Use with() 
+```{r}
+# Alternatively use with() instead of repeated 'mtcars$"
+with(mtcars, tapply(mpg, cyl, mean))
+```
+
+## Use attach() and detach()
+```{r}
+# makes all variable of the mtcars data frame available
+attach(mtcars)    
+
+head(income)
+
+tapply(income, edu, mean) 
+
+detach(incex)        # after you are done, detach data set
+
+```
+
+### !!! WARNING: in order to avoid confusions when manipulating data avoid using attach() and detach() !!! 
+## But attaching data is useful for plotting   
+
+## Basic Tables
+### sapply() & apply()
+```{r}
+sapply(mtcars, mean)
+
+sapply(mtcars, class)
+
+sapply(mtcars, function(x) sum(is.na(x)))
+
+apply(mtcars, 2, function(x) sum(is.na(x)))
+
+apply(mtcars, 1, function(x) sum(is.na(x)))
+```
+
+## CROSSTABS
+```{r}
+xtabs(~ mpg + cyl, data = mtcars)  
+
+xtabs(~ cyl, data = mtcars)
+
+xtabs(mpg ~ cyl, data = mtcars) # sum of mpg by cyl
+
+xtabs(mpg ~ cyl, data = mtcars) / xtabs( ~ cyl, data = mtcars) # mean mpg by cyl
+
+with(mtcars, tapply(mpg, cyl, mean))
+
+```
+
+### Compare statistics
+```{r}
+with(mtcars, tapply(mpg, cyl, summary)) # summary
+
+with(mtcars, tapply(mpg, cyl, mean))    # mean
+
+with(mtcars, tapply(mpg, cyl, sd))      # standard deviation
+
+library(tidyverse)
+mtcars %>% count(cyl)
+```
+
+```{r}
+# using boxplots
+
+boxplot(mpg ~ cyl, data = mtcars, varwidth = F, horizontal = T) #default
+
+boxplot(mpg ~ cyl, data = mtcars, varwidth = T, horizontal = T)
+
+#Students : what is varwidth doing?
+```
+
+
+
+
+
+
+
+
+## FUNCTIONS
+
+```{r}
+# ::::: mean value & standard dev. :::::
+my_mean <- function(x)
+{
+   # computes mean value of vector x
+   sum(x) / length(x)
+}
+
+my_mean             # without (), prints the body of the function
+
+my_mean(mtcars$mpg)
+
+
+my_sd <- function(x)
+{
+   # computes standard deviation of vector x
+   sqrt(sum((x - mean.val(x))^2) / (length(x) - 1))
+}
+
+my_sd(incex$income)
+
+# define your own my.summary() function
+my_summary <- function(x)
+{
+   # returns mean, sd, n, and standard error
+   # x ... numeric vector (no missings allowed)
+
+   m <- mean.val(x)
+   s <- sd.val(x)
+   n <- length(x)
+   se <- s / sqrt(n)  # standard error
+   c(mean = m, std.dev = s, n = n, s.e. = se)
+}
+
+my.summary(mtcars$mpg)
+```
+
+
+## OTHER PLOTS IN BASE R
+### Barplot
+```{r}
+# barplot()
+barplot(table(mtcars$cyl), main = 'cylinders')
+```
+
+```{r}
+# plot()
+plot(~ cyl, data = mtcars)      
+```
+
+### Scatter Plot
+```{r}
+plot(mpg ~ hp, data = mtcars)
+```
+
+
+
+

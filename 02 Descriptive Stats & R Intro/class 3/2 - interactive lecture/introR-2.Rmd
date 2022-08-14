@@ -1,0 +1,253 @@
+---
+course: 'DS2003: Communicating with Data'
+class title: 'Introduction to R: Part 2'
+class number: '3'
+output:
+  pdf_document: default
+  html_document: default
+---
+
+#################################
+# Matrix
+#################################
+### In R, a matrix is a collection of elements of the same data type (numeric, character, or logical) arranged into a fixed number of rows and columns
+
+### Since you are working with rows and columns, a matrix is two-dimensional
+
+### You can construct a matrix in R with the matrix() function
+
+```{r}
+# Example
+matrix(1:12, byrow = TRUE, nrow = 2)
+```
+
+In the matrix() function:
+
+* The first argument is the collection of elements that R will arrange into the rows and columns of the matrix. Here, we use 1:12 which is a shortcut for c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
+
+* The argument byrow indicates that the matrix is filled by the rows. 
+
+* If we want the matrix to be filled by the columns, we just place byrow = FALSE
+
+* The third argument nrow indicates that the matrix should have three rows
+
+```{r}
+# (s2) Make a matrix of the box office earnings for the movie The Matrix
+# the first element is US box offices, the second element is non-US box offices (in millions)
+matrix <- c(171.479, 465.974 )
+reloaded <- c(281.576, 738.576)
+revolutions <- c(139.313, 427.300 )
+resurrections <- c(37.686, 156.467)
+
+# Use c() to combine the three vectors into one vector called this vector box_office
+
+```
+
+```{r}
+# (s3) Construct a matrix with 4 rows, where each row represents a movie. Call this matrix matrix_matrix
+
+```
+
+### Similar to vectors, you can add names for the rows and the columns of a matrix
+
+* rownames(my_matrix) <- row_names_vector
+* colnames(my_matrix) <- col_names_vector
+
+```{r}
+# Example: create vectors of row and column names
+
+# rows
+
+title <- c('Matrix', 'Matrix: Reloaded', 'Matrix: Revolutions', 'Matrix: Resurrections')
+
+# columns 
+
+region <- c('US', 'Non-US')
+
+```
+
+```{r}
+# (s4) Use colnames() to name the columns of matrix_matrix with the region vector
+
+# Use rownames() to the name the columns of the matrix_matrix with the title vector
+
+# print the matrix_matrix
+```
+
+### rowSums() adds across columns and creates a new vector
+
+```{r}
+# (s5) Sum the rows of the matrix_matrix and save to a vector called worldwide
+
+```
+
+### The above creates a vector but does not add it to the matrix
+### We can do this using cbind()
+### cbind() merges matrices and/or vectors together by column (big_matrix <- cbind(matrix1, matrix2, vector1)
+
+```{r}
+# (s6) merge matrix_matrix and worldwide using cbind() and call it all_matrix
+
+```
+
+### rbind() does the same action, just with rows
+```{r}
+# Example: create another matrix with Star Wars data
+
+box_office <- c(460.998, 314.4, 290.475, 247.900, 309.306, 165.8)
+region <- c("US", "non-US")
+titles <- c("A New Hope", 
+            "The Empire Strikes Back", 
+            "Return of the Jedi")
+
+star_wars_matrix <- matrix(box_office, 
+                           nrow = 3, byrow = TRUE,
+                           dimnames = list(titles, region))
+```
+
+```{r}
+# (s7) use rbind() to merge star_wars_matrix and matrix_matrix
+
+```
+
+### colSums() is similar rowSums() but sums down columns instead of row.
+
+```{r}
+# (s8) use colSums() to sum the box office revenue for the Matrix and Star Wars movies for the US and non-US 
+
+```
+
+### Matrix Selection
+Similar to vectors, you can use the square brackets [ ] to select one or multiple elements from a matrix. Whereas vectors have one dimension, matrices have two dimensions. You should therefore use a comma to separate the rows you want to select from the columns. For example:
+
+*my_matrix[1,2] selects the element at the first row and second column
+*my_matrix[1:3,2:4] results in a matrix with the data on the rows 1, 2, 3 and columns 2, 3, 4
+
+If you want to select all elements of a row or a column, no number is needed before or after the comma, respectively:
+
+*my_matrix[,1] selects all elements of the first column
+*my_matrix[1,] selects all elements of the first row
+
+```{r}
+# (s9) Use mean() to calculate the mean box office revenue for the US for the Matrix movies
+
+```
+
+### You can use the arithmetic operators on a matrix
+### 3 * matrix with multiple each element by 3
+
+```{r}
+# (s10) divide the matrix_matrix by 5
+
+```
+
+### you can also do matrix math where matrix * matrix multiples the element in the first matrix by the corresponding element is the second matrix - the result is a matrix of the products
+
+```{r}
+# Example
+matrix1 <- matrix(1:10, nrow = 5)
+matrix2 <- matrix(11:20, nrow = 5)
+
+matrix1 * matrix2
+```
+
+###############################
+# Factors
+###############################
+
+### Factor refers to a statistical data type used to store categorical variables
+
+### The difference between a categorical variable and a continuous variable is that a categorical variable can belong to a limited number of categories. A continuous variable, on the other hand, can correspond to an infinite number of values
+
+* It is important that R knows whether it is dealing with a continuous or a categorical variable, as the statistical models you will develop in the future treat both types differently
+
+### Biological sex is good example of a categorical variable. In many circumstances you can limit the sex categories to "Male" or "Female"
+
+* Capturing a person's gender requires more options but you will always have a finite number of categories
+
+### R uses factor() to assign the factor data type to elements
+
+```{r}
+# Example
+
+# create a vector of biological sex elements with 2 levels: Male & Female
+
+biological_vector <- c('Male', 'Female', 'Female', 'Male', 'Female', 'Male', 'Male')
+
+# assign biological_vector to a factor & assign to the variable factor_biological_vector
+factor_biological_vector <- factor(biological_vector)
+```
+
+### Nominal categorical variable: categorical variable without an implied order
+* cannot use logical operators to compare levels
+
+### Ordinal categorical variable: cetegorical variable  with a natural order (e.g. high, medium, low)
+* factor(ordinal_vector, order = TRUE, levels = c("level 1", "level 2", "level 3"))
+* can use logical operators to compare levels
+
+```{r}
+# (s11) Create a factor vector using nominal variable and assign it to nominal
+
+# Create a factor vector using ordinal variable and assign it to ordinal (Hint: see argument format above)
+
+```
+
+# You can change the name of the levels by using the levels() 
+* if you don't specify the order, R will assign the order alphabetically
+
+```{r}
+# Example: change the factor_biological_vector levels to M for male and F for female
+
+# Check order of levels
+factor_biological_vector
+
+# change levels
+levels(factor_biological_vector) <- c("F", "M")
+
+# print vector
+factor_biological_vector
+```
+
+```{r}
+# (s12) Try out the summary() funtion on factor_biological_vector; use ? if you need help
+
+```
+
+################################
+# Lists
+################################
+
+### A list in R allows you to gather a variety of objects under one name (that is, the name of the list) in an ordered way. These objects can be matrices, vectors, data frames, even other lists, etc
+
+### It is not even required that these objects are related to each other in any way
+
+### list()
+
+```{r}
+# Example: create different data structures
+
+# Vector 
+vector <- 1:10 
+
+# Matrix 
+matrix <- matrix(1:9, ncol = 3)
+
+# First 10 elements of the built-in data frame mtcars 
+# We will get to dataframes in the next lesson
+df <- mtcars[1:10,]
+
+# Put together in a list
+list(vector, matrix, df)
+```
+
+```{r}
+# Can give names to components, just like in vectos using name()
+
+list <- list(vector, matrix, df)
+
+names(list) <- c('v', 'm', 'd')
+
+# print
+list
+```
+
