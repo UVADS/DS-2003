@@ -58,21 +58,24 @@ By the end of the course, I hope that you will:
   * Understand how charts can be used (intentionally or unintentionally) to manipulate results and mislead readers. And how to avoid making these mistakes.  
 
 ## How You'll Know You Are Learning
-This course will be a combination of lectures and labs. As the course progresses, it will become more lab based. During lab sessions, you should expect to spend your time on your computer working through examples with the class. The best way to become comfortable with the material is to continually practice. The idea by making this lab-based class is that you can practice in an environment where you can ask questions and trouble-shoot with peers. Every class won't go perfectly, but week after week you should be more comfortable with R and the material.  
+This course will be a combination of lectures and labs. As the course progresses, it will become more lab based. During lab sessions, you should expect to spend your time on your computer working through examples in small groups. The best way to become comfortable with the material is to continually practice. The idea by making this lab-based class is that you can practice in an environment where you can ask questions and trouble-shoot with peers. Every class won't go perfectly, but week after week you should be more comfortable with R and the material. 
 
-     Reflection/s (15%)
+     Reflections (25%)
+	
+     *There will be two written reflections based on the course reading, How Charts Lie. Students should draw on their own opinions and thoughts to answer      the prompt while framing their response in what they have learned from the book.*
      
-     Quizzes (lab completion?) (20%)
-     
-     Assignments (20%)
-     
-     There will be weekly assignments due. These assignments are meant to reiterate the content from the week. Students are asked to work 
-     independently on these assignments. 
+     Assignments (30%) 
+
+     *There will be weekly assignments due. These assignments are meant to reiterate the content 	from the week. Students are asked to work independently       on these assignments.* 
      
      Mid-term Project (20%) - Groups of 3
+
+     *A group project will be assigned for the midterm and consist of finding and cleaning data, developing a question, and designing 2-3 charts that           assist in answering the proposed question.*
      
      Final Project (25%) - Groups of 3
-     
+
+     *The final project will also be group-based. The end product will be a Shiny interactive app which displays data and graphs.* 
+
 ## Grading 
 
 Courses carrying a Data Science subject area use the following grading system: A, A-; B+, B, B-; C+, C, C-; D+, D, D-; F. The symbol W is used when a student officially drops a course before its completion or if the student withdraws from an academic program of the University. 
@@ -128,6 +131,12 @@ All work should be pledged in the spirit of the Honor System at the University o
      [ggplot2 book](https://ggplot2-book.org/index.html)
      [Plotly](https://plotly.com/r/)
      [Shiny](https://shiny.rstudio.com)
+     
+## Cheat Sheets
+     [Base R](https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf)
+     [tidyr | dpylr | ggplot | RMarkdown](https://www.rstudio.com/resources/cheatsheets/)
+     [Plotly](https://images.plot.ly/plotly-documentation/images/r_cheat_sheet.pdf) 
+     [Shiny](https://shiny.rstudio.com/images/shiny-cheatsheet.pdf)
      
 ## SDAC and Other Special Accommodations 
 
