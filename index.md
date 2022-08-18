@@ -125,7 +125,7 @@ All work should be pledged in the spirit of the Honor System at the University o
 
 ## Resources
 
-     [R for Data Science](https://r4ds.had.co.nz)
+>[R for Data Science](https://r4ds.had.co.nz)
      [R Cookbook](http://www.cookbook-r.com)
      [An Introduction to R](https://cran.r-project.org/doc/manuals/R-intro.pdf)
      [ggplot2 book](https://ggplot2-book.org/index.html)
