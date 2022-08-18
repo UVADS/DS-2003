@@ -60,21 +60,13 @@ By the end of the course, I hope that you will:
 ## How You'll Know You Are Learning
 This course will be a combination of lectures and labs. As the course progresses, it will become more lab based. During lab sessions, you should expect to spend your time on your computer working through examples in small groups. The best way to become comfortable with the material is to continually practice. The idea by making this lab-based class is that you can practice in an environment where you can ask questions and trouble-shoot with peers. Every class won't go perfectly, but week after week you should be more comfortable with R and the material. 
 
-     Reflections (25%)
-	
-     	There will be two written reflections based on the course reading, How Charts Lie. Students should draw on their own opinions and thoughts to             answer the prompt while framing their response in what they have learned from the book.
+     Reflections (25%): There will be two written reflections based on the course reading, How Charts Lie. Students should draw on their own opinions and  	thoughts to answer the prompt while framing their response in what they have learned from the book.
      
-     Assignments (30%) 
-
-     	There will be weekly assignments due. These assignments are meant to reiterate the content from the week. Students are asked to work independently         on these assignments. 
+     Assignments (30%): There will be weekly assignments due. These assignments are meant to reiterate the content 	from the week. Students are asked  	to work independently on these assignments. 
      
-     Mid-term Project (20%) - Groups of 3
-
-     	A group project will be assigned for the midterm and consist of finding and cleaning data, developing a question, and designing 2-3 charts that           assist in answering the proposed question.
+     Mid-term Project (20%): A group project will be assigned for the midterm and consist of finding and cleaning data, developing a question, and 	   	designing 2-3 charts that assist in answering the proposed question.
      
-     Final Project (25%) - Groups of 3
-
-     	The final project will also be group-based. The end product will be a Shiny interactive app which displays data and graphs.
+     Final Project (25%): The final project will also be group-based. The end product will be a Shiny interactive app which displays data and graphs. 
 
 ## Grading 
 
@@ -143,4 +135,26 @@ All work should be pledged in the spirit of the Honor System at the University o
 If you have been identified as a Student Disability Access Center (SDAC) student, please let the Center know you are taking this class. If you suspect you should be an SDAC student, please schedule an appointment with them for an evaluation. I happily and discretely provide the recommended accommodations for those students identified by the SDAC. Please contact your instructor one week before an exam so we can make appropriate accommodations. Website: https://www.studenthealth.virginia.edu/sdac  
 
 If you are affected by a situation that falls within issues addressed by the SDAC and the instructor and staff are not informed about this in advance, this prevents us from helping during the semester, and it is unfair to request special considerations at the end of the term or after work is completed. We request you inform the instructor as early in the term as possible your circumstances. If you have other special circumstances (athletics, other university-related activities, etc.) please contact your instructor and/or TA as soon as you know these may affect you in class. 
+
+## Student Mental Health and Wellbeing: 
+The University of Virginia is committed to advancing the mental health and wellbeing of its students, while acknowledging that a variety of issues, such as strained relationships, increased anxiety, alcohol/drug problems, and depression, directly impacts students’ academic performance.  If you or someone you know is feeling overwhelmed, depressed, and/or in need of support, services are available.  For help, contact Counseling and Psychological Services (CAPS) at 434-243-5150 Monday-Friday, 8:00am-4:30pm and after-hours including weekends and holidays.  For a comprehensive list of services provided by CAPS including individual therapy, group therapy, crisis services, and Outreach and Consultation, visit https://www.studenthealth.virginia.edu/caps. 
+
+For a list of online resources students may access independently, visit  https://www.studenthealth.virginia.edu/caps-online-resources.
+
+For access to community mental health referrals, visit https://www.studenthealth.virginia.edu/community-referrals.
+
+## Diversity and Inclusion
+
+The School of Data Science expects everyone to contribute to an inclusive and respectful classroom culture that reflects the School’s commitment to being a space in which you can find true belonging and a sense of shared community.  The diversity (referring to the multiple ways that we identify ourselves, including but not limited to race, color, national origin, language, sex, disability, age, sexual orientation, gender identity, religion, creed, ancestry, belief, veteran status, or genetic information) of our classroom is a strength. You are expected to respectfully embrace the opportunity to engage, collaborate, and learn with/from a diverse team of classmates.  
+
+Additionally, I will note that it is possible that, even though our course material is primarily scientific in nature, there may be covert biases in the material due to the lens with which it was written. I welcome feedback and suggestions to improve upon the inclusivity of the material.  We are all responsible for ensuring that our actions/experience align with our stated values. Please consider yourselves to be my accountability partners in creating an inclusive environment that supports a diversity of perspectives, do not hesitate to reach out if you have concerns, ideas, or questions about your experience.
+
+As part of our shared effort to promote a classroom culture of inclusion, we will each have the opportunity to indicate our preferred name and pronouns. I will do my best to refer to all students accordingly.
+
+
+If you find yourself in need of additional support, please consider the following resources:
+
+SDS Associate Dean for DEI, Siri Russell ssr5v@virginia.edu
+
+UVA Just Report It https://justreportit.sites.virginia.edu/
 
