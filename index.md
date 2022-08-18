@@ -62,19 +62,19 @@ This course will be a combination of lectures and labs. As the course progresses
 
      Reflections (25%)
 	
-     *There will be two written reflections based on the course reading, How Charts Lie. Students should draw on their own opinions and thoughts to answer      the prompt while framing their response in what they have learned from the book.*
+     	There will be two written reflections based on the course reading, How Charts Lie. Students should draw on their own opinions and thoughts to             answer the prompt while framing their response in what they have learned from the book.
      
      Assignments (30%) 
 
-     *There will be weekly assignments due. These assignments are meant to reiterate the content 	from the week. Students are asked to work independently       on these assignments.* 
+     	There will be weekly assignments due. These assignments are meant to reiterate the content from the week. Students are asked to work independently         on these assignments. 
      
      Mid-term Project (20%) - Groups of 3
 
-     *A group project will be assigned for the midterm and consist of finding and cleaning data, developing a question, and designing 2-3 charts that           assist in answering the proposed question.*
+     	A group project will be assigned for the midterm and consist of finding and cleaning data, developing a question, and designing 2-3 charts that           assist in answering the proposed question.
      
      Final Project (25%) - Groups of 3
 
-     *The final project will also be group-based. The end product will be a Shiny interactive app which displays data and graphs.* 
+     	The final project will also be group-based. The end product will be a Shiny interactive app which displays data and graphs.
 
 ## Grading 
 
@@ -125,18 +125,18 @@ All work should be pledged in the spirit of the Honor System at the University o
 
 ## Resources
 
-*[R for Data Science](https://r4ds.had.co.nz)
-*[R Cookbook](http://www.cookbook-r.com)
-*[An Introduction to R](https://cran.r-project.org/doc/manuals/R-intro.pdf)
-*[ggplot2 book](https://ggplot2-book.org/index.html)
-*[Plotly](https://plotly.com/r/)
-*[Shiny](https://shiny.rstudio.com)
+* [R for Data Science](https://r4ds.had.co.nz)
+* [R Cookbook](http://www.cookbook-r.com)
+* [An Introduction to R](https://cran.r-project.org/doc/manuals/R-intro.pdf)
+* [ggplot2 book](https://ggplot2-book.org/index.html)
+* [Plotly](https://plotly.com/r/)
+* [Shiny](https://shiny.rstudio.com)
      
 ## Cheat Sheets
-*[Base R](https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf)
-*[tidyr | dpylr | ggplot | RMarkdown](https://www.rstudio.com/resources/cheatsheets/)
-*[Plotly](https://images.plot.ly/plotly-documentation/images/r_cheat_sheet.pdf) 
-*[Shiny](https://shiny.rstudio.com/images/shiny-cheatsheet.pdf)
+* [Base R](https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf)
+* [tidyr | dpylr | ggplot | RMarkdown](https://www.rstudio.com/resources/cheatsheets/)
+* [Plotly](https://images.plot.ly/plotly-documentation/images/r_cheat_sheet.pdf) 
+* [Shiny](https://shiny.rstudio.com/images/shiny-cheatsheet.pdf)
      
 ## SDAC and Other Special Accommodations 
 
