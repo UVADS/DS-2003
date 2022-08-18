@@ -1,0 +1,368 @@
+---
+course: 'DS2003: Communicating with Data'
+class title: 'Introduction to R: Part 1'
+class number: '2'
+---
+##############################
+# R as a simple calculator
+##############################
+
+### Arithmetic operators
+* Addition: +
+* Subtraction: -
+* Multiplication: *
+* Division: /
+* Exponentiation: ^ (e.g. 4^4 = 16)
+* Modulo: %% (returns the remainder of the division of the number to the left by the number on its right; e.g. 5 %% 3 = 2)
+* Square root: sqrt() (this a function vs an operator; e.g. sqrt(16) = 4)
+
+
+```{r}
+# Example: Addition
+
+2 + 1
+
+```
+
+```{r}
+# (s1) Addition - write an addition equation
+
+4 + 2
+
+```
+
+```{r}
+# (s2) Subtraction - write a subtraction equation
+
+4 - 2
+
+```
+
+```{r}
+# (s3) Multiplication - write a multiplication equation
+
+4 * 2
+
+```
+
+```{r}
+# (s4) Division - write a division equation
+
+4/2
+
+```
+
+```{r}
+# (s5) Exponentiation - write an exponentiation equation
+
+4^2
+
+```
+
+```{r}
+# (s6) Modulo - write a modulo equation
+
+5%%2
+
+```
+
+### Remember PEMDAS (Parentheses, Exponents, Multiplication, Division, Addition, Subtraction)
+
+```{r}
+# Equation with PEMDAS
+
+100/(27-2)
+
+#versus
+
+100/27-2
+```
+
+```{r}
+# (s7) Write an equation that equal 25 where PEMDAS is applicable
+
+(200 - 100)/4
+
+```
+
+#################################
+# Logical (comparison) operators
+#################################
+
+* < for less than
+* > for greater than
+* <= for less than or equal to
+* >= for greater than or equal to
+* == for equal to each other
+* != not equal to each other
+
+```{r}
+# Example: R will tell us if the expression is TRUE or FALSE
+6 < 5
+```
+
+```{r}
+# (s7b) Write an expression with a logical operator that will return FALSE
+(2^2) != 4
+```
+
+
+################################
+# Variable Assignment
+################################
+
+### A variable allows you to store a value (e.g. a number) or an object (e.g. a function description). 
+### Later you can easily access the value or object stored within this variable
+### Reminder: R is case sensitive
+
+```{r}
+# Example: Assign the value 25 to x
+
+x <- 25
+
+# Print out the value of the variable x
+x
+```
+
+### You can view your variables in your Environment tab in RStudio
+
+```{r}
+# (s8) Assign the value of the square root of 144 to the variable my_var
+
+my_var <- sqrt(144)
+
+# print out my_var
+my_var
+
+```
+
+```{r}
+# (s9) Assign the value of the 10 to the variable y
+
+y <- 10
+
+# print out y
+
+y
+
+```
+
+###  You can use arthmetic operators and functions on variables if they are NUMBERIC variables
+
+```{r}
+# (s10) Subtract my_var from y and divide by 4 (Hint: your answer should be -0.5)
+
+(y - my_var)/4
+
+```
+
+```{r}
+# (s11) Assign the above equation to the variable my_ans and print it out
+
+my_ans <- (y - my_var)/4
+
+```
+
+```{r}
+# (s12) Assign the string "hello world" to the the variable char
+
+char <- "hello world"
+
+```
+
+```{r}
+# (s13) Add char and y together (Hint:you will get an error, why?)
+
+char + y
+
+```
+
+#############################
+# Basic Data Types
+############################
+
+* Decimal values like 5.88 are called numerics
+* Whole numbers like 5 are called integers. Integers are also numerics
+* Boolean values (e.g., `TRUE` or `FALSE`) are called logical
+* Text (or string) values are called characters (e.g. your variable `char`)
+
+### We can check the data type of variable using the class() function
+
+```{r}
+# Example: Declare variables of different types
+
+numeric <- 25
+character <- "data science"
+logical <- TRUE #note the color change of the text
+
+```
+
+```{r}
+# (s14) Check the class of variables above using class() (Hint: class(numeric))
+
+class(numeric)
+class(character)
+class(logical)
+
+```
+
+#############################
+# Vectors
+#############################
+
+### Vectors are one-dimension arrays that can hold numeric, character, or logical data
+### In R, you use the combine function, `c()`, with the elements separated with commas
+
+```{r}
+# Example: Creating vectors
+numeric_vector <- c(41, 66, 23, 3)
+
+# print numeric vector
+numeric_vector
+
+# check the class
+class(numeric_vector)
+```
+
+```{r}
+# (s15) Create, print, and check the class of a vector of your three favorite TV shows (Hint: don't forget the quotation marks) and assign it the variable tv
+
+tv <- c("Ted Lasso", "Only Murders in the Building", "Stranger Things")
+```
+
+```{r}
+# (s16) Create, print, and check the class of a vector named uva with the answers (True/False) to the following questions:
+# UVA is located in Charlottesville.
+# George Washington founded UVA.
+# Data science is a useful field.
+
+uva <- c(TRUE, FALSE, TRUE)
+
+print(uva)
+
+class(uva)
+```
+
+### We can add names to the data in our vectors using the names() function
+
+```{r}
+# Example: Create a vector
+fruit <- c("apples", "red")
+
+# Assign names to fruit vector
+names(fruit) <- c("Fruit", "Color")
+
+# Print to console
+fruit
+```
+
+### Make this process more efficient by creating a vector of the names you want to use
+
+```{r}
+# (s17) Create a vector of numbers 1-7 (Hint: your can use the ':' operator, 1:7) and assign to the variable days_number
+
+days_number <- c(1:7)
+
+# Create a vector of the days of the week in order and save it to a variable called days_name
+
+days_name <- c("Sunday", "Monday", "Tuesday", "Thursday", "Friday", "Saturday", "Sunday")
+
+# Now assign the names of the day to the day number
+names(days_number) <- days_name
+
+```
+
+### Arithmetic calcuations of vectors
+* takes elements list-wise
+* c(1, 2, 3) + c(4, 5, 6) = c(1 + 4, 2 + 5, 3 + 6)
+* can do calculations with variables that represent vectors
+
+```{r}
+# Create 2 vectors and multiple them together
+v1 <- c(2:9)
+v2 <- c(53:60)
+
+v1 * v2
+```
+
+### Vector Selection
+* use square brackets (`[]`) to select a specific element(s) out of your vector
+* note: unlike other programming languages, the first element in a R vector is 1 (compared to 0)
+
+```{r}
+# Example
+streets <- c('ivy', 'emmet', 'jpa', 'main')
+streets[2]
+```
+
+```{r}
+# (s18) Use your days_name vector and select the element "Thursday"
+days_name[4]
+```
+
+```{r}
+# Example: Select multiple elements
+
+# select the first 3 elements
+streets[c(1, 2, 3)]
+# =
+streets[1:3]
+
+# select the first and last elements (note the use of c())
+streets[c(1,4)]
+
+# select the first 2 elements and the last element
+streets[c(1:2, 4)]
+```
+
+### Element selection can also be done using the names of elements instead of their numeric positions
+
+```{r}
+#Example:
+# Vector of street numbers
+street_numbers <- c('Street 1', 'Street 2', 'Street 3', 'Street 4')
+
+# Assign street numbers as names to Streets
+names(streets) <- street_numbers
+
+# Select Street 1
+streets['Street 1']
+
+# Select Street 1 and Street 4
+streets[c('Street 1', 'Street 2')]
+```
+
+# Vectors & logical operators 
+### We can use logical operators to compare elements in a vector to a number (or == a string)
+```{r}
+#Example
+c(105, 21, 67, 3, 88) > 45
+
+# or we can use a vector saved to a variable
+
+my_vector <- c(105, 41, 67, 3, 88)
+
+my_vector > 45
+```
+
+```{r}
+# s(1) Given the vector below, determine which elements are positive and save them to a vector called positive
+
+c(-20, -0.5, 20, 0, 8, 3)
+
+```
+
+### If you place a logical vector inside square brackets, R will only return the elements that respond to TRUE
+
+```{r}
+# create a vector
+v <- c(1, 2, 3, 4, 5, 6, 7)
+names(v) <- c('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')
+
+# logical vector
+logical <- v > 3
+
+# subset out the values that equal TRUE
+thursday <- v[logical]
+thursday
+```
