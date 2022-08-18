@@ -125,18 +125,18 @@ All work should be pledged in the spirit of the Honor System at the University o
 
 ## Resources
 
->[R for Data Science](https://r4ds.had.co.nz)
-     [R Cookbook](http://www.cookbook-r.com)
-     [An Introduction to R](https://cran.r-project.org/doc/manuals/R-intro.pdf)
-     [ggplot2 book](https://ggplot2-book.org/index.html)
-     [Plotly](https://plotly.com/r/)
-     [Shiny](https://shiny.rstudio.com)
+*[R for Data Science](https://r4ds.had.co.nz)
+*[R Cookbook](http://www.cookbook-r.com)
+*[An Introduction to R](https://cran.r-project.org/doc/manuals/R-intro.pdf)
+*[ggplot2 book](https://ggplot2-book.org/index.html)
+*[Plotly](https://plotly.com/r/)
+*[Shiny](https://shiny.rstudio.com)
      
 ## Cheat Sheets
-     [Base R](https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf)
-     [tidyr | dpylr | ggplot | RMarkdown](https://www.rstudio.com/resources/cheatsheets/)
-     [Plotly](https://images.plot.ly/plotly-documentation/images/r_cheat_sheet.pdf) 
-     [Shiny](https://shiny.rstudio.com/images/shiny-cheatsheet.pdf)
+*[Base R](https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf)
+*[tidyr | dpylr | ggplot | RMarkdown](https://www.rstudio.com/resources/cheatsheets/)
+*[Plotly](https://images.plot.ly/plotly-documentation/images/r_cheat_sheet.pdf) 
+*[Shiny](https://shiny.rstudio.com/images/shiny-cheatsheet.pdf)
      
 ## SDAC and Other Special Accommodations 
 
