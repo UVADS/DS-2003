@@ -10,12 +10,12 @@ title: Home
 ### Section 001 (17703) (T/Th 9:30-10:45a; Ridley Hall G006)
 Bruce Corliss, PhD
 * Office: Elson 149A (Old Student Health Center)
-* Email:
-* Office Hours:
+* Email: bac7wj@virginia.edu
+* Office Hours: Mondays 3-4:30 PM
 
-TA:
-* Email:
-* Office Hours:
+TA: Shan Xu
+* Email: sx3ky@virginia.edu
+* Office Hours: Mondays 5-6:30
 
 ### Section 002 (19026) (T/Th 2:00-3:15p; Clark Hall G004)
 Natalie Kupperman, PhD, ATC
@@ -28,8 +28,6 @@ TA:
 * Office Hours: 
 
 ## Other Information
-
-Course Materials: [Communicating with Data Repo](github.com/UVADS)
 
 Subject Area and Catalog Number: Data Science, DS 2003, Section 17703 -or- 19026
 
@@ -49,13 +47,13 @@ This course provides practical experiences about how data is commonly used in co
 
 By the end of the course, I hope that you will: 
 
-  * Be adept in summarizing and visualizing data using R. 
+  1. Be adept in summarizing and visualizing data using R. 
 
-  * Be able to construct meaningful messages from data and effectively deliver them with 	visualization tools. 
+  2. Be able to construct meaningful messages from data and effectively deliver them with 	visualization tools. 
 
-  * Have confidence in interacting and collaborating with colleagues. 
+  3. Have confidence in interacting and collaborating with colleagues. 
 
-  * Understand how charts can be used (intentionally or unintentionally) to manipulate results and mislead readers. And how to avoid making these mistakes.  
+  4. Understand how charts can be used (intentionally or unintentionally) to manipulate results and mislead readers. And how to avoid making these mistakes.  
 
 ## How You'll Know You Are Learning
 This course will be a combination of lectures and labs. As the course progresses, it will become more lab based. During lab sessions, you should expect to spend your time on your computer working through examples in small groups. The best way to become comfortable with the material is to continually practice. The idea by making this lab-based class is that you can practice in an environment where you can ask questions and trouble-shoot with peers. Every class won't go perfectly, but week after week you should be more comfortable with R and the material. 
