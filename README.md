@@ -13,6 +13,8 @@ The [Class Assignments](docs/assignments.md) are found in "/docs/assignments.md"
 
 Lecture materials are organized by class week number in this directory.
 
+## Course Information
+
 Subject Area and Catalog Number: Data Science, DS 2003, Section 17703 -or- 19026
 
 Year, Term: 2022, Fall
