@@ -13,33 +13,6 @@ The [Class Assignments](docs/assignments.md) are found in "/docs/assignments.md"
 
 Lecture materials are organized by class week number in this directory.
 
-
-## Sections
-
-### Section 001 (17703) (T/Th 9:30-10:45a; Ridley Hall G006)
-Bruce Corliss, PhD
-* Office: Elson 149A (Old Student Health Center)
-* Email:
-* Office Hours:
-
-TA:
-* Email:
-* Office Hours:
-
-### Section 002 (19026) (T/Th 2:00-3:15p; Clark Hall G004)
-Natalie Kupperman, PhD, ATC
-* Office: Elson 184A (Old Student Health Center)
-* Email: n-kupperman@virginia.edu
-* Office Hours: Monday 10 - 11:30a
-
-TA:
-* Email: 
-* Office Hours: 
-
-## Other Information
-
-Course Materials: [Communicating with Data Repo](github.com/UVADS)
-
 Subject Area and Catalog Number: Data Science, DS 2003, Section 17703 -or- 19026
 
 Year, Term: 2022, Fall
