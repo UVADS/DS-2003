@@ -3,7 +3,7 @@ layout: default
 title: Coursework
 ---
 
-[Rep](01 Intro to Course and R/class 1/)
+[Rep](</01 Intro to Course and R/class 1/>)
 
 ## Schedule of Topics
 
