@@ -11,11 +11,11 @@ title: Home
 Bruce Corliss, PhD
 * Office: Elson 149A (Old Student Health Center)
 * Email: bac7wj@virginia.edu
-* Office Hours: Mondays 3-4:30 PM
+* Office Hours: See overview page on collab for time,date, and location
 
 TA: Shan Xu
 * Email: sx3ky@virginia.edu
-* Office Hours: Mondays 5-6:30
+* Office Hours: See overview page on collab for time,date, and location
 
 ### Section 002 (19026) (T/Th 2:00-3:15p; Clark Hall G004)
 Natalie Kupperman, PhD, ATC
