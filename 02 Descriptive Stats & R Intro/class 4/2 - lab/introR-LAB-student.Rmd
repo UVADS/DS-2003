@@ -1,0 +1,74 @@
+---
+course: 'DS2003: Communicating with Data'
+class title: 'Introduction to R: Part 3'
+class number: '4'
+---
+
+#LAB: DATAFRAMES in R
+### You may work in groups of 2-3
+
+```{r}
+# Load the data 'income_exmpl.csv'
+
+
+```
+
+```{r}
+# Show the first 6 rows of the dataframe
+
+
+```
+
+```{r}
+# Select the first row
+
+
+
+```
+
+
+```{r}
+# select the first column
+
+
+```
+
+
+```{r}
+# Select the first column by name
+
+
+```
+
+```{r}
+# Select the third row and the second column
+
+
+
+```
+
+```{r}
+# Select rows 5-25 row of the 'income' & 'age' column
+
+
+```
+
+```{r}
+# sort the above output by smallest-largest age - keep data in a dataframe
+
+```
+
+```{r}
+# using the full dataset, subset the data for females at or over age 35 with low or med education 
+
+
+
+```
+
+```{r}
+# determine amount of missing data in column 'age' - may need to Google
+
+
+
+```
+
