@@ -26,7 +26,7 @@
 
 # Reading Assignments
 
-| Date		| Assigned Reading			| Notes						|
+| Due Date		| Assigned Reading			| Notes						|
 |:---:		|:---:						|:---:						|
 | 9/1		| HCL: Prologue & Chapter 1	| Section 001 Due date: 9/6	|
 | 9/8		| HCL: Chapter 2			|							|
