@@ -22,3 +22,15 @@
 | Week 14       | NA                | Thanksgiving					|                 				| Repo, Zip		|		|
 | Week 15       | NA                | NA 							| FP: Final Presentation Prep 	| Repo, Zip		|5		|
 | Week 16       | NA                | Finals		                |								| Repo, Zip		|30		|
+
+
+# Reading Assignments
+
+| Date		| Assigned Reading			| Notes						|
+|:---:		|:---:						|:---:						|
+| 9/1		|HCL: Prologue & Chapter 1	| Section 001 Due date: 9/6	|
+| 9/8		|HCL: Chapter 2				|							|
+| 9/15		|HCL: Chapter 3				| Reflection #1 Due 9/20	|
+| 10/18		|HCL: Chapter 4				|							|
+| 10/25		|HCL: Chapter 5				|							|
+| 11/1		|HCL: Chapter 6 & Conclusion| Reflection #1 Due 11/8	|
