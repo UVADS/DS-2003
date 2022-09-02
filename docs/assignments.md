@@ -28,7 +28,7 @@
 
 | Due Date		| Assigned Reading			| Notes						|
 |:---:		|:---:						|:---:						|
-| 9/1		| HCL: Prologue & Chapter 1	| Section 001 Due date: 9/6	|
+| 9/1		| HCL: Prologue - Chapter 1	| Section 001 Due date: 9/6	|
 | 9/8		| HCL: Chapter 2			|							|
 | 9/15		| HCL: Chapter 3			| Reflection #1 Due 9/20	|
 | 10/18		| HCL: Chapter 4			|							|
