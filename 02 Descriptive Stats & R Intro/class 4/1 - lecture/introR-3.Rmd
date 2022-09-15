@@ -99,7 +99,7 @@ mtcars[ , 'mpg']
 ```{r}
 # select mpg and wt where cyl where cyl equals 8
 
-mtcars[cyl == 8, c('mpg', 'wt')]  
+mtcars[mtcars$cyl == 8, c('mpg', 'wt')]  
 
 ```
 
@@ -179,20 +179,20 @@ mtcars[position, ]
 
 ```{r}
 # find out current working directory
-getwd()
+#getwd()
 
 # set working directory to my laptop desktop
-setwd('/Users/nataliekupperman/Desktop') # working directory on my laptop
+#setwd('/Users/nataliekupperman/Desktop') # working directory on my laptop
 
 # set working directory back to One Drive
-setwd("/Users/nataliekupperman/Library/CloudStorage/OneDrive-UniversityofVirginia/Courses/DS2003/DS-3003/01 Intro to Course & R/class 2") 
+#setwd("/Users/nataliekupperman/Library/CloudStorage/OneDrive-UniversityofVirginia/Courses/DS2003/DS-3003/01 Intro to Course & R/class 2") 
 ```
 
 ## TABULAR separated data
 ### read in data with read.table() & sep = "\t
 ```{r}
 # read in data
-incex <- read.table('../data/income_exmpl.dat', header = T, sep = "\t") # use (..) to move up a directory
+incex <- read.table('./data/income_exmpl.dat', header = T, sep = "\t") # use (..) to move up a directory
 
 # print the first 6 lines of data with function head()
 head(incex)       
@@ -202,7 +202,7 @@ head(incex)
 
 ```{r}
 # Example
-incex <- read.table('/Users/nataliekupperman/Library/CloudStorage/OneDrive-UniversityofVirginia/Courses/DS2003/DS-3003/01 Intro to Course & R/data/income_exmpl.dat', header = T, sep = "\t")
+incex <- read.table('./data/income_exmpl.dat', header = T, sep = "\t")
 ```
 
 ### if an R function requires a character string or name as an argument (e.g., the file name or path), it must be set in quotes ("name" or 'name')
@@ -210,7 +210,7 @@ incex <- read.table('/Users/nataliekupperman/Library/CloudStorage/OneDrive-Unive
 ##COMMA separated data
 ### use read.csv()
 ```{r}
-incex.2 <- read.csv('../data/income_exmpl.csv')
+incex.2 <- read.csv('./data/income_exmpl.csv')
 ```
 
 ### Read other data formats (e.g., SPSS, SAS, or STATA)
@@ -228,7 +228,7 @@ library(help = 'foreign')
 # help on reading SPSS data files (.sav)
 ?read.spss  
 
-incex.3 <- read.spss('..data/income_exmpl.sav', to.data.frame = TRUE)
+incex.3 <- read.spss('./data/income_exmpl.sav', to.data.frame = TRUE)
 ```
 
 
