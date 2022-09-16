@@ -1,7 +1,9 @@
 ---
-course: "DS2003: Communicating with Data"
-class title: "Lab: ggplot2 -1 "
-class number: "8"
+course: 'DS2003: Communicating with Data'
+class title: "ggplot2 -1 "
+class number: '8'
+editor_options: 
+  chunk_output_type: inline
 ---
 
 ```{r}
@@ -40,28 +42,46 @@ ggplot(mtcars,
   geom_smooth()
 ```
 
-
-# COLOR
+#Students:
+ * import the income.csv dataset
+ * create a scatter plot between age and income
+ * create a second plot that includes a smooth line
+ 
 ```{r}
 
-# When adding color in aesthetics mapping, it is tied to a variable
-# Can be added in the base layer or geom layer
+```
 
+```{r}
+
+```
+
+```{r}
+
+```
+
+# COLOR
+* When adding color in aesthetics mapping, it is tied to a variable
+* Can be added in the base layer or geom layer
+
+```{r}
 # base layer
 ggplot(mtcars,               
        aes(x = wt,           
            y = mpg,
            color = cyl)) +       
   geom_point()  
+```
 
+```{r}
 # geom layer
 ggplot(mtcars,               
        aes(x = wt,           
            y = mpg)) +       
   geom_point(aes(color = cyl)) 
+```
 
 # What looks wrong with this graph? (hint: look at the legend)
-```
+
 ```{r}
 # Convert cyl from numeric to factor
 mtcars$fcyl <- as.factor(mtcars$cyl)
@@ -75,9 +95,52 @@ ggplot(mtcars,
   geom_point() 
 ```
 
+From lecture: When should we put aesthetics in base layer and when should we put them in the geom layer?
+
 ```{r}
-# From lecture: When should we put aesthetics in base layer and when should we put them in the geom layer?
+# Color refers to the outline of the shape.
+ggplot(mtcars,               
+       aes(x = wt,           
+           y = mpg,
+           color = fcyl)) +       
+  geom_point(shape = 1) # shape is being used as an attribute (will effect all markers the homogeneously)
 ```
+
+```{r}
+# An exception is point markers. Instead of fill, use color to change the inside color
+
+ggplot(mtcars,               
+       aes(x = wt,           
+           y = mpg,
+           color = fcyl)) +       
+  geom_point() 
+```
+
+```{r}
+# Fill refers to the inside color
+ggplot(mtcars,               
+       aes(x = wt,           
+           y = mpg,
+           fill = fcyl)) +       
+  geom_point(shape = 24) 
+```
+
+```{r}
+# Some shapes allow color and fill
+ggplot(mtcars,               
+       aes(x = wt,           
+           y = mpg,
+           fill = fcyl)) +       
+  geom_point(shape = 21, color  = 'white', size = 12) 
+```
+
+Student:
+* color the points on your age x income plot to signify education level
+
+```{r}
+
+```
+
 
 # SHAPES
 ```{r}
@@ -92,47 +155,6 @@ ggplot(mtcars,
            shape = fcyl)) +       
   geom_point() 
 
-
-# An is an exception where 'color' changes the inside color (vs the outline).
-
-# Shape 21 is a solid circle that allows changes to its fill and color
-```
-
-# SHAPES, COLOR, FILL
-```{r}
-# Color refers to the outline of the shape.
-ggplot(mtcars,               
-       aes(x = wt,           
-           y = mpg,
-           color = fcyl)) +       
-  geom_point(shape = 1) # note this is an attribute, will get to this soon
-```
-
-```{r}
-# Fill refers to the inside color
-ggplot(mtcars,               
-       aes(x = wt,           
-           y = mpg,
-           fill = fcyl)) +       
-  geom_point(shape = 24, size = 12) 
-```
-
-```{r}
-# Some shapes allow color and fill
-ggplot(mtcars,               
-       aes(x = wt,           
-           y = mpg,
-           fill = fcyl)) +       
-  geom_point(shape = 21, color  = 'white', size = 12) 
-```
-
-```{r}
-# An exception is point markers. Instead of fill, use color to change the inside color
-ggplot(mtcars,               
-       aes(x = wt,           
-           y = mpg,
-           color = fcyl)) +       
-  geom_point(size = 12) 
 ```
 
 ```{r}
@@ -144,9 +166,27 @@ ggplot(mtcars,
   geom_point(aes(shape = fcyl)) 
 ```
 
-#SIZE
+Students:
+* Use shape to denote participant's gender
+
 ```{r}
-# with the aesthetics mappings so size is determined by variable (which is different from the size attribute seen above)
+
+```
+
+#SIZE
+
+```{r}
+# to change marker size overall, use size argument as attribute
+ggplot(mtcars,               
+       aes(x = wt,           
+           y = mpg,
+           fill = fcyl)) +       
+  geom_point(shape = 21, color  = 'white', size = 12) 
+```
+
+
+```{r}
+# To change marker size dependent on variable info, place inside aesthetics mapping. 
 ggplot(mtcars,               
        aes(x = wt,           
            y = mpg,
@@ -156,6 +196,7 @@ ggplot(mtcars,
 
 #ALPHA (TRANSPARENCY)
 ```{r}
+# inside aesthetics mapping, transparency will be determined by variable
 ggplot(mtcars,               
        aes(x = wt,           
            y = mpg,
@@ -163,13 +204,28 @@ ggplot(mtcars,
   geom_point()
 ```
 
+```{r}
+# as attribute, all markers will be made the same transparency
+ggplot(income, aes(age, income, color = fedu)) +       
+  geom_point(alpha = .6) 
+```
+Changing the transparency of all markers is helpful when you have areas of dense plotting.
+
 # LINETYPE
 ```{r}
+# in aesthetic layer
 ggplot(mtcars,               
        aes(x = wt,           
            y = mpg,
            linetype = fcyl)) +       
   geom_line()                   # Note change in geom layer
+```
+```{r}
+# as an attribute
+ggplot(mtcars,               
+       aes(x = wt,           
+           y = mpg )) +       
+  geom_line(linetype = 'dashed')
 ```
 
 # LABELS
@@ -179,6 +235,13 @@ ggplot(mtcars,
            y = mpg,
            label = fcyl)) +       
   geom_text()                 # Note change in geom layer
+```
+
+Students:
+* Choose a few of the above visual properties from above and alter your income x age plot using aesthetic mappings
+
+```{r}
+
 ```
 
 #########################################
@@ -210,7 +273,7 @@ ggplot(mtcars,
 ```{r}
 # using HEX assigned to a variable
 
-my_color1 = '#2A9D8F'
+my_color = '#2A9D8F'
 my_fill = '#FFFFFF'
 
 ggplot(mtcars,               
@@ -357,7 +420,7 @@ ggplot(iris,     # new dataset
 ## SCALES
 
 ```{r}
-# Includes the labels scales seen above. 
+# Includes the scales seen above. 
 
 # x-axis limits
 ggplot(iris,                   
@@ -366,6 +429,7 @@ ggplot(iris,
            color = Species)) +       
   geom_point(position = preset_jitter) + 
   xlim(5, 7)
+
 ```
 
 ```{r}
@@ -387,8 +451,10 @@ ggplot(iris,
   geom_point(position = preset_jitter) + 
   ylim(2.5, 4)
 
-# What are issues starting graphs not at zero?
+
 ```
+
+# What are issues starting graphs not at zero?
 
 ```{r}
 # color scales
@@ -416,6 +482,8 @@ ggplot(mtcars, aes(fcyl)) +
 
 ```{r}
 # Calculate Descriptive Statistics
+# this is using dpylr
+
 mtcars %>%
   select(fcyl, wt) %>%
   gather(key, value, -fcyl) %>%
@@ -442,6 +510,14 @@ ggplot(mtcars, aes(fcyl)) +
   stat_count()
 ```
 
+Student:
+* using income, make a bar plot charting number of observations per education level
+
+```{r}
+
+```
+
+
 ```{r}
 #boxplot
 ggplot(mtcars, aes(fcyl, mpg)) +
@@ -452,7 +528,7 @@ ggplot(mtcars, aes(fcyl, mpg)) +
 # violin plot
 ggplot(mtcars, aes(fcyl, mpg)) +
   geom_violin(scale = 'count', draw_quantiles = c(.25, .5, .75)) +
-  geom_jitter(heigt = 0, width = 0.1)
+  geom_jitter(height = 0, width = 0.1)
 ```
 
 
