@@ -21,12 +21,12 @@ class number: "9"
 ```
 
 ```{r}
-# change order of factor levels for 'occ' and 'edu' to be low, med, high
+# Convert columns for 'occ' and 'edu' to be factors with levels (low, med, high)
 
 ```
 
 ```{r}
-# change 'sex' variable to male & female
+# change 'sex' variable factor with levels (male & female)
 
 ```
 
@@ -36,6 +36,7 @@ class number: "9"
 # create a bar plot that counts people with low, medium, and high occupation status respectively
 
 ```
+
 
 ```{r}
 # Add a title, color, and theme, differentiate by sex, and total count labels over the bars (don't be afraid to google)

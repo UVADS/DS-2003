@@ -22,13 +22,13 @@ str(df)
 ```
 
 ```{r}
-# change order of factor levels for 'occ' and 'edu' to be low, med, high
+# Convert columns for 'occ' and 'edu' to be factors with levels (low, med, high)
 df$occ <- factor(df$occ, levels = c('low', 'med', 'high'))
 df$edu <- factor(df$edu, levels = c('low', 'med', 'high'))
 ```
 
 ```{r}
-# change 'sex' variable to male & female
+# change 'sex' variable factor with levels (male & female)
 df$sex <- factor(df$sex, levels = c('m', 'f'), labels = c('male', 'female'))
 ```
 
@@ -40,6 +40,7 @@ df$sex <- factor(df$sex, levels = c('m', 'f'), labels = c('male', 'female'))
 ggplot(df, aes(occ)) + 
   geom_bar()
 ```
+
 ```{r}
 # Add a title, color, and theme, differentiate by sex, and total count labels over the bars (don't be afraid to google)
 
