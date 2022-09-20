@@ -26,7 +26,7 @@ class number: "9"
 ```
 
 ```{r}
-# change 'sex' variable factor with levels (male & female)
+# change 'sex' variable to a factor with  levels (male & female)
 
 ```
 
@@ -53,6 +53,7 @@ class number: "9"
 
 ```{r}
 # Make the same graph with precomputed data (will need to consider changing default settings)
+# No need to color the bars by sex for this step
 
 #pre-computed data
 occ_counted <- df %>% count(occ, name = 'count') 
