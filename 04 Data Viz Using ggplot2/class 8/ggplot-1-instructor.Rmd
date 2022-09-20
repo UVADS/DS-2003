@@ -499,12 +499,20 @@ ggplot(mtcars, aes(fcyl)) +
 # Calculate Descriptive Statistics
 # this is using dpylr
 
-mtcars %>%
+# This dplyr sequence uses gather to convert a wide dataset to a long
+mtcars_summary_long <- mtcars %>%
   select(fcyl, wt) %>%
   gather(key, value, -fcyl) %>%
   group_by(fcyl) %>%
   summarise(avg = mean(value),
-            sd = sd(value)) -> mtcars_summary_long
+            sd = sd(value))
+
+# Alternative dplyr commands without gather function
+mtcars_summary_long <- mtcars %>%
+  select(fcyl, wt) %>%
+  group_by(fcyl) %>%
+  summarise(avg = mean(wt),
+            sd = sd(wt))
 ```
 
 ```{r}
