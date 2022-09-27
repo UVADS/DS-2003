@@ -37,7 +37,7 @@ df$sex <- factor(df$sex, levels = c('m', 'f'), labels = c('male', 'female'))
 ```{r}
 # create a bar plot that counts people with low, medium, and high occupation status respectively
 
-ggplot(df, aes(occ)) + 
+ggplot(df, aes(x=occ)) + 
   geom_bar()
 ```
 
@@ -155,13 +155,21 @@ ggplot(df, aes(x = income, y=..density..)) +
   geom_histogram(bins=20, fill = 'white', color = 'gray') + 
   geom_density(aes(x = income), col="red") + 
   theme_minimal()
+
+
+ggplot(df, aes(x=income)) +                                # ggplot2 histogram & density
+  geom_histogram(aes(y = stat(density))) +
+  geom_density(col = "red") +
+  theme_minimal()
+
+
 ```
 
 ## Histogram with groups
 
 ```{r}
 # Create a histogram separated by sex
-ggplot(df, aes(income, fill = sex)) + 
+ggplot(df, aes(x=income, fill = sex)) + 
   geom_histogram(bins=20, alpha=0.7) + 
   theme_bw()
 ```

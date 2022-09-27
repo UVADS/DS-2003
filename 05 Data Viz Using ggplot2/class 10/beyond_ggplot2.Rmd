@@ -75,7 +75,9 @@ ggpairs(df[, c('income', 'oexp', 'age', 'edu')])
 ggpairs(df, columns = c(6,2)) 
 # Edu used as aesthetic
 ggpairs(df, columns = c(6,2), ggplot2::aes(colour = edu)) 
+ggpairs(df, columns = c(6,2), aes(colour = edu)) 
 ```
+
 
 ```{r}
 # 1 continuous, 1 categorical variable
