@@ -1,10 +1,120 @@
 ---
-title: "R Notebook"
+course: "DS2003: Communicating with Data"
+class title: "Interactive Lecture: tidyr "
+class number: "14"
 ---
 
 ```{r}
+#import dependencies
+library(tidyverse)
+```
+## Tidy Data
+>“Happy families are all alike; every unhappy family is unhappy in its own way.” –– Leo Tolstoy
 
+>“Tidy datasets are all alike, but every messy dataset is messy in its own way.” –– Hadley Wickham
+
+Based on Hadley Wickham's [Tidy Data](https://vita.had.co.nz/papers/tidy-data.pdf) paper. 
+
+Data is said to be tidy if it meets the following conditions:
+
+* Each variable forms a column.
+* Each observation forms a row.
+* Each type of observational unit forms a table.
+
+Example:
+```{r}
+student_results <- read.csv('student_results.csv')
+student_results
 ```
 
+**Is this data tidy or untidy data?**
+
+This data is untidy due to the following common issues of untidy data:
+
+*Some column headers are values, not variable names*
+* The column headers `term 1`, `term 2` and `term 3` are values. These need not to be column headers but values within another column like term.
+
+*Multiple variables are stored in one column*
+The column `gender_age` has two variables. For example Mike’s value for this column is m_12, meaning that he is a 12 year old male. The sex and age values should be in different columns.
+
+*Variables are stored in both rows and columns*
+The `test number` column is not a variable, it stores names of variables test 1 and test 2. Therefore, test 1 and test 2 need to be headers of columns as they are variables.
+
+*Multiple types of observational units are stored in the same table*
+The table above has data for two types of observational units: the student and student performance in two tests for each term. These different observational units need to be in their own tables for consistency. Therefore, a table for student should have the id, name, phone, sex and age. The table for performance should have the rest of the data, plus the id column which should be common in both tables.
+
+**Let's tidy this data**
+
+1. Turn 'term 1', 'term 2', 'term 3' into a column 'term'
+
+* To do this we will use `pivot_longer` from the tidyr package
+
+```{r}
+student_results_clean <- student_results %>%
+  pivot_longer(cols = c('term1', 'term2', 'term3'), names_to = 'term', values_to = 'score')
+
+student_results_clean
+```
+
+2. Split 'gender_age' variable
+* use `separate()` from tidyr
+
+```{r}
+student_results_clean <- student_results_clean %>%
+  separate(gender_age, c('gender', 'age'), '_')
+
+student_results_clean
+```
+
+3. Make 'test`' and 'test2' headers
+* use pivot_wider() from tidyr
+
+```{r}
+student_results_clean <- student_results_clean %>%
+  pivot_wider(names_from = test_number, values_from = score)
+
+student_results_clean
+```
+
+4. Split the table into a 'student' table and 'test' table
+* use dplyr functions
+
+```{r}
+student <- student_results_clean %>%
+  select('id', 'name', 'phone', 'gender', 'age')
+
+student
+```
+
+```{r}
+test <- student_results_clean %>%
+  select('id', 'term', 'test1', 'test2')
+
+test
+```
+
+Students:
+* Import `dogs.csv'
+* Review data and transform to tidy data using tidyverse methods
+
+```{r}
+
+# Fill in values for patient, breed, address, gaurdian, for all rows (fill down same value to next value)
+
+# pivot longer to combine height, length, width columns
+
+# split weight between "weight" and "weight_units"
+
+# Convert weight to lbs only and add new column "weight_lbs"
+
+# Split visit_date to visit and date
+
+# Separate dataframe into dog_tb and guardian_tb
+
+
+
+
+
+```
 
 

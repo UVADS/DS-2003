@@ -1,0 +1,11 @@
+id,name,phone,gender_age,test_number,term1,term2,term3
+1,Lauren,123-567-890,f_12,test1,76,84,87
+2,Aparna,434-999-2222,f_13,test1,88,90,73
+3,Sheng,555-202-8765,m_11,test1,78,74,80
+4,Connor,701-920-8073,m_12,test1,68,75,74
+5,Cecil,464-921-9054,m_13,test1,65,67,64
+1,Lauren,123-567-890,f_12,test2,85,80,80
+2,Aparna,434-999-2222,f_13,test2,87,82,94
+3,Sheng,555-202-8765,m_11,test2,80,87,80
+4,Connor,701-920-8073,m_12,test2,70,75,78
+5,Cecil,464-921-9054,m_13,test2,68,70,63

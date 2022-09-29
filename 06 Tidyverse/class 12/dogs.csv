@@ -1,0 +1,11 @@
+patient,visit_date,breed,phone,weight,diagnosis,guardian,address,height,length,width
+tag,1 - 9/22/17,mix,434-926-8943,65 lb,ear infection,Mike ,"500 Emmett St, Charlottesville",18,36,12
+,2- 7/5/18,,434-926-8944,68 lb,routine visit,,,22,38,14
+,3 - 9/15/18,,434-926-8945,63 lb,kennel cough,,,23,40,14
+scooch,1 - 5/4/19,labrador retriever,434-990-9824,105 lb,routine visit,Laurel,"400 JPA, Charlottesville",36,42,14
+,2 - 8/28/20,labrador retriever,434-990-9825,100 lb,routine visit,Laurel,"400 JPA, Charlottesville",40,45,16
+,3 - 4/22/21,labrador retriever,434-990-9826,103 lb,routine visit,Laurel,"400 JPA, Charlottesville",21,46,16
+fido,1- 2/11/18,bernadoodle,202-999-4678,36 kg,routine visit,Jayden,"200 Ivy Rd, Charlottesville",12,18,6
+,2 - 2/25/18,,202-999-4679,35 kg,vaccine visit,Jayden,"201 Ivy Rd, Charlottesville",14,20,8
+,3 - 5/7/18,,202-999-4680,36 kg,skin infection,Jayden,,15,22,10
+,4 - 7/27/20,,202-999-4678,36 kg,routine visit,,,15,23,11
