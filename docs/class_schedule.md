@@ -7,7 +7,7 @@ title: Coursework
 
 ## Schedule of Topics
 
-| Week 	  | Class #       | Date      | Topic										| Links	| Notes									|
+| Week_ 	  | Class #       | Date_      | Topic										| Links	| Notes									|
 |:---:	  |:---:	      |:---:	  |:---											|:---:		| :---:								|
 | Week 1  | 1             | 8/23      |   Lecture: Intro to Course					|[Rep](</01 Intro to Course and R/class 1/>), Site 	|									|
 | Week 1  | 2             | 8/25      |   iLecture: Intro to R - 1					|[Rep](</01 Intro to Course and R/class 2/>)		|									|
@@ -25,13 +25,13 @@ title: Coursework
 | Week 7  | 14            | 10/6      |   R Markdown						|		|                           |
 | Week 8  | 15            | 10/11     |   Midterm Presentations	- 1					|		|                           | 
 | Week 8  | 16            | 10/13     |   Midterm Presentations - 2	| [Rep](</01 Intro to Course and R/class 1/>)       |                           |  
-| Week 9  | 17            | 10/18     |   Lab: Plotly & Interactive Graphs			|[Rep](</01 Intro to Course and R/class 1/>)         |                           |	
-| Week 9  | 18            | 10/20     |   Lab: Plotly & Interactive Graphs			|[Rep](</01 Intro to Course and R/class 1/>)         |                           |
+| Week 9  | 17            | 10/18     |   Plotly & Interactive Graphs			|[Rep](</01 Intro to Course and R/class 1/>)         |                           |	
+| Week 9  | 18            | 10/20     |   Plotly & Interactive Graphs			|[Rep](</01 Intro to Course and R/class 1/>)         |                           |
 | Week 10 | 19            | 10/25     |   Lab: Shiny							|[Rep](</01 Intro to Course and R/class 1/>) 	    |                       	| 	
 | Week 10 | 20            | 10/27     |   Lab: Shiny						|[Rep](</01 Intro to Course and R/class 1/>)         |                           |
 | Week 11 | 21            | 11/1      |   Lab: Shiny								|[Rep](</01 Intro to Course and R/class 1/>)  	    |  	                        | 	
 | Week 11 | 22            | 11/3      |   Lab: Shiny								|[Rep](</01 Intro to Course and R/class 1/>)         |                           |
-| Week 12 | 23            | 11/8      |   NO CLASS (tenative)/Election Day			|	        |                           |  
+| Week 12 | 23            | 11/8      |   NO CLASS Election Day			|	        |                           |  
 | Week 12 | 24            | 11/10     |   Maps									|[Rep](</01 Intro to Course and R/class 1/>)         |                           |
 | Week 13 | 25            | 11/15     |   Maps									|[Rep](</01 Intro to Course and R/class 1/>) 	    |                           |
 | Week 13 | 26            | 11/17     |   Heatmaps									|[Rep](</01 Intro to Course and R/class 1/>)         |                           |
