@@ -36,7 +36,7 @@ title: Coursework
 | Week 13 | 25            | 11/15     |   Maps									|[Rep](</01 Intro to Course and R/class 1/>) 	    |                           |
 | Week 13 | 26            | 11/17     |   Heatmaps									|[Rep](</01 Intro to Course and R/class 1/>)         |                           |
 | Week 14 | 27            | 11/22     |   Animations									|[Rep](</01 Intro to Course and R/class 1/>) 	    |                           |
-| Week 14 | 28            | 11/14     |   NO CLASS/Thanksgivng Break					|         |                           |
+| Week 14 | 28            | 11/24     |   NO CLASS/Thanksgivng Break					|         |                           |
 | Week 15 | 29            | 11/29     |   Class Choice/ Review					|  	    |	                        |
 | Week 15 | 30            | 12/1      |   Final Presentations	1						|         |                           |
 | Week 16 | 31            | 12/6	    |   Final Presentations	2						| 	    | 	                        |
