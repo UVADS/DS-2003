@@ -19,27 +19,27 @@ title: Coursework
 | Week 4  | 8             | 9/15      | Interactive Lecture: ggplot2 -1				|[Rep](</04 Data Viz Using ggplot2/class 8/>)		|									|
 | Week 5  | 9             | 9/20      | Lab: ggplot2 - 2							|[Rep](</05 Data Viz Using ggplot2/class 9/>)		|  Midterm Group Assignments		|
 | Week 5  | 10            | 9/22      | Lab: ggplot2 - 3							|[Rep](</05 Data Viz Using ggplot2/class 10/>)		|                           		|
-| Week 6  | 11            | 9/27      | Lecture: R Markdown							|[Rep](</01 Intro to Course and R/class 1/>)		| Midterm Data Source Selection Due (in class) | 
-| Week 6  | 12            | 9/29      | Lab: Data Formats							|[Rep](</01 Intro to Course and R/class 1/>)		|                           |
+| Week 6  | 11            | 9/27      | Tidyverse - 1							|[Rep](</01 Intro to Course and R/class 1/>)		| Midterm Data Source Selection Due (in class) | 
+| Week 6  | 12            | 9/29      | Tidyverse - 2							|[Rep](</01 Intro to Course and R/class 1/>)		|                           |
 | Week 7  | 13            | 10/4      |	NO CLASS/Fall Reading Days					|		|                           | 
-| Week 7  | 14            | 10/6      | Midterm Presentations						|		|                           |
-| Week 8  | 15            | 10/11     | Midterm Presentations						|		|                           | 
-| Week 8  | 16            | 10/13     | Lecture: Stat. Uncertainity/Linear Regr.	|[Rep](</01 Intro to Course and R/class 1/>)       |                           |  
+| Week 7  | 14            | 10/6      | R Markdown						|		|                           |
+| Week 8  | 15            | 10/11     | Midterm Presentations	- 1					|		|                           | 
+| Week 8  | 16            | 10/13     | Midterm Presentations - 2	| [Rep](</01 Intro to Course and R/class 1/>)       |                           |  
 | Week 9  | 17            | 10/18     |	Lab: Plotly & Interactive Graphs			|[Rep](</01 Intro to Course and R/class 1/>)         |                           |	
 | Week 9  | 18            | 10/20     | Lab: Plotly & Interactive Graphs			|[Rep](</01 Intro to Course and R/class 1/>)         |                           |
-| Week 10 | 19            | 10/25     | Lab: Static Maps							|[Rep](</01 Intro to Course and R/class 1/>) 	    |                       	| 	
-| Week 10 | 20            | 10/27     | Lab: Interactive Maps						|[Rep](</01 Intro to Course and R/class 1/>)         |                           |
-| Week 11 | 21            | 11/1      | Lab: Heatmaps								|[Rep](</01 Intro to Course and R/class 1/>)  	    |  	                        | 	
-| Week 11 | 22            | 11/3      | Lab: Animations								|[Rep](</01 Intro to Course and R/class 1/>)         |                           |
+| Week 10 | 19            | 10/25     | Lab: Shiny							|[Rep](</01 Intro to Course and R/class 1/>) 	    |                       	| 	
+| Week 10 | 20            | 10/27     | Lab: Shiny						|[Rep](</01 Intro to Course and R/class 1/>)         |                           |
+| Week 11 | 21            | 11/1      | Lab: Shiny								|[Rep](</01 Intro to Course and R/class 1/>)  	    |  	                        | 	
+| Week 11 | 22            | 11/3      | Lab: Shiny								|[Rep](</01 Intro to Course and R/class 1/>)         |                           |
 | Week 12 | 23            | 11/8      | NO CLASS (tenative)/Election Day			|	        |                           |  
-| Week 12 | 24            | 11/10     | Lab: Shiny									|[Rep](</01 Intro to Course and R/class 1/>)         |                           |
-| Week 13 | 25            | 11/15     | Lab: Shiny									|[Rep](</01 Intro to Course and R/class 1/>) 	    |                           |
-| Week 13 | 26            | 11/17     | Lab: Shiny									|[Rep](</01 Intro to Course and R/class 1/>)         |                           |
-| Week 14 | 27            | 11/22     | Lab: Shiny									|[Rep](</01 Intro to Course and R/class 1/>) 	    |                           |
+| Week 12 | 24            | 11/10     | Maps									|[Rep](</01 Intro to Course and R/class 1/>)         |                           |
+| Week 13 | 25            | 11/15     | Maps									|[Rep](</01 Intro to Course and R/class 1/>) 	    |                           |
+| Week 13 | 26            | 11/17     | Heatmaps									|[Rep](</01 Intro to Course and R/class 1/>)         |                           |
+| Week 14 | 27            | 11/22     | Animations									|[Rep](</01 Intro to Course and R/class 1/>) 	    |                           |
 | Week 14 | 28            | 11/14     | NO CLASS/Thanksgivng Break					|         |                           |
-| Week 15 | 29            | 11/29     | Final Presentation Work Day					|  	    |	                        |
-| Week 15 | 30            | 12/1      | Final Presentations							|         |                           |
-| Week 16 | 31            | 12/6	  | Final Presentations							| 	    | 	                        |
+| Week 15 | 29            | 11/29     | Class Choice/ Review					|  	    |	                        |
+| Week 15 | 30            | 12/1      | Final Presentations	1						|         |                           |
+| Week 16 | 31            | 12/6	    | Final Presentations	2						| 	    | 	                        |
 
 | Finals  | Section 19026 | Th 12/8   | 9a-12p | 
 | Finals  | Section 17703 | Sat 12/10 | 2-5p |
