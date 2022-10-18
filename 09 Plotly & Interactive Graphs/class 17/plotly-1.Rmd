@@ -1,0 +1,375 @@
+---
+title: 'DS2003: Interactive Plots in plotly'
+author: "Natalie Kupperman"
+week: 9
+class: 17
+---
+## Plotly
+
+* `plotly` is a high-level interface to [plotly.js](https://github.com/plotly/plotly.js), based on [d3.js](https://d3js.org/) which provides an easy-to-use UI to generate slick D3 interactive graphics.
+
+* Plot work in multiple formats: viewer windows, R Markdown documents, shiny apps
+
+* plotly is also backed by a strong community and active development
+
+* plotly works with R, python, excel, and others. We will just focus on R in this class.  
+
+### Why use interactive graphics?
+  - Zooming
+  - Silencing
+  - Hovering
+  - Sliding
+  - Filtering
+  
+### Difference between interactive and animated graphs
+- interactive graphs allow the user to manipulate different features of the graph
+
+  
+### plotly Resources
+
+- [The Plolty Website](https://plotly.com/)
+- [The Plotly R documentation](https://plotly.com/r/)
+- [The Plotly R Package on GitHub](https://github.com/plotly/plotly.R)
+- [The Plotly R Cheatsheet](https://images.plot.ly/plotly-documentation/images/r_cheat_sheet.pdf)
+
+```{r}
+library(tidyverse)
+library(plotly)
+```
+
+```{r}
+# read in 'wine.csv' data
+wine <- read.csv('wine.csv')
+
+head(wine)
+```
+```{r}
+wine$Type <- as.factor(wine$Type)
+```
+
+
+## Convert Static Graphs to Interactive Graphs Using `ggplotly`
+
+Let's look at a static graph comparing `flavanoids` to `proline`
+
+```{r}
+static_plot <- wine %>%
+  ggplot(aes(Flavanoids, Proline, color = Type)) +
+  geom_point() +
+  theme_minimal() +
+  scale_color_manual(values = c("#00AFBB", "#E7B800", "#FC4E07"))
+
+static_plot
+```
+
+### How to create a plotly object
+
+- There are two main approaches to initialize a plotly object:  
+  
+   + transforming a ggplot2 object with `ggplotly()` 
+   + setting up aesthetics mappings with `plot_ly()` directly
+
+## Today's focus `ggplotly()`
+
+- `ggplotly()` takes existing `ggplot2` objects and converts them into interactive `plotly` graphics. That is, `ggplotly()` converts your static plots to an interactive web-based version!
+
+- This makes it easy to create interactive figures because we are already familiar to the `ggplot2` syntax.
+
+```{r}
+# Create an interactive plot of Flavonoids vs Proline
+
+ggplotly(static_plot)
+```
+### Notes
+Interactive plots are great!  
+*Bad Design = Bad Interactive Plots  
+*Follow data-viz best practices  
+
+### Bar Plot
+
+```{r}
+g <- ggplot(data = wine, aes(x = Type, fill = Type)) + 
+     geom_bar(fill = c("#00AFBB", "#E7B800", "#FC4E07")) +
+     theme_classic() 
+
+ggplotly(g)
+```
+
+### If you want the bar in descending order
+```{r}
+g.5 <- count(wine, Type) %>% 
+       ggplot(aes(x = reorder(Type, -n), y = n)) +
+       geom_bar(fill = c("#00AFBB", "#E7B800", "#FC4E07"), stat = 'identity') +
+       theme_classic() +
+       xlab('Type')
+     
+ggplotly(g.5)
+```
+
+### Histogram
+
+```{r}
+g2 <- ggplot(wine, aes(x = Flavanoids, fill = as.factor(Type))) + 
+      geom_histogram(bins = 15, alpha = 0.6) +
+      theme_minimal() +
+      scale_fill_manual(values = c("#00AFBB", "#E7B800", "#FC4E07")) 
+
+ggplotly(g2)
+```
+
+### Scatterplot
+
+```{r}
+g4 <- ggplot(wine, aes(x = Flavanoids, y = Proline, color = as.factor(Type))) + 
+      geom_point() + 
+      geom_smooth(method="loess", formula=y~x, se=F) + 
+      scale_color_manual(values = c("#00AFBB", "#E7B800", "#FC4E07"), name = 'Type') +
+      theme_bw() 
+
+ggplotly(g4)
+```
+```{r}
+g5 <- ggplot(wine, aes(x = Flavanoids, y = Proline, color = as.factor(Type))) + 
+      geom_point() + 
+      geom_smooth(method="lm", formula=y~x, se=F) + 
+      scale_color_manual(values = c("#00AFBB", "#E7B800", "#FC4E07"), name = 'Type') +
+      theme_bw()
+
+ggplotly(g5)
+```
+
+## Creating interactive graphs directly in `plot_ly`
+
+- `plot_ly()` is the base `plotly` command to initialize a plot from a dataframe, similar to `ggplot()` from ggplot2.
+
+### import `plotly`
+
+```{r}
+library(plotly)
+```
+
+### Bar plot
+```{r}
+wine %>% mutate(fType = as.factor(Type)) %>%
+  count(fType) %>% #using dplyr create frequency table
+  plot_ly(x = ~fType, y = ~n) %>% # initialize graph in plotly, use ~ for aes mappings
+  add_bars() %>% #set graph as bar chart
+  layout(title = "Freq. of Wine Soil Type",
+         xaxis = list(title = "Type"),
+         yaxis = list(title = "Frequency"))
+
+
+
+
+```
+
+### Reorder columns
+
+```{r}
+wine %>% mutate(fType = as.factor(Type)) %>%
+  count(fType) %>% #using dplyr create frequency table
+  mutate(fType = fct_reorder(fType, n, .desc = TRUE)) %>% #order for largest to smallest
+  plot_ly(x = ~fType, y = ~n) %>% # initialize graph in plotly, use ~ for aes mappings
+  add_bars() %>% #set graph as bar chart
+  layout(title = "Freq. of Wine Soil Type",
+         xaxis = list(title = "Type"),
+         yaxis = list(title = "Frequency"))
+```
+
+### Basic Histogram
+```{r}
+g6 <- plot_ly(wine, x = ~Flavanoids, type = "histogram")
+
+g6
+```
+
+### Flavanoids by Type Histogram
+
+```{r}
+Type1 <- wine %>% filter(Type == 1)
+Type2 <- wine %>% filter(Type ==2)
+Type3 <- wine %>% filter(Type == 3)
+
+```
+
+```{r}
+
+g7 <- plot_ly(alpha = 0.4) %>%
+  add_histogram(x = ~Type1$Flavanoids,
+                name = 'Type 1',
+                opacity = 0.6, 
+                marker = list(color = "#00AFBB",
+                              alpha = 0.6,
+                              line = list(color = "lightgray",
+                              width = 2))) %>%
+  add_histogram(x = ~Type2$Flavanoids,
+                name = 'Type 2',
+                opacity = 0.6,
+                marker = list(color = "#E7B800",
+                              line = list(color = "lightgray",
+                              width = 2))) %>%
+  add_histogram(x = ~Type3$Flavanoids, 
+                name = 'Type 3',
+                opacity = 0.6,
+                marker = list(color = "#FC4E07",
+                              line = list(color = "lightgray",
+                              width = 2))) %>%
+  layout(barmode = 'overlay',
+         title = 'Histogram of flavanoids by soil type',
+         xaxis = list(title = 'flavanoids',
+                      zeroline = FALSE),
+         yaxis = list(title = 'count'))
+
+g7
+
+```
+## Scatter plot
+
+```{r}
+fig <- plot_ly(type = 'scatter', mode = 'markers') 
+
+fig <- fig %>%
+  add_trace(
+    x = Type1$Flavanoids,
+    y = Type1$Proline,
+    opacity = 0.5,
+    marker = list(
+      color = "#00AFBB",
+      size = 7,
+      line = list(
+        color = 'lightgray',
+        width = .5
+      )
+    ),
+    name = 'Type 1'
+  ) 
+
+fig <- fig %>%
+  add_trace(
+    x = Type2$Flavanoids,
+    y = Type2$Proline,
+    marker = list(
+      color = "#E7B800",
+      size = 7,
+      line = list(
+        color = 'lightgray',
+        width = .5
+      )
+    ),
+    name = 'Type 2'
+  )
+
+fig <- fig %>%
+  add_trace(
+    x = Type3$Flavanoids,
+    y = Type3$Proline,
+    marker = list(
+      color = "#FC4E07",
+      size = 7,
+      line = list(
+        color = 'lightgray',
+        width = .5
+      )
+    ),
+    name = 'Type 3'
+  )
+
+fig <- fig %>%
+  layout(title = 'Scatterplot of Flavanoids & Proline',
+         xaxis = list(title = 'flavanoids',
+                      zeroline = FALSE),
+         yaxis = list(title = 'proline'))
+fig
+```
+
+### 3D Scatterplot
+```{r}
+fig2 <- plot_ly(type = 'scatter3d', mode = 'markers') 
+fig2 <- fig2 %>%
+  add_trace(
+    x = Type1$Flavanoids,
+    y = Type1$Proline,
+    z = Type1$Alcalinity,
+    opacity = 0.5,
+    marker = list(
+      color = "#00AFBB",
+      size = 7,
+      line = list(
+        color = 'lightgray',
+        width = .5
+      )
+    ),
+    name = 'Type 1'
+  ) 
+
+fig2 <- fig2 %>%
+  add_trace(
+    x = Type2$Flavanoids,
+    y = Type2$Proline,
+    z = Type2$Alcalinity,
+    marker = list(
+      color = "#E7B800",
+      size = 7,
+      line = list(
+        color = 'lightgray',
+        width = .5
+      )
+    ),
+    name = 'Type 2'
+  )
+
+fig2 <- fig2 %>%
+  add_trace(
+    x = Type3$Flavanoids,
+    y = Type3$Proline,
+    z = Type3$Alcalinity,
+    marker = list(
+      color = "#FC4E07",
+      size = 7,
+      line = list(
+        color = 'lightgray',
+        width = .5
+      )
+    ),
+    name = 'Type 3'
+  )
+
+axx <- list(
+  title = "flavanoids"
+)
+
+axy <- list(
+  title = "proline"
+)
+
+axz <- list(
+  title = "alcalinity"
+)
+
+fig2 <- fig2 %>%
+  layout(title = 'Scatterplot of Flavanoids, Proline & Alcalinity',
+         scene = list(xaxis = axx,
+                      yaxis = axy,
+                      zaxis = axz))
+
+fig2
+```
+
+## Line Plot
+(From plotly examples)
+```{r}
+library(plyr)
+
+#create date
+tg <- ddply(ToothGrowth, c("supp", "dose"), summarise, length=mean(len))
+
+# create figure
+fig <- plot_ly(tg, x = ~dose, y = ~length, type = 'scatter', mode = 'lines', linetype = ~supp, color = I('black')) 
+
+fig <- fig %>% layout(title = 'The Effect of Vitamin C on Tooth Growth in Guinea Pigs by Supplement Type',
+         xaxis = list(title = 'Dose in milligrams/day'),
+         yaxis = list (title = 'Tooth length'))
+
+fig
+```
+
