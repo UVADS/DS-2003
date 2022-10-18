@@ -33,6 +33,7 @@ class: 17
 - [The Plotly R Cheatsheet](https://images.plot.ly/plotly-documentation/images/r_cheat_sheet.pdf)
 
 ```{r}
+library(plyr)
 library(tidyverse)
 library(plotly)
 ```
@@ -157,10 +158,6 @@ wine %>% mutate(fType = as.factor(Type)) %>%
   layout(title = "Freq. of Wine Soil Type",
          xaxis = list(title = "Type"),
          yaxis = list(title = "Frequency"))
-
-
-
-
 ```
 
 ### Reorder columns
@@ -358,10 +355,10 @@ fig2
 ## Line Plot
 (From plotly examples)
 ```{r}
-library(plyr)
 
 #create date
 tg <- ddply(ToothGrowth, c("supp", "dose"), summarise, length=mean(len))
+
 
 # create figure
 fig <- plot_ly(tg, x = ~dose, y = ~length, type = 'scatter', mode = 'lines', linetype = ~supp, color = I('black')) 
