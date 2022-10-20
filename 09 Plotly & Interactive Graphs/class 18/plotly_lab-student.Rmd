@@ -1,0 +1,82 @@
+---
+title: "Plotly Lab"
+week: 9 
+---
+
+```{r}
+library(tidyverse)
+library(plotly)
+```
+
+```{r}
+data <- as.data.frame(iris)
+head(data)
+```
+
+# create a scatterplot of petal length vs petal width colored by species using ggplot2. Set you colors manually. 
+
+```{r}
+
+```
+
+# Convert your plot above to an interactive graph using `ggplotly`
+
+```{r}
+
+```
+
+# Now code the the above plot directly in `plot_ly`
+
+1. Manipulate data as needed
+```{r}
+
+```
+
+2. initialize your plotly plot
+```{r}
+
+```
+
+3. add your Setosa trace 
+```{r}
+
+```
+
+4. Add your versicolor trace
+```{r}
+
+```
+
+5. Add your virginica trace
+```{r}
+
+```
+
+6. Update the tooltip to read petal width: x.x petal length: x.x
+```{r}
+
+```
+
+7. Add graph title and remove the gridlines
+```{r}
+
+```
+
+8. Lighten the marker, create a dark outline of the same color
+```{r}
+
+```
+
+Homework:
+
+9. Take the above graph and make it 3D by adding Sepal Length on the z-axis. 
+```{r}
+
+```
+
+10. Create grouped boxplots where each iris dataset measure in on the x-axis with 3 boxplots for each measure representing the species. Use your own cohesive color palette using coolors.co. Don't forget to include all the parts of a chart. 
+
+```{r}
+
+```
+
