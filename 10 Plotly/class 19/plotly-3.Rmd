@@ -69,13 +69,13 @@ g7
 
 
 
-g7_c <- wine %>% plot_ly(alpha = 0.4, type = "histogram", marker = list(width = 5)) %>% 
+g7_2 <- wine %>% plot_ly(alpha = 0.4, type = "histogram", marker = list(width = 5)) %>% 
   add_histogram(x = ~Flavanoids , color = ~Type, bingroup = 1,) %>%
   layout(barmode = 'overlay',
          xaxis = list(title = 'flavanoids',
                       zeroline = FALSE),
          yaxis = list(title = 'count'))
-g7_c
+g7_2
 
 ```
 ## Scatter plot: 
@@ -122,7 +122,7 @@ g8
 
 
 g8_2 <- wine %>% plot_ly(type = 'scatter', mode = 'markers') %>% 
-  add_trace(x = ~Flavanoids, y = ~Proline,color = ~Type) %>% 
+  add_trace(x = ~Flavanoids, y = ~Proline, color = ~Type) %>% 
 layout(title = 'Scatterplot of Flavanoids & Proline',
          xaxis = list(title = 'flavanoids',
                       zeroline = FALSE),
