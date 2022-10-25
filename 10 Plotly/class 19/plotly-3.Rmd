@@ -1,0 +1,215 @@
+---
+title: 'DS2003: Interactive Plots in plotly'
+author: "Natalie Kupperman"
+week: 10
+class: 19
+---
+## Let's work through some of the questions that came up last week...
+
+```{r}
+library(tidyverse)
+library(plotly)
+```
+
+```{r}
+# read in 'wine.csv' data
+wine <- read.csv('data/wine.csv')
+
+head(wine)
+```
+
+```{r}
+wine$Type <- as.factor(wine$Type)
+```
+
+## Set bins of `plot_ly` histogram
+
+* Use the argument `bingroup`
+
+### Flavanoids by Type Histogram
+
+```{r}
+Type1 <- wine %>% filter(Type == 1)
+Type2 <- wine %>% filter(Type == 2)
+Type3 <- wine %>% filter(Type == 3)
+
+```
+
+```{r}
+
+g7 <- plot_ly(alpha = 0.4) %>%
+  add_histogram(x = ~Type1$Flavanoids,
+                bingroup = 1, 
+                name = 'Type 1',
+                opacity = 0.6, 
+                marker = list(color = "#00AFBB",
+                              alpha = 0.6,
+                              line = list(color = "lightgray",
+                              width = 2))) %>%
+  add_histogram(x = ~Type2$Flavanoids,
+                bingroup = 1, 
+                name = 'Type 2',
+                opacity = 0.6,
+                marker = list(color = "#E7B800",
+                              line = list(color = "lightgray",
+                              width = 2))) %>%
+  add_histogram(x = ~Type3$Flavanoids, 
+                bingroup = 1,
+                name = 'Type 3',
+                opacity = 0.6,
+                marker = list(color = "#FC4E07",
+                              line = list(color = "lightgray",
+                              width = 2))) %>%
+  layout(barmode = 'overlay',
+         title = 'Histogram of flavanoids by soil type',
+         xaxis = list(title = 'flavanoids',
+                      zeroline = FALSE),
+         yaxis = list(title = 'count'))
+
+g7
+
+```
+## Scatter plot: 
+
+```{r}
+fig <- plot_ly(type = 'scatter', mode = 'markers') 
+
+fig <- fig %>%
+  add_trace(
+    x = jitter(Type1$Flavanoids),
+    y = jitter(Type1$Proline),
+    opacity = 0.5,
+    marker = list(
+      color = "#00AFBB",
+      size = 7,
+      line = list(
+        color = 'lightgray',
+        width = .5
+      )
+    ),
+    name = 'Type 1'
+  ) 
+
+fig <- fig %>%
+  add_trace(
+    x = jitter(Type2$Flavanoids),
+    y = jitter(Type2$Proline),
+    marker = list(
+      color = "#E7B800",
+      size = 7,
+      line = list(
+        color = 'lightgray',
+        width = .5
+      )
+    ),
+    name = 'Type 2'
+  )
+
+fig <- fig %>%
+  add_trace(
+    x = jitter(Type3$Flavanoids),
+    y = jitter(Type3$Proline),
+    marker = list(
+      color = "#FC4E07",
+      size = 7,
+      line = list(
+        color = 'lightgray',
+        width = .5
+      )
+    ),
+    name = 'Type 3'
+  )
+
+fig <- fig %>%
+  layout(title = 'Scatterplot of Flavanoids & Proline',
+         xaxis = list(title = 'flavanoids',
+                      zeroline = FALSE),
+         yaxis = list(title = 'proline'))
+fig
+```
+
+### setting transparency
+
+```{r}
+fig2 <- plot_ly(type = 'scatter', mode = 'markers') 
+
+fig2 <- fig2 %>%
+  add_trace(
+    x = jitter(Type1$Flavanoids),
+    y = jitter(Type1$Proline),
+    opacity = 0.5,
+    marker = list(
+      color = 'rgba(0,0,0,1)',
+      size = 7,
+      line = list(
+        color = 'lightgray',
+        width = .5
+      )
+    ),
+    name = 'Type 1'
+  ) 
+
+fig2 <- fig2 %>%
+  add_trace(
+    x = jitter(Type2$Flavanoids),
+    y = jitter(Type2$Proline),
+    marker = list(
+      color = 'rgba(0,0,0,.5)',
+      size = 7,
+      line = list(
+        color = 'lightgray',
+        width = .5
+      )
+    ),
+    name = 'Type 2'
+  )
+
+fig2 <- fig2 %>%
+  add_trace(
+    x = jitter(Type3$Flavanoids),
+    y = jitter(Type3$Proline),
+    marker = list(
+      color = 'rgba(0,0,0,.1)',
+      size = 7,
+      line = list(
+        color = 'lightgray',
+        width = .5
+      )
+    ),
+    name = 'Type 3'
+  )
+
+fig2 <- fig2 %>%
+  layout(title = 'Scatterplot of Flavanoids & Proline',
+         xaxis = list(title = 'flavanoids',
+                      zeroline = FALSE),
+         yaxis = list(title = 'proline'))
+fig2
+```
+
+
+## Custom controls in Plotly (hint: may be useful on final project)
+
+For each feature, we will take a few minutes to look through the documentation. We will then go over some of the code together.
+
+1. [Custom Buttons](https://plotly.com/r/custom-buttons/)
+
+2. [Dropdown Events](https://plotly.com/r/dropdowns/)
+
+3. [Sliders](https://plotly.com/r/range-slider/)
+
+4. [3D Scatter - Life Expectancy](https://plotly.com/r/3d-scatter-plots/)
+
+## Examples of Animated Plots
+
+What's the difference between interactive and animated plots?  
+
+1. [Racing Bar Chart](https://observablehq.com/@d3/bar-chart-race)  
+
+2. [Animated Scatter](https://observablehq.com/@mbostock/the-wealth-health-of-nations)  
+
+3. [Animated Line Graph](https://observablehq.com/@d3/connected-scatterplot)  
+
+4. [Zoomable Circle](https://observablehq.com/@d3/zoomable-circle-packing)
+
+
