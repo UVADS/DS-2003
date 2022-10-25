@@ -13,7 +13,7 @@ library(plotly)
 
 ```{r}
 # read in 'wine.csv' data
-wine <- read.csv('data/wine.csv')
+wine <- read.csv('wine.csv')
 
 head(wine)
 ```
@@ -65,19 +65,28 @@ g7 <- plot_ly(alpha = 0.4) %>%
          xaxis = list(title = 'flavanoids',
                       zeroline = FALSE),
          yaxis = list(title = 'count'))
-
 g7
+
+
+
+g7_c <- wine %>% plot_ly(alpha = 0.4, type = "histogram", marker = list(width = 5)) %>% 
+  add_histogram(x = ~Flavanoids , color = ~Type, bingroup = 1,) %>%
+  layout(barmode = 'overlay',
+         xaxis = list(title = 'flavanoids',
+                      zeroline = FALSE),
+         yaxis = list(title = 'count'))
+g7_c
 
 ```
 ## Scatter plot: 
 
 ```{r}
-fig <- plot_ly(type = 'scatter', mode = 'markers') 
+g8 <- plot_ly(type = 'scatter', mode = 'markers') 
 
-fig <- fig %>%
+g8 <- g8 %>%
   add_trace(
-    x = jitter(Type1$Flavanoids),
-    y = jitter(Type1$Proline),
+    x = Type1$Flavanoids,
+    y = Type1$Proline,
     opacity = 0.5,
     marker = list(
       color = "#00AFBB",
@@ -89,43 +98,38 @@ fig <- fig %>%
     ),
     name = 'Type 1'
   ) 
-
-fig <- fig %>%
-  add_trace(
-    x = jitter(Type2$Flavanoids),
-    y = jitter(Type2$Proline),
-    marker = list(
-      color = "#E7B800",
-      size = 7,
-      line = list(
-        color = 'lightgray',
-        width = .5
-      )
+g8 <- g8 %>%
+  add_trace( x = Type2$Flavanoids, y = Type2$Proline,
+    marker = list(color = "#E7B800", size = 7,
+      line = list(color = 'lightgray', width = .5)
     ),
     name = 'Type 2'
   )
 
-fig <- fig %>%
-  add_trace(
-    x = jitter(Type3$Flavanoids),
-    y = jitter(Type3$Proline),
-    marker = list(
-      color = "#FC4E07",
-      size = 7,
-      line = list(
-        color = 'lightgray',
-        width = .5
-      )
-    ),
+g8 <- g8 %>%
+  add_trace(x = Type3$Flavanoids, y = Type3$Proline,
+    marker = list(color = "#FC4E07", size = 7,
+      line = list(color = 'lightgray', width = .5)),
     name = 'Type 3'
   )
 
-fig <- fig %>%
+g8 <- g8 %>%
   layout(title = 'Scatterplot of Flavanoids & Proline',
          xaxis = list(title = 'flavanoids',
                       zeroline = FALSE),
          yaxis = list(title = 'proline'))
-fig
+g8
+
+
+g8_2 <- wine %>% plot_ly(type = 'scatter', mode = 'markers') %>% 
+  add_trace(x = ~Flavanoids, y = ~Proline,color = ~Type) %>% 
+layout(title = 'Scatterplot of Flavanoids & Proline',
+         xaxis = list(title = 'flavanoids',
+                      zeroline = FALSE),
+         yaxis = list(title = 'proline'))
+g8_2
+
+
 ```
 
 ### setting transparency
@@ -185,6 +189,9 @@ fig2 <- fig2 %>%
                       zeroline = FALSE),
          yaxis = list(title = 'proline'))
 fig2
+
+
+
 ```
 
 
