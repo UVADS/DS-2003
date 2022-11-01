@@ -1,0 +1,36 @@
+---
+title: "Introduction to Shiny: Demo"
+output: slidy_presentation
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, out.width = "80%", out.height = "70%")
+library(ggplot2)
+library(shiny)
+```
+
+## Scatterplot with loess
+
+The scatterplot with `Sepal.Length` and `Sepal.Width` from `iris` data
+
+```{r scatterplot}
+ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width)) + geom_point() + geom_smooth(method="loess", formula=y~x, se=FALSE, span=0.75) + theme_bw()
+```
+
+
+## Scatterplot with loess using Shiny
+
+The Shiny app below allows us to draw the scatterplot with loess regression with varying spans ranging from 0.2 to 0.9:
+
+```{r scatterplot_shiny}
+inputPanel(
+  sliderInput("span", label = "Span adjustment:",
+              min = 0.2, max = 0.9, value = 0.5, step = 0.1)
+)
+
+renderPlot({
+  ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width)) + geom_point() + geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span) + theme_bw()
+})  
+```
+

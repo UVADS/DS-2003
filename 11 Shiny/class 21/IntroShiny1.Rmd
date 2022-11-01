@@ -1,0 +1,359 @@
+---
+title: "Introduction to Shiny: Part 1"
+class: "DS2003: Communicating with Data"
+output:
+     html_document:
+          number_sections: yes
+          toc: TRUE
+          toc_depth: 4
+          toc_float: true
+          toc_collapsed: true
+          theme: journal
+          code_folding: show
+runtime: shiny          
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(shiny)
+```
+
+# What is Shiny?
+
+- Framework for building interactive applications using the R programming language
+
+    - Any R script or visualization can be made interactive using Shiny.
+
+- An R package that makes it easy to build interactive web apps straight from R
+
+
+- You can host standalone apps on a webpage or embed them in R Markdown documents or build dashboards.
+
+
+- There is no need to learn HTML or JavaScript. 
+
+# Run your Shiny app
+
+- You can run through either your local machine or through the web browser, [ShinyApp.io](https://www.shinyapps.io).
+
+- Local machine needs Rstudio and R package `shiny`.
+
+- You need to use [ShinyApps.io](https://www.shinyapps.io) if you want to share you Shiny app with other people through the web browser.
+
+   - [ShinyApp.io](https://www.shinyapps.io) is a hosting platform for Shiny apps.
+   
+   - Review [ShinyApps.IO Pricing](https://www.shinyapps.io/#pricing)
+   
+        - While your shiny apps are displayed on screen, they use active hours.
+
+        - A default timeout period is 15 mins.
+      
+## Connect RStudio to your ShinyApps.io account
+
+- Register for an account at [ShinyApps.io](https://www.shinyapps.io) 
+
+- Get 25 active hours with a free shinyapps.io account
+
+- Connect RStudio to your shinyapps.io account through the *Publishing Account* section of the *Global Options* under *Tools* (i.e.,  Tools > Global Options > Publishing Account). 
+
+## Deploy Presentations to shinyapps.io
+
+- Include "runtime: shiny" in the preamble. 
+
+```
+---
+title: "Example"
+output: ioslides_presentation
+runtime: shiny
+---
+```
+
+- Click "Run Presentation"
+
+- Click "Publish" in the top-right corner of the shiny app.
+
+## Magnage your deployed Shiny Apps
+
+- You can manage your deployed Shiny apps at [ShinyApps.io](https://www.shinyapps.io).
+
+- You can track usage activities (i.e., engagement and remaining active hours) through the dashboard at [ShinyApps.io](https://www.shinyapps.io)
+
+- You can archive your shiny apps and then delete them if necessary.
+
+# Shiny inputs and outputs in Markdown
+
+- You can include Shiny inputs and outputs in your R Markdown document. Outputs are automatically updated whenever users change input. 
+
+- `inputPanel()` function is used to get inputs. 
+
+- `render*()` functions are used to generate output objects and depend on input variables (`input$<id>`).
+
+## Control Type: `sliderInput` 
+
+- For demonstrations, we use here `sliderInput` function to create the input widgets used to drive an interactive plot. For more info, see [Widget gallery](https://shiny.rstudio.com/gallery/widget-gallery.html).
+
+```{r}
+inputPanel(
+  sliderInput("span", label = "Span adjustment:",
+              min = 0.2, max = 0.9, value = 0.5, step = 0.1),
+  sliderInput("span0", label = "Second Span adjustment:",
+              min = 1, max = nrow(iris), value = nrow(iris), step = 10)
+)
+
+renderPlot({
+  my_iris<-iris[1:input$span0,]
+  ggplot(my_iris, aes(x=Sepal.Length, y=Sepal.Width)) + geom_point() + geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span) + theme_bw()
+})
+```
+
+```{r, include=FALSE}
+# if you want to change the title depending on your input,
+inputPanel(
+  sliderInput("span1", label = "Span adjustment:",
+              min = 0.2, max = 0.9, value = 0.5, step = 0.1)
+)
+
+renderPlot({
+  ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width)) + geom_point() + geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span1) + ggtitle(paste0("Span = ", input$span)) +  theme_bw()
+})
+```
+
+## Control Type: `selectInput`
+
+- We modify the above plot using `selectInput`. 
+
+- The loess line is not added to the scatterplot. Why?
+
+```{r}
+inputPanel(
+  selectInput("span2", label = "Span adjustment:",
+              choices = seq(0.2, 0.9, 0.1), 
+              selected = 0.5)
+)
+
+renderPlot({
+  ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width)) + geom_point() + geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span2) + theme_bw()
+})
+```
+
+```{r, include=FALSE}
+# if you want to change the choice labels,
+inputPanel(
+  selectInput("span3", label = "Span adjustment:",
+              choices = list("Span = 0.2" = 0.2, "Span = 0.3" = 0.3, "Span = 0.4" = 0.4,
+                             "Span = 0.5" = 0.5, "Span = 0.6" = 0.6, "Span = 0.7" = 0.7,
+                             "Span = 0.8" = 0.8, "Span = 0.9" = 0.9), 
+              selected = 0.5)
+)
+
+renderPlot({
+  ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width)) + geom_point() + geom_smooth(method="loess", formula=y~x, se=FALSE, span=as.numeric(input$span3)) + theme_bw()
+})
+```
+
+## Notes
+
+- For more control types, see [Widget gallery](https://shiny.rstudio.com/gallery/widget-gallery.html).
+
+- `selectInput` produces strings, so if necessary, you need to convert them into other data types, say using `as.numeric`. 
+
+- `print(input$<id>)` can be used in `render*` functions for debugging and troubleshooting.
+
+
+# Embedded Shiny Application
+
+- In Shiny App, there are two main arguments: `ui` and `server`.
+
+- The `ui` defines what we see inside the ShinyApp and contains ''user/client-side code''.
+
+     - A fluidpage is required for our inputs and outputs to be displayed together. 
+
+- The `server` defines what we do depending on both inputs and outputs.
+
+     - `render*` functions are used to generate output objects and depend on `input$<id>`.
+
+     - `output*` functions are used to display output objects in the client side. 
+
+- To display content from the `server` argument in the `ui`, you should use a pair of `render_*` and `*_Output` functions. For more info, see [Shiny Cheatsheet](https://shiny.rstudio.com/images/shiny-cheatsheet.pdf).
+
+    - There are unique pairings of `render_*` and `*_Output` functions for all content types. 
+    
+    - Below, we focus on `renderPlot` in the `server` and `plotOutput` in the `ui`.
+    
+```{r}
+shinyApp(
+  ui = fluidPage(
+  sliderInput("span4", label = "Span adjustment:",
+              min = 0.2, max = 0.9, value = 0.5, step = 0.1),
+  plotOutput("irisplot")
+  ),
+  
+  server = function(input, output){
+    output$irisplot <- renderPlot({
+    ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width)) + geom_point() +         geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span4) + theme_bw()
+      })}
+)   
+```
+
+## Using multiple `render*` and `*Output` functions
+
+```{r}
+shinyApp(
+  ui = fluidPage(
+  sliderInput("span5", label = "Span adjustment:",
+              min = 0.2, max = 0.9, value = 0.5, step = 0.1),
+  
+  plotOutput("irisplot"), # add plot
+  
+  textOutput("span_val"), # add text
+  
+  dataTableOutput("data_table"), ## add data table
+    
+  verbatimTextOutput("summary_var") # add print output
+  
+  ),
+  
+  server = function(input, output){
+    
+    output$irisplot <- renderPlot({
+    ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width)) + geom_point() +  
+     geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span5) + theme_bw()
+    })
+    
+    output$span_val <- renderText({
+      paste0("Span = ", input$span5)
+    })
+    
+    output$data_table <- renderDataTable({
+      iris
+    })
+    
+    output$summary_var <- renderPrint({
+      summary(iris[, c("Sepal.Length", "Sepal.Width")])
+    })
+  }                                  
+)
+```
+
+
+## Changing layouts
+
+### `SidebarLayout()`
+
+- Use `SidebarLayout()` to display our content. 
+
+```
+ui <- fluidPage(
+      sidebarLayout( 
+        sidebarPanel(),
+           mainPanel() 
+      )
+    )  
+```
+ 
+```{r}
+shinyApp(
+  ui = fluidPage(
+   sidebarLayout(
+    sidebarPanel( 
+     sliderInput("span6", label = "Span adjustment:",
+              min = 0.2, max = 0.9, value = 0.5, step = 0.1)
+    ),
+    mainPanel(
+     plotOutput("irisplot"),
+     textOutput("span_val"),
+     dataTableOutput("data_table"),
+     verbatimTextOutput("summary_var")
+    )
+   )
+  ),
+  
+  server = function(input, output){
+    
+    output$irisplot <- renderPlot({
+    ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width)) + geom_point() +  
+     geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span6) + theme_bw()
+    })
+    
+    output$span_val <- renderText({
+      paste0("Span = ", input$span6)
+    })
+    
+    output$data_table <- renderDataTable({
+      iris
+    })
+    
+    output$summary_var <- renderPrint({
+      summary(iris[, c("Sepal.Length", "Sepal.Width")])
+    })
+  }                                  
+)
+```
+
+
+### `tabsetPanel()`
+
+- Additionally, use `tabsetPanel()` in the `mainPanel()` to display our content. 
+
+```
+ui <- fluidPage( tabsetPanel( 
+  tabPanel("tab 1", "contents"), 
+  tabPanel("tab 2", "contents"), 
+  tabPanel("tab 3", "contents")))
+```
+
+
+```{r}
+shinyApp(
+  ui = fluidPage(
+   sidebarLayout(
+    sidebarPanel( 
+     sliderInput("span7", label = "Span adjustment:",
+              min = 0.2, max = 0.9, value = 0.5, step = 0.1),
+  ),
+    mainPanel(tabsetPanel(
+      tabPanel("Scatterplot", plotOutput("irisplot")),
+      tabPanel("Span Value", textOutput("span_val")),
+      tabPanel("Data", dataTableOutput("data_table")),
+      tabPanel("Variable Summary", verbatimTextOutput("summary_var")))
+    )
+   )
+  ),
+  
+  server = function(input, output){
+    
+    output$irisplot <- renderPlot({
+    ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width)) + geom_point() +  
+     geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span7) + theme_bw()
+    })
+    
+    output$span_val <- renderText({
+      paste0("Span = ", input$span7)
+    })
+    
+    output$data_table <- renderDataTable({
+      iris
+    })
+    
+    output$summary_var <- renderPrint({
+      summary(iris[, c("Sepal.Length", "Sepal.Width")])
+    })
+  }                                  
+)
+```
+
+# Shiny Resources
+
+- [Shiny](https://shiny.rstudio.com)!
+- [Shiny Cheatsheet](https://shiny.rstudio.com/images/shiny-cheatsheet.pdf)
+- [Shiny Documents](https://bookdown.org/yihui/rmarkdown/shiny-documents.html)
+- [1st Shiny Competition](https://blog.rstudio.com/2019/04/05/first-shiny-contest-winners/),
+- [Gallery](https://shiny.rstudio.com/gallery/)
+- [Get Started](https://shiny.rstudio.com/tutorial/)
+  - [First Shiny App](https://shiny.rstudio.com/tutorial/written-tutorial/lesson1/) 
+    - which is discussed in this document
+- ["Curly Brackets" in Shiny](https://community.rstudio.com/t/help-understanding-shiny-function-syntax-expression-objects-and-curly-brackets/22807/2)
+
+
+
