@@ -1,0 +1,646 @@
+---
+title: "DS 2003: Introduction to Shiny: Part 2"
+output:
+     html_document:
+          number_sections: yes
+          toc: TRUE
+          toc_depth: 4
+          toc_float: true
+          toc_collapsed: true
+          theme: journal
+          code_folding: hide
+runtime: shiny          
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(foreign)
+library(ggplot2)
+library(shiny)
+```
+
+## Independent controls
+
+- By default, input elements are independent of all the other input elements.
+
+```{r}
+ui <- fluidPage(
+  selectInput("n_breaks", label = "Number of bins:",
+              choices = c(10, 20, 35, 50), selected = 20),
+  sliderInput("bw_adjust", label = "Bandwidth adjustment:",
+              min = 0.2, max = 2, value = 1, step = 0.2),
+  plotOutput("irisplot"))
+
+server <- function(input, output){
+    output$irisplot <- renderPlot({
+      hist(iris$Sepal.Length, probability = TRUE, breaks = as.numeric(input$n_breaks),
+       xlab = "Sepal Length", main = "Histogram and Density of Sepal Length from Iris Data")
+  
+      dens <- density(iris$Sepal.Length, adjust = input$bw_adjust)
+      lines(dens, col = "blue")
+    })}
+
+shinyApp(ui = ui, server = server, options = list(height = 600)) 
+```
+
+## Interdependent controls
+
+- But, some input elements may depend on other input elements.
+
+- In such a case, you can (i) use `renderUI` to create an input element depending on server-side values and (ii) display the input element with `uiOutput`
+
+- Suppose that the min of bandwidth adjustment is "0.2", and the max is "the number of bins /10". 
+
+```{r}
+ui <- fluidPage(
+  selectInput("n_breaks2", label = "Number of bins:",
+              choices = c(10, 20, 35, 50), selected = 20),
+  uiOutput("bw_adjust_ui"),
+  plotOutput("irisplot"))
+
+server <- function(input, output){
+  
+  output$bw_adjust_ui <- renderUI({
+      
+      if(is.null(input$n_breaks2)){
+        return()
+      }
+    
+     sliderInput("bw_adjust2", label = "Bandwidth adjustment:",
+              min = 0.2, max = as.numeric(input$n_breaks2)/10, value = (0.2 + as.numeric(input$n_breaks2)/10)/2, step = 0.2)
+    })
+
+    output$irisplot <- renderPlot({
+      
+     if(is.null(input$n_breaks2)){
+        return()
+      }  
+      
+      hist(iris$Sepal.Length, probability = TRUE, breaks = as.numeric(input$n_breaks2),
+       xlab = "Sepal Length", main = "Histogram and Density of Sepal Length from Iris Data")
+  
+      dens <- density(iris$Sepal.Length, adjust = input$bw_adjust2)
+      lines(dens, col = "blue")
+    })}
+
+shinyApp(ui = ui, server = server, options = list(height = 500)) 
+```
+
+## Common errors with interdependent controls
+
+- If input elements are displayed before their values are set, it produces errors. To prevent the errors, add the following codes:
+   
+```
+if(is.null(input$...)) {
+  return()
+}
+```
+
+# Reactive Expressions
+
+- You can use *reactive* expressions to stop an expression being updated until you use a specified controller.
+
+- *reactive* expressions are evaluated when *input$<id>* is updated. 
+
+- *reactive* objects must be called as a function.
+
+## without reactive expressions
+
+```{r}
+scs <- read.spss('SCS_QE.sav', to.data.frame=T)
+
+ui <- fluidPage(
+   sidebarLayout(
+    sidebarPanel(   
+    sliderInput("span", label = "Span adjustment:",
+              min = 0.2, max = 0.9, value = 0.5, step = 0.1),
+    sliderInput("sd", label = "Standard deviation of error:",
+              min = 0.2, max = 2, value = 0.5, step = 0.2)  
+    ),
+  mainPanel(
+     plotOutput("scsplot")
+    )
+  ))
+
+server <- function(input, output){
+   
+   output$scsplot <- renderPlot({
+     
+     scs$mathpre2 <- scs$mathpre + rnorm(nrow(scs), mean = 0, sd = input$sd) # add noise
+     
+    ggplot(scs, aes(x=mars, y=mathpre2)) + geom_point(alpha=0.3) + geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span) + theme_bw() + ylim(-1, 20) + xlim(20, 130)
+    })}
+
+shinyApp(ui = ui, server = server) 
+```
+
+## with reactive expressions
+
+- We want to re-evaluate the `mathpre2` with noise whenever *input$sd* is updated.
+
+- Using reactive expressions it's possible to control when the `mathpre2` is invalidated.
+
+```{r}
+ui <- fluidPage(
+   sidebarLayout(
+    sidebarPanel(   
+    sliderInput("span2", label = "Span adjustment:",
+              min = 0.2, max = 0.9, value = 0.5, step = 0.1),
+    sliderInput("sd2", label = "Standard deviation of error:",
+              min = 0.2, max = 2, value = 0.5, step = 0.2)  
+    ),
+  mainPanel(
+     plotOutput("scsplot")
+    )
+  ))
+
+server <- function(input, output){
+   
+    scs_data <- reactive({
+     scs$mathpre2 <- scs$mathpre + rnorm(nrow(scs), mean = 0, sd = input$sd2) # add noise
+     scs
+    })
+      
+   output$scsplot <- renderPlot({
+      ggplot(scs_data(), aes(x=mars, y=mathpre2)) + geom_point(alpha=0.3) + geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span2)  + theme_bw() + ylim(-1, 20) + xlim(22, 128)
+     })}
+
+shinyApp(ui = ui, server = server) 
+```
+
+# About layouts
+
+- `sidebarLayout`: A two column layout with `sidebarPanel` and `mainPanel` (inside a fluidpage)
+
+    - `sidebarPanel` contains input controls.
+    - `mainPanel` contains outputs. 
+
+- `splitLayout`: equally-spaced multiple column layout (inside a fluidpage)
+    
+- `tabsetPanel`: tabsets that divide outputs into multiple independently viewable sections (inside a fluidpage)
+
+- `navbarPage`: A horizontal navigation that creates multipage dashboards
+
+- Note that `fluidpage` should be used to contain all layout elements except `navbarPage`.
+
+- For more info, see [Shiny Cheatsheet](https://shiny.rstudio.com/images/shiny-cheatsheet.pdf).
+
+##  `sidebarLayout()`
+
+```
+ui <- fluidPage(
+      sidebarLayout( 
+        sidebarPanel(),
+           mainPanel() 
+      )
+    )  
+```
+
+```{r}
+# example from IntroShiny1
+ui <- fluidPage(
+   sidebarLayout(
+    sidebarPanel( 
+     sliderInput("span_adj", label = "Span adjustment:",
+              min = 0.2, max = 0.9, value = 0.5, step = 0.1),
+  ),
+    mainPanel(tabsetPanel(
+      tabPanel("Scatterplot", plotOutput("irisplot")),
+      tabPanel("Span Value", textOutput("span_val")),
+      tabPanel("Data", dataTableOutput("data_table")),
+      tabPanel("Variable Summary", verbatimTextOutput("summary_var")))
+  )))
+
+server <- function(input, output){
+    
+    output$irisplot <- renderPlot({
+    ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width)) + geom_point() +  
+     geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span_adj) + theme_bw()
+    })
+    
+    output$span_val <- renderText({
+      paste0("Span = ", input$span_adj)
+    })
+    
+    output$data_table <- renderDataTable({
+      iris
+    })
+    
+    output$summary_var <- renderPrint({
+      summary(iris[, c("Sepal.Length", "Sepal.Width")])
+    })
+}
+
+shinyApp(ui = ui, server = server) 
+```
+
+##  `splitLayout()` 
+
+```
+ui <- fluidPage( 
+      splitLayout(# object 1,
+                  # object 2
+       )
+      )
+```
+
+```{r}
+ui <- fluidPage(
+   splitLayout(
+     sliderInput("span_adj2", label = "Span adjustment:",
+              min = 0.2, max = 0.9, value = 0.5, step = 0.1),
+    tabsetPanel(
+      tabPanel("Scatterplot", plotOutput("irisplot")),
+      tabPanel("Span Value", textOutput("span_val")),
+      tabPanel("Data", dataTableOutput("data_table")),
+      tabPanel("Variable Summary", verbatimTextOutput("summary_var")))
+  ))
+
+server <- function(input, output){
+    
+    output$irisplot <- renderPlot({
+    ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width)) + geom_point() +  
+     geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span_adj2) + theme_bw()
+    })
+    
+    output$span_val <- renderText({
+      paste0("Span = ", input$span_adj2)
+    })
+    
+    output$data_table <- renderDataTable({
+      iris
+    })
+    
+    output$summary_var <- renderPrint({
+      summary(iris[, c("Sepal.Length", "Sepal.Width")])
+    })
+}
+
+shinyApp(ui = ui, server = server) 
+```
+
+## `navbarPage()`
+
+```
+ui <- navbarPage(title = "Page", 
+      tabPanel("tab 1", "contents"), 
+      tabPanel("tab 2", "contents"), 
+      tabPanel("tab 3", "contents"))
+```
+
+```{r}
+ui <- navbarPage("navbarPage Example",
+  tabPanel("IRIS data",
+   splitLayout(
+     sliderInput("span_adj3", label = "Span adjustment:",
+              min = 0.2, max = 0.9, value = 0.5, step = 0.1),
+     tabsetPanel(
+      tabPanel("Scatterplot", plotOutput("irisplot")),
+      tabPanel("Span Value", textOutput("span_val")),
+      tabPanel("Data", dataTableOutput("data_table")),
+      tabPanel("Variable Summary", verbatimTextOutput("summary_var")))
+  )),
+ tabPanel("SCS data",
+   sidebarLayout(
+    sidebarPanel(   
+    sliderInput("span3", label = "Span adjustment:",
+              min = 0.2, max = 0.9, value = 0.5, step = 0.1),
+    sliderInput("sd3", label = "Standard deviation of error:",
+              min = 0.2, max = 2, value = 0.5, step = 0.2)  
+    ),
+    mainPanel(
+     plotOutput("scsplot")
+    )
+  ))        
+)
+
+server <- function(input, output){
+    
+    output$irisplot <- renderPlot({
+    ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width)) + geom_point() +  
+     geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span_adj3) + theme_bw()
+    })
+    
+    output$span_val <- renderText({
+      paste0("Span = ", input$span_adj3)
+    })
+    
+    output$data_table <- renderDataTable({
+      iris
+    })
+    
+    output$summary_var <- renderPrint({
+      summary(iris[, c("Sepal.Length", "Sepal.Width")])
+    })
+    
+    scs_data <- reactive({
+     scs$mathpre2 <- scs$mathpre + rnorm(nrow(scs), mean = 0, sd = input$sd3) # add noise
+     scs
+    })
+      
+   output$scsplot <- renderPlot({
+      ggplot(scs_data(), aes(x=mars, y=mathpre2)) + geom_point(alpha=0.3) + geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span3)  + theme_bw() + ylim(-1, 20) + xlim(22, 128)
+     })
+}
+
+shinyApp(ui = ui, server = server, options = list(height = 500)) 
+```
+
+### `navbarPage()` with `navbarMenu()`
+
+- Try with `collapsible = FALSE` instead of `collapsible = TRUE`.
+
+```{r}
+ui <- navbarPage("navbarPage Example",
+  tabPanel("IRIS data",
+   splitLayout(
+     sliderInput("span_adj4", label = "Span adjustment:",
+              min = 0.2, max = 0.9, value = 0.5, step = 0.1),
+     tabsetPanel(
+      tabPanel("Scatterplot", plotOutput("irisplot")),
+      tabPanel("Span Value", textOutput("span_val")),
+      tabPanel("Data", dataTableOutput("data_table")),
+      tabPanel("Variable Summary", verbatimTextOutput("summary_var")))
+  )),
+  navbarMenu("SCS data",  
+  tabPanel("Blue Line",
+   sidebarLayout(
+    sidebarPanel(   
+    sliderInput("span4", label = "Span adjustment:",
+              min = 0.2, max = 0.9, value = 0.5, step = 0.1),
+    sliderInput("sd4", label = "Standard deviation of error:",
+              min = 0.2, max = 2, value = 0.5, step = 0.2)  
+    ),
+    mainPanel(
+     plotOutput("scsplot")
+    )
+   )),
+  tabPanel("Red Line",
+   sidebarLayout(
+    sidebarPanel(   
+    sliderInput("span5", label = "Span adjustment:",
+              min = 0.2, max = 0.9, value = 0.5, step = 0.1),
+    sliderInput("sd5", label = "Standard deviation of error:",
+              min = 0.2, max = 2, value = 0.5, step = 0.2)  
+    ),
+    mainPanel(
+     plotOutput("scsplot2")
+    )
+   ))
+  ), collapsible = TRUE
+)
+
+server <- function(input, output){
+    
+    output$irisplot <- renderPlot({
+    ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width)) + geom_point() +  
+     geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span_adj4) + theme_bw()
+    })
+    
+    output$span_val <- renderText({
+      paste0("Span = ", input$span_adj4)
+    })
+    
+    output$data_table <- renderDataTable({
+      iris
+    })
+    
+    output$summary_var <- renderPrint({
+      summary(iris[, c("Sepal.Length", "Sepal.Width")])
+    })
+    
+    scs_data <- reactive({
+     scs$mathpre2 <- scs$mathpre + rnorm(nrow(scs), mean = 0, sd = input$sd4) # add noise
+     scs
+    })
+    
+    scs_data2 <- reactive({
+     scs$mathpre2 <- scs$mathpre + rnorm(nrow(scs), mean = 0, sd = input$sd5) # add noise
+     scs
+    })
+      
+   output$scsplot <- renderPlot({
+      ggplot(scs_data(), aes(x=mars, y=mathpre2)) + geom_point(alpha=0.3) + geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span4)  + theme_bw() + ylim(-1, 20) + xlim(22, 128)
+     })
+   
+  output$scsplot2 <- renderPlot({
+      ggplot(scs_data2(), aes(x=mars, y=mathpre2)) + geom_point(alpha=0.3) + geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span5, col="red")  + theme_bw() + ylim(-1, 20) + xlim(22, 128)
+     })
+}
+
+shinyApp(ui = ui, server = server, options = list(height = 600)) 
+```
+
+
+# shinythemes
+
+- `shinythemes` package makes it easy to alter the overall appearance of your Shiny applications. 
+
+- See options from https://rstudio.github.io/shinythemes/. 
+
+- You need to include the following code to change the shinytheme:
+
+```
+fluidPage(theme = shinytheme("cerulean"),
+  ...
+)
+
+navbarPage(theme = shinytheme("journal"),
+  ...
+)
+```
+
+```{r}
+library(shinythemes)
+
+ui <- navbarPage("navbarPage Example",
+  theme = shinytheme("journal"),                    
+  tabPanel("IRIS data",
+   splitLayout(
+     sliderInput("span_adj5", label = "Span adjustment:",
+              min = 0.2, max = 0.9, value = 0.5, step = 0.1),
+     tabsetPanel(
+      tabPanel("Scatterplot", plotOutput("irisplot")),
+      tabPanel("Span Value", textOutput("span_val")),
+      tabPanel("Data", dataTableOutput("data_table")),
+      tabPanel("Variable Summary", verbatimTextOutput("summary_var")))
+  )),
+  navbarMenu("SCS data",  
+  tabPanel("Blue Line",
+   sidebarLayout(
+    sidebarPanel(   
+    sliderInput("span6", label = "Span adjustment:",
+              min = 0.2, max = 0.9, value = 0.5, step = 0.1),
+    sliderInput("sd6", label = "Standard deviation of error:",
+              min = 0.2, max = 2, value = 0.5, step = 0.2)  
+    ),
+    mainPanel(
+     plotOutput("scsplot")
+    )
+   )),
+  tabPanel("Red Line",
+   sidebarLayout(
+    sidebarPanel(   
+    sliderInput("span7", label = "Span adjustment:",
+              min = 0.2, max = 0.9, value = 0.5, step = 0.1),
+    sliderInput("sd7", label = "Standard deviation of error:",
+              min = 0.2, max = 2, value = 0.5, step = 0.2)  
+    ),
+    mainPanel(
+     plotOutput("scsplot2")
+    )
+   ))
+  ), collapsible = TRUE
+)
+
+server <- function(input, output){
+    
+    output$irisplot <- renderPlot({
+    ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width)) + geom_point() +  
+     geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span_adj5) + theme_bw()
+    })
+    
+    output$span_val <- renderText({
+      paste0("Span = ", input$span_adj5)
+    })
+    
+    output$data_table <- renderDataTable({
+      iris
+    })
+    
+    output$summary_var <- renderPrint({
+      summary(iris[, c("Sepal.Length", "Sepal.Width")])
+    })
+    
+    scs_data <- reactive({
+     scs$mathpre2 <- scs$mathpre + rnorm(nrow(scs), mean = 0, sd = input$sd6) # add noise
+     scs
+    })
+    
+    scs_data2 <- reactive({
+     scs$mathpre2 <- scs$mathpre + rnorm(nrow(scs), mean = 0, sd = input$sd7) # add noise
+     scs
+    })
+      
+   output$scsplot <- renderPlot({
+      ggplot(scs_data(), aes(x=mars, y=mathpre2)) + geom_point(alpha=0.3) + geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span6)  + theme_bw() + ylim(-1, 20) + xlim(22, 128)
+     })
+   
+  output$scsplot2 <- renderPlot({
+      ggplot(scs_data2(), aes(x=mars, y=mathpre2)) + geom_point(alpha=0.3) + geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span7, col="red")  + theme_bw() + ylim(-1, 20) + xlim(22, 128)
+     })
+}
+
+shinyApp(ui = ui, server = server, options = list(height = 600)) 
+```
+    
+# self-contained vs split-file shinyApps 
+
+- self-contained shinyApps
+ 
+    - useful for small apps
+    
+    - can be easily added in R code chucks
+
+- split-file shinyApps: `ui.R` & `server.R`
+
+    - allow for easy separation of codes between the `ui.R` and `server.R` components.
+    - can be included into R markdown presentations with `shinyAppDir()`. 
+   
+## Some tips for the ui.R and server.R
+
+**< ui.R >** 
+
+- Don't include input variables such as `input$<id>`
+
+- Don't include output variables such as `output$<id>`
+
+- Instead, please always quote the names of variables like `plotOutput("<id>")`
+
+- If you like, change the size of the output chart in `plotOutput("<id>")`.
+
+**< server.R >**
+
+- Add a new content to display to the output object with the following code: 
+
+```
+    output$<id> <- renderPlot({ ...
+````    
+
+- Select the appropriate `render*` function for the output you're creating to send to the user side. 
+
+- Use input values from the input objects using their names, such as `input$<id>`.
+
+
+# shinyAppDir, iframe, and include_app
+
+- `shinyAppDir()` and `<iframe ...>` can include your shiny apps in the presentation.        
+
+## `shinyAppDir()`
+
+- `shinyAppDir()` can include an entire Shiny application within an R Markdown document. 
+
+- unzip `shinyApp.zip` (from Collab) that contains `ui.R`, `server.R` and `SCS_QE.csv` in your working directory.
+
+```{r, eval=TRUE}
+#shinyAppDir(appDir = "shinyApp", options = list(width = "100%", height = 550))
+```
+
+- You can embed a Shiny application located in another directory:
+
+```{r}
+#shinyAppDir(system.file("examples/06_tabsets", package = "shiny"), options = list(width = "100%", height = 550))
+```
+
+## `iframe`
+
+- Get the URL for your shiny app that is uploaded on [ShinyApp.io](https://www.shinyapps.io). 
+
+- Use the following code and change the URL. Change the sizes of the width and height.
+
+<iframe src="https://youmi.shinyapps.io/shinyApp_mini/" width="100%" height="550"></iframe>
+
+## `include_app()`
+
+```{r test}
+#knitr::include_app(url = "https://youmi.shinyapps.io/shinyApp_mini/", height="550")
+```
+
+# htmlwidgets in Shiny Apps
+
+- htmlwidgets work just like R plots except they produce interactive web visualizations. Check available packages from http://www.htmlwidgets.org/index.html 
+
+- Examples: [plotly](http://www.htmlwidgets.org/showcase_plotly.html), [highcharter](http://www.htmlwidgets.org/showcase_highcharts.html), etc
+
+- If you use split files, load the packages that provide interactivity (i.e., `Plotly`) using `library()` in both the `ui.R` and `server.R` files.
+
+## package `Plotly`
+
+- Let's use [Plotly](https://plot.ly/r/) we discussed in class. Again, `plotly` allows you to easily convert your `ggplot2` graphics to an interactive web-based version. 
+
+- Use `renderPlotly()` in the `server` argument, and use `plotlyOutput()` in the `ui` argument.
+
+```{r}
+library(plotly)
+
+shinyApp(
+  ui = fluidPage(
+  sliderInput("span_p", label = "Span adjustment:",
+              min = 0.2, max = 0.9, value = 0.5, step = 0.1),
+  plotlyOutput("irisplot")
+  ),
+  
+  server = function(input, output){
+    output$irisplot <- renderPlotly({
+      
+    p <- ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width)) + geom_point() + geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span_p) + theme_bw()
+    
+    ggplotly(p)
+    
+      })},
+  options = list(height=600)
+)    
+```
+
+
+
