@@ -1,0 +1,33 @@
+---
+title: "lab_instructions"
+author: "Bruce Corliss"
+date: "2022-11-10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(shiny)
+```
+
+## Shiny Lab
+
+Today for class you are going to deploy a shiny app online to shinyapp.io
+
+Please follow the instructions found at:
+<https://shiny.rstudio.com/articles/shinyapps.html>.
+
+To start, set your working directory to the shinyApp folder within this directory.
+
+To run the app, enter:
+
+```{r, eval = FALSE}
+runApp()
+```
+
+To deploy the app
+```{r, eval=FALSE}
+library(rsconnect)
+deployApp()
+```
+
