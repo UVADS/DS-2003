@@ -1,0 +1,198 @@
+---
+title: "DS2003: Interactive Maps"
+output:
+     html_document:
+          number_sections: yes
+          toc: TRUE
+          toc_depth: 4
+          toc_float: true
+          toc_collapsed: true
+          theme: journal
+          code_folding: hide
+runtime: shiny          
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval=FALSE)
+library(sf)
+library(tidyverse)
+library(tigris) #download shp file from U.S. census website
+library(tmaptools)
+library(tmap)
+```
+
+# Interactive Maps
+
+- Interactive maps allow us to do:
+     - Zooming
+     - Panning around
+     - Hovering
+     - Changing map types, etc.
+
+
+## Example Data
+
+- Again, I use a dataset (created on December 6th, 2020) on state voting counts from 
+[NBC news](https://www.nbcnews.com/politics/2020-elections/president-results),
+along with States Latitudes and Longitudes from 
+[Google](https://developers.google.com/public-data/docs/canonical/states_csv).
+
+- I create voting percentages within the range of [0.4, 0.6] so that I could eventually color the map red and blue in a manner that closely reflected population political leanings.
+
+
+```{r, eval=TRUE}
+US2020_Election <- readxl::read_excel("Presidential_Results_Dec6_2020.xlsx") %>%
+  mutate(Total = Trump+Biden) %>%
+  mutate(Trump_Percent = 
+           ifelse(Trump/Total>0.6, 0.6, ifelse(Trump/Total<0.4, 0.4, Trump/Total)))
+
+US2020_Election %>% head()
+```
+
+
+# Package: `tmap`
+
+- `tmap` is a powerful and flexible map-making package. It has a concise syntax that allows for the creation of attractive maps with minimal code which will be familiar to `ggplot2` users. 
+
+- For more info, see [tmap-getstarted](https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html), [Making maps with R](https://geocompr.robinlovelace.net/adv-map.html#fig:tmshape), as well as [Tennekes (2018)](https://www.jstatsoft.org/article/view/v084i06).
+
+- Let's use the example 
+  
+```{r, eval=FALSE}
+library(tigris) #download shp file from U.S. census website
+library(tmaptools)
+library(tmap)
+library(sf)
+
+download.file("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_state_20m.zip", destfile = "states.zip")
+unzip("states.zip")
+```
+
+```{r, eval=TRUE}
+usmap <- st_read("cb_2015_us_state_20m.shp", stringsAsFactors = FALSE)
+```
+
+- Merge data and draw a choropleth map with package `tmap`.
+
+```{r, eval=TRUE}
+usdata <- inner_join(usmap, US2020_Election, by=c("STUSPS" = "State_Abbreviation"))
+usdata2 <- usdata %>% filter(!STUSPS %in% c("PR", "HI", "AK")) # delete Puerto Rico, Hawaii, and Alaska
+tm_shape(usdata2) + tm_polygons("Trump_Percent", id="STUSPS", palette = "Reds", title = "Rep %")
+```
+
+- Let's create an interactive map. Use the tmap interactive view mode.
+
+```{r, eval=FALSE}
+tmap_mode("view") # tmap view mode
+tmap_last() # hovering, clicking, zooming, changing map types, saving files
+
+# save the result as html
+class_map <- tmap_last()
+tmap_save(class_map, "class_tmap.html") 
+```
+
+# Package: `plotly`
+
+- Let's use [Plotly](https://plot.ly/r/) that allows you to easily convert your ggplot2 graphics to an interactive web-based version. 
+
+## `ggplotly()`
+
+- `ggplotly()` takes existing `ggplot2` objects and converts them into interactive `plotly` graphics. That is, `ggplotly()` converts your static plots to an interactive web-based version!
+
+- This makes it easy to create interactive figures because we are already familiar to the `ggplot2` syntax. 
+
+```{r, eval=TRUE}
+library(plotly)
+
+g <-  ggplot(usdata2) + geom_sf(aes(fill=Trump_Percent)) + theme_bw() +
+  scale_fill_gradient(low="beige", high="red", limits=c(.4,.6), name='Rep %')
+ggplotly(g)
+```
+
+## `plot_ly()`
+
+- `plot_ly()` is the base `plotly` command to initialize a plot from a dataframe, similar to `ggplot()` from ggplot2. For more info, see [https://plotly.com/r/choropleth-maps/](https://plotly.com/r/choropleth-maps/).
+
+```{r, eval=TRUE}
+# Load the state map data 
+states <- ggplot2::map_data("state") # from ggplot2
+
+US2020_Election$region <- tolower(US2020_Election$State_Name) # small letters
+
+# Merge datasets
+mapdata <- merge(states, US2020_Election, by = "region")
+
+# Add hover text
+mapdata$hover <- with(mapdata, paste(State_Name, '<br>', "Trump Percent:", format(round(Trump_Percent, 2), 2)))
+
+# Make state borders red
+borders <- list(color = toRGB("red"))
+
+# Change some mapping options
+map_options <- list(
+  scope = 'usa',
+  projection = list(type = 'albers usa'),
+  showlakes = TRUE,
+  lakecolor = toRGB('white')
+)
+
+plot_ly(mapdata, z = ~Trump_Percent, text = ~hover, locations = ~State_Abbreviation, 
+        type = 'choropleth', locationmode = 'USA-states', 
+        color = ~Trump_Percent, colors = 'Reds', marker = list(line = borders)) %>%
+  layout(geo = map_options) %>% 
+  colorbar(title = "Rep %") # change the title of colorbar
+```
+
+# `plotly` with Shiny Apps
+
+- Use `renderPlotly()` in the `server` argument, and use `plotlyOutput()` in the `ui` argument.
+
+```{r, eval=TRUE}
+library(plotly)
+library(shiny)
+library(shinythemes)
+
+ui = fluidPage(theme = shinytheme("united"),
+  sliderInput(inputId = "percent", "Rep %", min = 0.4, max = 0.6, step = 0.05, value = 0.5),
+      plotlyOutput(outputId = "map")
+  )
+
+server = function(input, output) {
+  
+  states <- map_data("state") # from ggplot2
+
+  US2020_Election$region <- tolower(US2020_Election$State_Name) # small letters
+
+  # Merge datasets
+  mapdata <- merge(states, US2020_Election, by = "region")
+
+  # Add hover text
+  mapdata$hover <- with(mapdata, paste(State_Name, '<br>', "Trump Percent:", format(round(Trump_Percent, 2), 2)))
+
+  # Make state borders red
+  borders <- list(color = toRGB("red"))
+
+  # Change some mapping options
+  map_options <- list(
+    scope = 'usa',
+    projection = list(type = 'albers usa'),
+    showlakes = TRUE,
+    lakecolor = toRGB('white')
+  )
+
+ output$map = renderPlotly({
+    
+    plot_ly(mapdata[mapdata$Trump_Percent <= input$percent, ], z = ~Trump_Percent, text = ~hover, locations = ~State_Abbreviation, 
+        type = 'choropleth', locationmode = 'USA-states', 
+        color = ~Trump_Percent, 
+        colors = 'Reds', 
+        marker = list(line = borders)) %>%
+     layout(title = 'Trump Impeachment in 2020', geo = map_options) %>% 
+     colorbar(title = "Rep %", limits = c(0.4, 0.6)) # fix the range of colorbar
+ })
+}
+ 
+shinyApp(ui, server, options = list(height=600))       
+```
+
+
