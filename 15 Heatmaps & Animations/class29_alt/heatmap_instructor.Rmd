@@ -1,0 +1,121 @@
+---
+title: "heatmaps_instructor"
+author: "Bruce Corliss"
+date: "2022-11-29"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+In this article, we will take you through the tutorial for Heatmap using ggplot2 which is a commonly used package for creating beautiful visualizations in R. We will first understand the syntax and then see different types of examples of heatmap with ggplot2.
+
+# Syntax of Heatmap in ggplot2
+The minimal syntax for generating the heatmap in ggplot2
+
+ggplot(<data>, mapping = aes(<mapping>)) + geom_tile()
+
+We can also customize the heatmap by adding more layers such as themes, labs, etc.
+
+# Examples of Heatmap in R using ggplot2
+Preparing the Dataset
+
+For all the examples of heatmap in ggplot2, we will use the ‘heart.csv’ dataset.
+
+into a data frame called df
+
+```{r}
+df <- read.table("heart.csv",header=TRUE,sep=',') 
+head(df)
+```
+
+We use the cor() function to calculate the correlation between two vectors, this, in turn, generates a correlation matrix of the dataset for us
+
+```{r}
+df <- subset(df, select = -c(ChestPain, Thal, AHD, Ca))
+
+cormat <- round(cor(df),2)
+head(cormat)
+```
+
+
+Using the reshape2 library, we can subsequently use the melt function to convert our data frame into the long format and to stretch the data frame. This transformed dataset will be used in all the subsequent examples.
+
+```{r}
+library(reshape2)
+melted_cormat <- melt(cormat)
+head(melted_cormat)
+```
+
+
+Loading ggplot2
+First, let us load the ggplot2 library as shown below.
+
+```{r}
+library(ggplot2)
+```
+
+
+## Example 1: Basic Heatmap in ggplot2
+The basic heatmap in ggplot2 is created by using geom_tile() layer as shown in the below example.
+
+```{r}
+ggplot(data = melted_cormat, aes(x=Var1, y=Var2, fill=value)) + 
+  geom_tile()
+```
+
+## Example 2: Scale_fill_gradient in Heatmap
+The Scale_fill_gradient is used to add the color gradient to the heatmap plot. It has got to parameters namely high and low to assign the gradient scale.
+
+```{r}
+ggplot(data=melted_cormat,aes(x = Var1, y = Var2, fill = value))+
+  geom_tile()+scale_fill_gradient(high = "red", low = "white")
+```
+
+## Example 3: Adding Title to the Heatmap
+Let us add a title to our heatmap to give it more description. We can do this by using ggtitle().
+
+```{r}
+ggplot(data=melted_cormat,aes(x = Var1, y = Var2, fill = value))+
+  geom_tile()+scale_fill_gradient(high = "green", low = "white") +
+  ggtitle("Heart dataset")+ theme(plot.title = element_text(size = 20, face = "bold"))
+```
+
+## Example 4: Visualize the correlation using Heatmap
+Each cell here depicts the relationship between the intersecting variables, such as a linear correlation. This plot helps analysts understand relationships between variables while descriptive or predictive statistical models.
+
+```{r}
+ggplot(data=melted_cormat,aes(x = Var1, y = Var2, fill = value))+
+  geom_tile()+scale_fill_gradient(high = "green", low = "red")+
+  ggtitle("Heart dataset")+ 
+  theme(plot.title = element_text(size = 20, face = "bold"))+
+  geom_text(aes(label = round(value, 3)))+
+  scale_fill_continuous(low = "red", high = "lightgreen")
+```
+
+
+## Example 5: Hexbin Plot
+Add hexagon binding The function geom_hex() produces a scatter plot with hexagon binning. The hexbin R package is required for hexagon binning. If you don’t have it, use the R code below to install using require(hexbin).
+
+```{r}
+install.packages("hexbin")
+library(hexbin)
+# Default plot 
+ggplot(df,aes(Chol, MaxHR))+ geom_hex()
+# Change the number of bins
+ggplot(df,aes(Chol, MaxHR)) + geom_hex(bins = 10)
+```
+
+## Example 6: Add heatmap of 2d bin counts
+The function geom_bin2d() produces a scatter plot with rectangular bins. The number of observations is counted in each bin and displayed as a heatmap.
+
+```{r}
+# Default plot 
+ggplot(df,aes(Chol, MaxHR)) + geom_bin2d()
+# Change the number of bins
+ggplot(df,aes(Chol, MaxHR)) + geom_bin2d(bins = 15)
+```
+
+
