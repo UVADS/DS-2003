@@ -5,9 +5,13 @@ date: "2022-11-29"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+Lesson from: Tutorial for Heatmap in ggplot2 with Examples.
+https://machinelearningknowledge.ai/tutorial-for-heatmap-in-ggplot2-with-examples/
+ByVeer Kumar-December 17, 2021
 
 # Introduction
 In this article, we will take you through the tutorial for Heatmap using ggplot2 which is a commonly used package for creating beautiful visualizations in R. We will first understand the syntax and then see different types of examples of heatmap with ggplot2.
@@ -102,6 +106,8 @@ Add hexagon binding The function geom_hex() produces a scatter plot with hexagon
 ```{r}
 install.packages("hexbin")
 library(hexbin)
+# Plot X,Y for reference
+ggplot(df,aes(Chol, MaxHR))+ geom_hex()
 # Default plot 
 ggplot(df,aes(Chol, MaxHR))+ geom_hex()
 # Change the number of bins
