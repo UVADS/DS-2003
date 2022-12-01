@@ -1,0 +1,169 @@
+---
+title: "animations_instructor"
+author: "Bruce Corliss"
+date: "2022-12-01"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Animation tutorial
+This tutorial is approppriated from:
+https://towardsdatascience.com/how-to-create-animated-plots-in-r-adf53a775961
+Chanin Natasenamat. Nov 30 2022
+
+1. The Animated Plot that we are Building Today
+Today, we’re going to build an animated scatter plot of the Gapminder dataset. Particularly, you will see that the plot is faceted (separated into distinct sub-plots) by the continents instead of having them all in the same plot (which can be quite messy).
+
+The animated plot will be build using ggplot2 and gganimate R packages.
+
+2. Coding Environment
+Now, fire up your IDE of choice whether it be RStudio, Kaggle Notebooks or a plain old R terminal. Within this coding environment you will be typing in the codes mentioned hereafter.
+
+My personal favorite for coding in R would have to be using the RStudio IDE, which is free and open source.
+
+3. Installing Prerequisite R Packages
+In this tutorial, we’re using 4 R packages including gapminder, ggplot2, gganimate and gifski.
+
+To install these R packages, type the following into an R terminal (whether it be directly into an R terminal, in an R terminal from within the RStudio or in a code cell of a Kaggle Notebook.
+
+
+```{r}
+install.packages(c('gapminder','ggplot2','gganimate','gifski'),repos = "http://cran.us.r-project.org")
+```
+
+## Packages
+Let’s now take a look at why we’re using the above R packages.
+
+gapminder contains an excerpt of the Gapminder time series dataset that we are using in this tutorial.
+ggplot2 allows us to create awesome data visualizations namely the scatter plot
+gganimate allows us to add animation to the plots
+gifski allows us to render the animation as a GIF file format (GIF is a popular image format for animated images).
+
+4. Exploring the Gapminder dataset
+Prior to our data visualization, let’s have a look at the Gapminder dataset.
+
+Here, we will start by loading the gapminder package and return the contents of the gapminder variable.
+
+```{r}
+library(gapminder)
+library(ggplot2)
+library(gganimate)
+library(gifski)
+```
+
+Here, we can see that the data is a tibble (tidyverse’s implementation of a data frame) consisting of 1,704 rows and 6 columns.
+
+These 6 columns consists of:
+
+* country — Names of the countries
+* continent — Names of the continents
+* year — Year of the data entry
+* lifeExp — Life expectancy for the given year
+* pop — Population count for the given year
+* gdpPercap — Per capita GDP for the given year
+
+
+```{r}
+head(gapminder)
+```
+
+5. Creating the Static Scatter Plot
+In this section, we will create a static version of the scatter plot that can be used as the baseline for comparison with the animated version.
+
+5.1. Code
+The code for creating the scatter plot is shown below:
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r}
+ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, colour = country)) +
+   geom_point(alpha = 0.7, show.legend = FALSE) +
+   scale_colour_manual(values = country_colors) +
+   scale_size(range = c(2, 12)) +
+   scale_x_log10() +
+   facet_wrap(~continent) +
+   labs(title = 'Year: 1952-2007', x = 'GDP per capita', y = 'Life expectancy')
+```
+5.2 Line-by-Line Explanation
+* Line 1 — The ggplot() function is used for creating plots using the ggplot2 R package. The first input argument defines the input data that is stored in the gapminder variable. The aes() function allows aesthetic mapping of the input variables by defining the use of gdpPercap to be displayed on the X axis while defining lifeExp to be displayed on the Y axis. The size of each data point will now be dependent on the pop variable (the larger the pop value becomes the larger the data point also becomes). Finally, the color (particularly, the colour parameter) of the data points will be a function of the country for which it belongs to.
+* Line 2 — geom_point() is used to define the alpha transparency (i.e. the data point will be translucent as defined by the alpha parameter of 0.7; the lower the value the more translucent they become) of each data point (i.e. the circles that we see on the plot). As implied, show.legend=FALSE will hide the legend.
+* Line 3 — scale_colour_manual() function defines the color scheme stored in the country_colors variable that will be used for coloring data points according to the countries.
+* Line 4 — scale_size() function defines the size range of the data points (i.e. recall that on Line 1 we defined in the aes() function that size=pop) to be in the range of 2 and 12 (i.e. 2 being small data points while 12 represents the largest data points).
+* Line 5 — scale_x_log10() function logarithmically transforms the data in the X axis via log10.
+* Line 6 — facet_wrap() function splits the plot to multiple sub-plots (i.e. this process is also known as facet) by using the continent variable.
+* Line 7—labs() function defines the plot title, X axis title and Y axis title.
+
+5.3. Saving the Plot to File
+From the above screenshot we can see that the plot is shown in the Plots panel (lower left panel) but is not saved to a file.
+
+To save the plot to a file, we will use the ggsave() function as follows:
+
+
+```{r}
+# ggsave('plot_gdpPercap_lifeExp_static.png', width=8, height=8)
+```
+
+
+6. Creating the Animated Scatter Plot
+Here comes the fun part, let’s now proceed to creating the animated scatter plot using the gganimate R package.
+
+
+
+```{r}
+
+p1 <- ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, colour = country)) +
+             geom_point(alpha = 0.7, show.legend = FALSE) +
+             scale_colour_manual(values = country_colors) +
+             scale_size(range = c(2, 12)) +
+             scale_x_log10() +
+             facet_wrap(~continent) +
+             # Animating the plot
+             labs(title = 'Year: {frame_time}', x = 'GDP per capita', y = 'Life expectancy') +
+             transition_time(year) +
+             ease_aes('linear')
+
+animate(p1)
+# anim_save('plot_gdpPercap_lifeExp.gif')
+```
+
+6.2. Line-by-Line Explanation
+* Lines 1–6 — Explanation is the same as that of the static plot and thus please refer to the explanation in section 5.2.
+* Line 7 — Commented text to hint that the lines that follows pertains to the animation component of the plot.
+* Line 8 — labs() function defines the plot title, X axis title and Y axis title. {frame_time} will dynamically display the changing years as the data points move across the plot.
+* Line 9 — transition_time() function takes in the year variable as an input and it allows the animated plot to transition frame by frame as a function of the year variable.
+* Line 10 — ease_aes() function takes in linear as an input argument and it defines the transition of the frame to be in a linear fashion.
+As we can see Lines 1–10 are assigned to the p1 variable
+* Line 12 — animate() function takes in the plot defined in the p1 variable as the input argument and performs rendering of the animation.
+* Line 13 — anim_save() function allows saving the rendered animated plot to a .GIF file.
+
+
+
+7. Customizing the Animated Plot
+So how do you customize this animated plot?
+
+In this section, we will explore which parameters we can adjust to further customize your animated plot.
+
+7.1. Changing the input variables
+So instead of making a scatter plot for gdpPercap and lifeExp (in the X and Y axes), we can also consider other columns in the gapminder dataset.
+
+Let’s say that we would like to use these 2 variables: pop and lifeExp, we can define this within the ggplot() function.
+
+
+```{r}
+
+p2 <- ggplot(gapminder, aes(pop, lifeExp, size = pop, colour = country)) +
+             geom_point(alpha = 0.7, show.legend = FALSE) +
+             scale_colour_manual(values = country_colors) +
+             scale_size(range = c(2, 12)) +
+             scale_x_log10() +
+             facet_wrap(~continent) +
+             # Animating the plot
+             labs(title = 'Year: {frame_time}', x = 'GDP per capita', y = 'Life expectancy') +
+             transition_time(year) +
+             ease_aes('linear')
+
+animate(p2)
+# anim_save('plot_gdpPercap_lifeExp.gif')
+```
