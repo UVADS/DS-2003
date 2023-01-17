@@ -3,12 +3,18 @@ layout: default
 title: Coursework
 ---
 
+# Please see canvas site for the official class schedule.
 
+<br>
+<br>
+<br>
 
-## Schedule of Topics
+##Below are reference schedules for the instructor
+
+### Reference Schedule for TuesThurs Format
 
 | Week_ 	  | Class #       | Date_      | Topic										| Links	| Notes									|
-|:---:	  |:---:	      |:---:	  |:---											|:---:		| :---:								|
+|:---:	  |:---:	        |:---:	  |:---											              |:---:		| :---:								|
 | Week 1  | 1             | 8/23      |   Lecture: Intro to Course					|[Rep](</01 Intro to Course and R/class 1/>), Site 	|									|
 | Week 1  | 2             | 8/25      |   iLecture: Intro to R - 1					|[Rep](</01 Intro to Course and R/class 2/>)		|									|
 | Week 2  | 3             | 8/30      |   iLecture: Descriptive Stats & Intro to R(2)	|[Rep](</02 Descriptive Stats & R Intro/class 3/>)		| 									|       
