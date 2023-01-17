@@ -1,0 +1,659 @@
+---
+title: "Heatmaps and Surface Plots"
+author: "Youmi Suk"
+date: "4/1/2022"
+output:
+     html_document:
+          toc: TRUE
+          toc_depth: 4
+          toc_float: true
+          toc_collapsed: true
+          theme: journal
+          code_folding: hide
+---
+
+<!--- Change font size for headers --->
+<style>
+h1.title {
+  font-size: 28px;
+}
+h1 {
+  font-size: 22px;
+}
+h2 {
+  font-size: 18px;
+}
+h3 { 
+  font-size: 14px;
+}
+
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE, 
+                      fig.align="center", out.width="80%")
+```
+
+# Having Children
+
+## An Irrational Fear?
+
+It is hypothesized that the later in life we wait 
+to have a child, the more risky the birth would be for adverse birth outcomes. I
+remember being told -- by my mother, I think -- that if I were a guy I
+wouldn't have to worry about these things: having a child when you were older was 
+an problem for women, not men. Because of how anxious I was about this issue, 
+though, I did a little more looking into things and came across a paper that had 
+a bivariate heat map plot of the risk of an adverse birth outcome -- I can't 
+remember which, probably *autism* -- versus the age of the parents (i.e., versus 
+*both* the age of the mother *and* the father).  And as it turns out, the plot 
+(and the associated manuscript) strongly indicated that there is in fact 
+increasing risk for adverse birth outcomes for *both* increasing age of the 
+mother *as well as* increasing age of the father. So, empirically speaking, I 
+had been right to worry to start with because it does indeed seem that my own 
+age will be a relevant factor in birth outcomes if I have a child. 
+
+```{r, out.width = "50%"}
+knitr::include_graphics("figure/heatmap.jpg")
+```
+
+This is figure from a 
+<a href=https://www.nature.com/articles/mp201570>2015 nature article</a> showing 
+the joint distribution of relative-risk of autism for given ages of both parents. 
+I don't think this was the figure and paper I found earlier when I was first 
+looking into this (as I remember that being aesthetically different from this);
+but, this figure and manuscript has the same take away message of the original 
+one I initially found during my first foray into this
+topic
+
+
+## A little late, Stanford?
+
+For a demonstration of heat maps (and the related surface plots), I thought I
+would find the original article I had come across and remake the figure that I 
+had seen there.  As it turns out, I didn't think anything I found was the exact
+original article and figure I had found previously; but, I did 
+find a suitable (more recent) alternative in a
+[2018 BMJ article](https://www.bmj.com/content/363/bmj.k4372)
+from a research group out of the
+[Stanford School of Medicine](http://med.stanford.edu/news/all-news/2017/08/fathers-of-american-newborns-keep-getting-older.html)
+which came to the same conclusion I remembered from the original article
+(as did other articles I found, such as the
+[2015 nature article](https://www.nature.com/articles/mp201570)
+from which the figure above is taken).
+The newer Stanford BMJ article didn't provide a heat map figure like the one I
+wanted to recreate, but the data source they used to perform their analysis turns out to just be publicly 
+available open data that is freely accessible online through the 
+[NCHS Vital Statistics Online Data Portal](https://www.cdc.gov/nchs/data_access/vitalstatsonline.htm).
+
+And after seemingly finding a file that would work for what I needed 
+(Nat2019us.zip), and then running a Google search for "Nat2019us zip" (after I 
+couldn't figure out how to make the website actually let me download the file), 
+I found the 
+[NCHS Vital Statistics Data Repository](https://ftp.cdc.gov/pub/health_statistics/nchs/datasets/dvs/natality/)
+along with the sister [NCHS Vital Statistics Documentation Repository](https://ftp.cdc.gov/pub/health_statistics/nchs/dataset_documentation/DVS/natality/),
+and was able to download the data and documentation I needed.
+
+## Making the data sing
+
+It initially appeared to me that I needed to have an ftp client to log in to the 
+NCHS FTP data server and download data, so I followed 
+[these instructions](https://osxdaily.com/2018/08/07/get-install-ftp-mac-os/)
+I found online and ran `brew install inetutils`.  It turned out, however, that I 
+didn't need to do this, and was able to find the above data download locations.
+Once I'd downloaded the data, however, I was met with a very *strange* data 
+format (that turned out to be based on exact-location positioning). So, after 
+some failed attempts trying to read in the data, i.e.,
+
+- `readr::read_csv` (which would not have ever worked)
+- `readr::read_tsv` (which appeared to be working was also was not ever going
+to actually work because of the optional "blanks" that appear in the data file)
+- `readr::read_table` (which for the same reasons as above would not have worked)
+
+and then some sleuthing in the 
+[UserGuide2019-508.pdf documentation file](https://ftp.cdc.gov/pub/health_statistics/nchs/dataset_documentation/DVS/natality/)
+which elucidated the exact-position formatting of the file, I finally realized
+that (given the exact-location based positioning of the data file and the
+optional "blanks"), I needed to extract the data using exact-location positioning.
+
+Fortunately for me, my previous venture into the command line approach returned 
+to serve me well as I decided I would first pre-process the data file with the 
+bash `cut` command in order to extract the columns (separated by whitespace) 
+that I was interested in.  To do this I used
+
+- `cut -c75-76,146-148,495,504-508,517-519,523-526,530-532,561 <in> > <out>`, where
+    - `<in>` for me was `~/Downloads/Nat2019PublicUS.c20200506.r20200915.txt`, and
+    - `<out>` for me was `Nat2019PublicUS.c20200506.r20200915.age.outcomes.txt`
+    
+and *then* I was able to use `readr::read_table` to extract the columns (separated by whitespace) that I 
+had extracted. *Note that there are also* ways to read exact-location positioned 
+data with the `readr::` library functions, but the `cut -> readr::read_table` 
+strategy that I used worked fine for me given my experience with command line 
+utilities.  
+
+
+## Exact-Location Positining {.tabset}
+
+<!--- https://bookdown.org/yihui/rmarkdown-cookbook/html-tabs.html -->
+
+### Maternal Age
+
+![](figure/a.png)
+
+### Paternal Age
+
+![](figure/b.png)
+
+### Abnormal Conditions
+
+![](figure/c.png) 
+
+### Congenital Anomalies
+
+![](figure/d.png) 
+
+### Birth Weight
+
+![](figure/e.png)
+
+
+## Adverse birth outcomes? 
+
+The screen shots (above) from the
+[UserGuide2019-508.pdf](https://ftp.cdc.gov/pub/health_statistics/nchs/dataset_documentation/DVS/natality/)
+documentation shows the exact-location positioning style of the 
+[NCHS](https://www.cdc.gov/nchs/data_access/vitalstatsonline.htm)
+[data](https://ftp.cdc.gov/pub/health_statistics/nchs/datasets/dvs/natality/)
+for the age of the mother and father (which can be seen to *not* be stored in 
+the same layout as each other), as well as "Abnormal Conditions of the Newborn"
+and "Congenital Anomalies of the Newborn" (listed in the table below).
+
+| Abnormal Conditions of the Newborn | Congenital Anomalies of the Newborn |
+|:----------------------------------:|:-----------------------------------:|
+| Assisted Ventilation (immediately) | Meningomyelocele / Spina Bifida     |
+| Assisted Ventilation > 6 hrs       | Cyanotic Congenital Heart Disease   |
+| Admission to NICU                  | Congenital Diaphragmatic Hernia     | 
+| Surfactant                         | Omphalocele; Gastroschisis          |
+| Antibiotics for Newborn            | Limb Reduction Defect               |
+| Seizures                           | Cleft Lip w/ or w/o Cleft Palate    |
+|                                    | Cleft Palate alone; Down Syndrome   |               
+|                                    | Suspected Chromosomal Disorder      |
+|                                    | Hypospadias                         |
+
+
+We will examine parental age and aggregated indicators of the above using the 
+data columns "No Abnormal Conditions Checked" and "No Congenital Anomalies Checked";
+and, we will also consider **birth weight of the baby (in grams)** 
+because low and high birth weights are themselves viewed as 
+adverse birth outcomes. Naturally, there are many more components of this data 
+as well (such as risk and demographic factors of the parents), so what we are
+examining here only begins to scratch the surface of the
+[NCHS](https://www.cdc.gov/nchs/data_access/vitalstatsonline.htm)
+[data](https://ftp.cdc.gov/pub/health_statistics/nchs/datasets/dvs/natality/).
+The [UserGuide2019-508.pdf](https://ftp.cdc.gov/pub/health_statistics/nchs/dataset_documentation/DVS/natality/)
+itself is 95 pages!
+
+
+# Examining Birth Outcomes
+
+The data we use includes all births reported in US states -- about 3.7 million -- 
+in the [NCHS](https://www.cdc.gov/nchs/data_access/vitalstatsonline.htm) 
+[data](https://ftp.cdc.gov/pub/health_statistics/nchs/datasets/dvs/natality/) 
+during 2019. 
+
+
+## Initialization
+
+- Loading tidyverse and data:
+    - The [read_delim](https://readr.tidyverse.org/reference/read_delim.html) 
+      and [read_table](https://readr.tidyverse.org/reference/read_table.html) 
+      documentation pages, in conjunction with the 
+      [data documentation](https://ftp.cdc.gov/pub/health_statistics/nchs/dataset_documentation/DVS/natality/),
+      were helpful in coming to terms with how I needed to 
+      extract the [NCHS](https://www.cdc.gov/nchs/data_access/vitalstatsonline.htm)
+      [data](https://ftp.cdc.gov/pub/health_statistics/nchs/datasets/dvs/natality/).
+    - As described above, I prepossessed the 
+      [NCHS](https://www.cdc.gov/nchs/data_access/vitalstatsonline.htm)
+      [data](https://ftp.cdc.gov/pub/health_statistics/nchs/datasets/dvs/natality/)
+      into an intermediate file with the `cut` command line tool, i.e., 
+      `cut -c75-76,146-148,495,504-508,517-519,523-526,530-532,561 <in> > <out>`
+
+```{r data}
+library(tidyverse)
+
+# the intermediate file I made after preprocessing the original data file into
+# only the columns I wanted to extract (separated by whitespace)
+d1 <- "Nat2019PublicUS.c20200506.r20200915.age.outcomes.txt"
+parent_ages_outcomes <- readr::read_table(d1, col_names=FALSE)
+
+# renaming the data columns (and not the `col_names=FALSE` flag above)
+parent_ages_outcomes %>% rename(maternal_age=X1,
+                                paternal_age=X2,
+                                bw_grams=X3,
+                                abnormalities_1=X4,
+                                abnormalities_2=X5,
+                                abnormalities_NOT_reported=X6,
+                                congenital_NOT_reported=X7) %>%
+  mutate(abnormalities_reported=1-abnormalities_NOT_reported,
+         congenital_reported=1-congenital_NOT_reported) -> parent_ages_outcomes
+
+parent_ages_outcomes
+```
+
+
+## Congenital Anomaly Births
+
+- For what parental ages do adverse birth outcomes occur? 
+  - Where "adverse birth outcomes" here mean that some congenital anomaly was reported
+
+```{r plotly_adverse_heatmap_v1}
+library(plotly)
+# https://plotly.com/r/2D-Histogram/
+# https://stackoverflow.com/questions/38946218/plot-ly-doesnt-recognize-column-names
+# https://plotly.com/r/text-and-annotations/
+# https://stackoverflow.com/questions/63162434/plotly-how-to-prevent-title-from-overlapping-the-plot
+
+advese_reported_fig <- parent_ages_outcomes %>% 
+  dplyr::filter(congenital_reported==1) %>%
+  dplyr::filter(paternal_age<51) %>%
+  dplyr::filter(paternal_age>13) %>%
+  dplyr::filter(maternal_age<50) %>%
+  dplyr::filter(maternal_age>13) %>%
+  plot_ly(x=~paternal_age, y=~maternal_age)
+
+advese_reported_fig2 <- subplot(
+  advese_reported_fig  %>% add_markers(alpha = 0.2),
+  advese_reported_fig  %>% add_histogram2d(), shareY = TRUE, shareX = TRUE, titleX = TRUE
+)
+
+
+advese_reported_fig2 %>%
+  layout(title = 'Number of congenital anomaly birth outcomes in the US in 2019',
+         xaxis = list(title = 'Paternal Age'),
+         xaxis2 = list(title = 'Paternal Age'),
+         yaxis = list(title = 'Maternal Age'))
+```
+
+
+    
+## Non Congenital Anomaly Births
+
+- But the previous plot doesn't consider the relative risk of adverse birth outcomes
+    - i.e., it doesn't account for how many births actually take place for each
+      paternal age configuration
+- I only sample 10000 cases for visualization.
+
+```{r plotly_non_adverse_heatmap_v2}
+
+# restricting data to line up with the adverse birth outcomes limits above
+no_advese_reported_fig <- parent_ages_outcomes %>%
+  dplyr::filter(congenital_reported==0) %>%
+  dplyr::sample_n(size=10000,replace=FALSE) %>%
+  dplyr::filter(paternal_age<51) %>%
+  dplyr::filter(paternal_age>13) %>%
+  dplyr::filter(maternal_age<50) %>%
+  dplyr::filter(maternal_age>13) %>%
+  plot_ly(x=~paternal_age, y=~maternal_age)
+        
+
+no_advese_reported_fig2 <- subplot(
+  no_advese_reported_fig  %>% add_markers(alpha = 0.2),
+  no_advese_reported_fig  %>% add_histogram2d(), shareY = TRUE, shareX = TRUE, titleX = TRUE
+)
+
+
+no_advese_reported_fig2 %>%
+  layout(title = 'Number of non congenital anomaly birth outcomes in the US in 2019',
+         xaxis = list(title = 'Paternal Age'),
+         xaxis2 = list(title = 'Paternal Age'),
+         yaxis = list(title = 'Maternal Age'))
+```
+
+## Extracting Plotly Data
+
+- If we could "divide" the counts in above two heat map plots, we could see the relative
+ number of congenital anomaly births to non congenital anomaly births
+  - But unfortunately *plotly* does not currently provide a way to access this data
+  - Fortunately, *ggplot2* does, so we'll quickly remake these two plots with *ggplot2*
+
+```{r ggplot_adverse}
+# https://www.r-bloggers.com/2014/09/5-ways-to-do-2d-histograms-in-r/
+# https://www.rdocumentation.org/packages/ggplot2/versions/1.0.1/topics/stat_bin
+
+advese_reported_fig_gg <- parent_ages_outcomes %>% 
+  dplyr::filter(congenital_reported==1) %>%
+  dplyr::filter(paternal_age<51) %>%
+  rename(`Paternal Age`=paternal_age, `Maternal Age`=maternal_age) %>%
+  ggplot(mapping=aes(`Paternal Age`, `Maternal Age`)) + stat_bin2d(origin=14, 
+                                                               binwidth=1)
+advese_reported_fig_gg
+```
+
+- Note here that we're careful to keep the same data range since this is all 
+we'll be able to consider, anyway
+
+```{r ggplot_non_adverse}
+no_advese_reported_fig_gg <- parent_ages_outcomes %>% 
+  dplyr::filter(congenital_reported==0) %>%
+  dplyr::filter(paternal_age<51) %>%
+  dplyr::filter(paternal_age>14) %>%
+  dplyr::filter(maternal_age<50) %>% 
+  dplyr::filter(maternal_age>14) %>%
+  rename(`Paternal Age`=paternal_age, `Maternal Age`=maternal_age) %>%
+  ggplot(mapping=aes(`Paternal Age`, `Maternal Age`)) + stat_bin2d(origin=14, 
+                                                               binwidth=1)
+no_advese_reported_fig_gg
+```
+
+
+
+## Congenital Anomaly Birth Risk
+
+- Here's how we can extract the counts from the ggplot images in order to
+  calculate the rate of congenital anomaly birth in all births
+
+```{r ggplot_adverse_data_normalized}
+
+# https://stackoverflow.com/questions/25378184/extract-data-from-a-ggplot
+
+age_abnormality_surface <- ggplot_build(advese_reported_fig_gg)$data[[1]] %>% 
+  select(count,x,y) %>%
+  rename(abnormal_count=count) %>%
+  inner_join(ggplot_build(no_advese_reported_fig_gg)$data[[1]] %>%
+               select(count,x,y),
+             by=c('x','y'), copy=TRUE) %>%
+  mutate(abnormal_percent=abnormal_count/(abnormal_count+count))
+
+age_abnormality_surface %>% as_tibble()
+```
+
+## Rasterizing
+
+- But if we want to plot this again, we'll need to do so as a true *heat map*,
+  as opposed to a convenient *2D histogram*, so here's how we can do this 
+  (quite commonly required adjustment). 
+
+
+```{r ggplot_adverse_data_normalized_rasterized}
+# https://stat.ethz.ch/pipermail/r-help/2006-December/122439.html
+
+x <- as.integer(age_abnormality_surface$x-0.5)
+y <- as.integer(age_abnormality_surface$y-0.5)
+
+paternal_age <- matrix(NA, length(unique(x)), length(unique(y)))
+paternal_age[cbind(x-min(x)+1, y-min(y)+1)] <- x
+maternal_age <- matrix(NA, length(unique(x)), length(unique(y)))
+maternal_age[cbind(x-min(x)+1, y-min(y)+1)] <- y
+abnormal_percent <- matrix(NA, length(unique(x)), length(unique(y)))
+
+abnormal_percent[cbind(x-min(x)+1, y-min(y)+1)] <- age_abnormality_surface$abnormal_percent
+rownames(abnormal_percent) <- sort(unique(x))
+colnames(abnormal_percent) <- sort(unique(y))
+
+#paternal_age[1:5,]
+#maternal_age[1:5,]
+abnormal_percent[1:5,]
+```
+
+
+## Heat Maps/Surface Plots
+
+- We can plot a *heat map* with the matrix above.
+
+```{r plotly_adverse_data_normalized}
+# https://www.r-graph-gallery.com/215-interactive-heatmap-with-plotly.html
+# https://stackoverflow.com/questions/37283165/change-plotly-colorbar-title/37286201
+
+plot_ly(x=colnames(abnormal_percent),y=rownames(abnormal_percent), z=~abnormal_percent, type="heatmap") %>%    colorbar(title = "Congenital Anomaly")
+#plot_ly(x=colnames(abnormal_percent),y=rownames(abnormal_percent), z=~abnormal_percent) %>% add_heatmap() # it produces the same result.
+```
+- Now we can draw a *surface plot*.
+
+  - It's kind of strange, and hard to see...
+  - What we really want is an "average" surface
+  
+  
+````{r}
+# https://stackoverflow.com/questions/45052188/how-to-plot-3d-scatter-diagram-using-ggplot
+# https://plotly.com/r/3d-surface-plots/
+# https://community.plotly.com/t/3d-surface-plot-absolute-color-bar/380/5
+# https://plotly.com/r/3d-axes/
+
+plot_ly(x=~paternal_age, y=~maternal_age, z=~abnormal_percent) %>% 
+  add_surface(zmax=0.01, zmin=0, contours=list(z=list(show=TRUE,
+                                                      usecolormap=TRUE,
+                                                      highlightcolor="#ff0000",
+                                                      project=list(z=TRUE)))) %>%
+  layout(scene=list(xaxis = list(title = 'Paternal Age'),
+                    yaxis = list(title = 'Maternal Age'),
+                    zaxis = list(title = 'Congenital Anomaly'))) %>% 
+  colorbar(title = "Congenital Anomaly")
+```
+
+## Adverse Birth Outcome Risk
+
+- There are about 3.7 million birth entries that went into making the
+  2D histogram counts which we then transformed into the percent of 
+  congenital anomaly birth in all births.
+- What we really want to see is, for each parental age configuration, what is
+  the approximate rate congenital anomaly birth in all births.
+- This can be done with some "advanced" data trend modeling techniques
+  
+```{r plotly_surface_congenital_reported}
+# we needed to correct the data type that birth weight was stored as; originally
+# it was typed as a string, probably because one of the numbers started with 0
+parent_ages_outcomes <- parent_ages_outcomes %>% 
+  mutate(bw_grams=as.numeric(bw_grams))
+
+local_average <- glm(congenital_reported~1+paternal_age:maternal_age+
+                      paternal_age:paternal_age:maternal_age+
+                      paternal_age:maternal_age:maternal_age+
+                      I(paternal_age^2)+I(maternal_age^2)+
+                      I(paternal_age^3)+I(maternal_age^3)+
+                      I(paternal_age^4)+I(maternal_age^4), 
+                       data=parent_ages_outcomes[parent_ages_outcomes$congenital_NOT_reported<=1,],
+                     family='binomial')
+
+library(caret)
+local_average <- train(congenital_reported~paternal_age+maternal_age,
+                       data=parent_ages_outcomes[parent_ages_outcomes$congenital_NOT_reported<=1,],
+                       method='gamLoess', 
+                       trControl=trainControl(method="none"),
+                       tuneGrid=data.frame(span=0.5, degree=1))
+
+# https://plotly.com/r/3d-surface-plots/
+# https://plotly.com/r/contour-plots/
+x <- matrix(14:50, nrow=37, ncol=37, byrow=TRUE)
+y <- matrix(14:50, nrow=37, ncol=37, byrow=FALSE)
+z <- predict(local_average, 
+             newdata=data.frame(paternal_age=as.numeric(x),
+                                maternal_age=as.numeric(y)))
+smoothed_congenital_reported_percentage <- matrix(z, nrow=37, ncol=37, byrow=FALSE)
+paternal_age <- 14:50
+maternal_age <- 14:50
+
+plot_ly(x=~paternal_age, y=~maternal_age, 
+        z=~smoothed_congenital_reported_percentage) %>% 
+  add_surface(contours=list(z=list(show=TRUE,
+                                   usecolormap=TRUE,
+                                   highlightcolor="#ff0000",
+                                   project=list(z=TRUE)))) %>%
+  layout(title = 'Model Predicted',
+         scene = list(xaxis = list(title = 'Paternal Age'),
+                      yaxis = list(title = 'Maternal Age'),
+                      zaxis = list(title = 'Congenital Anomaly'))) %>% 
+  colorbar(title = "Congenital\nAnomaly")
+```
+
+
+- Interestingly, paternal age seems to have very little empirical association
+  with the rate of birth congenital anomalies
+    - Note, though, that this is a raw empirical association that does not 
+      account for potential confounding risk and demographic factors
+    - Also note that this is a population average prediction with no
+      uncertainty characterization (i.e., population variation) provided
+      
+      
+- **There does appear, however, to be more of a raw empirical association between parental age and the rate of *abnormal birth conditions***
+  - This is more inline with the [scientific reporting](http://med.stanford.edu/news/all-news/2017/08/fathers-of-american-newborns-keep-getting-older.html) 
+    of birth outcomes risk for our data set 
+
+```{r plotly_surface_abnormality_reported}
+
+local_average <- glm(abnormalities_reported~1+paternal_age:maternal_age+
+                      paternal_age:paternal_age:maternal_age+
+                      paternal_age:maternal_age:maternal_age+
+                      I(paternal_age^2)+I(maternal_age^2)+
+                      I(paternal_age^3)+I(maternal_age^3)+
+                      I(paternal_age^4)+I(maternal_age^4), 
+                       data=parent_ages_outcomes[parent_ages_outcomes$abnormalities_NOT_reported<=1,],
+                     family='binomial')
+
+local_average <- train(abnormalities_reported~paternal_age+maternal_age,
+                       data=parent_ages_outcomes[parent_ages_outcomes$abnormalities_NOT_reported<=1,],
+                       method='gamLoess', 
+                       trControl=trainControl(method="none"),
+                       tuneGrid=data.frame(span=0.5, degree=1))
+
+# https://plotly.com/r/3d-surface-plots/
+# https://plotly.com/r/contour-plots/
+
+x <- matrix(14:50, nrow=37, ncol=37, byrow=TRUE)
+y <- matrix(14:50, nrow=37, ncol=37, byrow=FALSE)
+z <- predict(local_average, 
+             newdata=data.frame(paternal_age=as.numeric(x),
+                                maternal_age=as.numeric(y)))
+smoothed_abnormality_reported_percentage <- matrix(z, nrow=37, ncol=37, byrow=FALSE)
+paternal_age <- 14:50
+maternal_age <- 14:50
+plot_ly(x=~paternal_age, y=~maternal_age, 
+        z=~smoothed_abnormality_reported_percentage) %>%
+  add_surface(contours=list(z=list(show=TRUE,
+                                   usecolormap=TRUE,
+                                   highlightcolor="#ff0000",
+                                   project=list(z=TRUE)))) %>%
+  layout(title = 'Model Predicted',
+         scene = list(xaxis = list(title = 'Paternal Age'),
+                      yaxis = list(title = 'Maternal Age'),
+                      zaxis = list(title = 'Abnormal Conditions'))) %>% 
+  colorbar(title = "Abnormal\nConditions")
+```
+
+- Finally, as was [specifically reported](http://med.stanford.edu/news/all-news/2017/08/fathers-of-american-newborns-keep-getting-older.html), 
+  *there is indeed* an adverse empirical association between birth weight and 
+  parental age.
+
+```{r plotly_surface_birthweight}
+
+local_average <- lm(bw_grams~1+paternal_age:maternal_age+
+                      paternal_age:paternal_age:maternal_age+
+                      paternal_age:maternal_age:maternal_age+
+                      I(paternal_age^2)+I(maternal_age^2)+
+                      I(paternal_age^3)+I(maternal_age^3)+
+                      I(paternal_age^4)+I(maternal_age^4), 
+                       data=parent_ages_outcomes)
+
+parent_ages_outcomes <- parent_ages_outcomes %>% 
+  mutate(bw_grams=as.numeric(bw_grams))
+local_average <- train(bw_grams~paternal_age+maternal_age,
+                       data=parent_ages_outcomes,
+                       method='gamLoess', 
+                       trControl=trainControl(method="none"),
+                       tuneGrid=data.frame(span=0.5, degree=1))
+
+# https://plotly.com/r/3d-surface-plots/
+# https://plotly.com/r/contour-plots/
+
+x <- matrix(14:50, nrow=37, ncol=37, byrow=TRUE)
+y <- matrix(14:50, nrow=37, ncol=37, byrow=FALSE)
+z <- predict(local_average, 
+             newdata=data.frame(paternal_age=as.numeric(x),
+                                maternal_age=as.numeric(y)))
+average_bw_grams <- matrix(z, nrow=37, ncol=37, byrow=FALSE)
+paternal_age <- 14:50
+maternal_age <- 14:50
+plot_ly(x=~paternal_age, y=~maternal_age, z=~average_bw_grams) %>% 
+  add_surface(contours=list(z=list(show=TRUE,
+                                   usecolormap=TRUE,
+                                   highlightcolor="#ff0000",
+                                   project=list(z=TRUE)))) %>%
+  layout(title = 'Model Predicted',
+         scene = list(xaxis = list(title = 'Paternal Age'),
+                      yaxis = list(title = 'Maternal Age'),
+                      zaxis = list(title = 'Birth Weights'))) %>% 
+  colorbar(title = "Birth Weights")
+
+```
+
+# Wrap-Up
+
+The data we've looked at suggests that there does appear to be some truth to the
+idea that adverse birth outcome risks associated with increasing parental age 
+are in some regards more exacting towards mothers than fathers; however, the 
+data also suggests that fathers themselves are also not immune to contributing 
+similar increased adverse birth outcome risk associated with increasing age. 
+When examining reporting on adverse birth outcomes, such as that provided by the
+[2018 BMJ article](https://www.bmj.com/content/363/bmj.k4372) from the 
+[Stanford School of Medicine](http://med.stanford.edu/news/all-news/2017/08/fathers-of-american-newborns-keep-getting-older.html), it's very important that we are very mindful and attentive to *which*
+adverse birth outcomes are actually being indicated and discussed.
+For example, the results we've seen in the data ourselves *do not* contradict 
+the findings of the [Stanford Study](http://med.stanford.edu/news/all-news/2017/08/fathers-of-american-newborns-keep-getting-older.html) of the
+[NCHS](https://www.cdc.gov/nchs/data_access/vitalstatsonline.htm) 
+[data](https://ftp.cdc.gov/pub/health_statistics/nchs/datasets/dvs/natality/), 
+but this may come as a surprise given the very cavalier and non-specific 
+manner in which I initially presented the "adverse birth outcomes and parental
+age" consideration.  It is true that increasing paternal age increases the 
+risk of some adverse birth outcomes, but the manner in which this happens 
+appears to be somewhat complex and varied.  
+
+While looking at this sort of data may, as in my case, "confirm our worst fears",
+I was eventually able to stop stressing out and worrying about it by recognizing
+that while risks *do increase* with increasing parental age, they are still not
+actually that great.  As [another article](https://scopeblog.stanford.edu/2018/11/01/higher-birth-risks-associated-with-older-dads/)
+reporting on the Stanford study put it: 
+
+> "Overall, Eisenberg [the senior scientist involved with the study] said, these numbers aren't reason for panic. The increased risks are sort of like buying lottery tickets, he explained. If you were to buy two lottery tickets instead of one, technically your odds double. But in the grand scheme of things, your chances of actually winning the lottery are still very low. It's an extreme example, but the concept can be applied to how you think about these increased birth risks."
+
+And, as is noted in the [initial reporting](http://med.stanford.edu/news/all-news/2017/08/fathers-of-american-newborns-keep-getting-older.html)
+on Stanford Study, when considering adverse affects from increasing paternal age
+
+> "On the flip side, [Eisenberg] noted, older fathers are more likely to have better jobs and more resources, more likely to have reasonably stable lifestyles and more likely to live with their children and, thus, be more involved in child-rearing."
+
+# References
+
+## Reporting 
+
+- [Fathers of American newborns keep getting older](http://med.stanford.edu/news/all-news/2017/08/fathers-of-american-newborns-keep-getting-older.html),
+[Stanford Medicine News Center](http://med.stanford.edu/news.html) (2017)
+- [Higher birth risks associated with older dads](https://scopeblog.stanford.edu/2018/11/01/higher-birth-risks-associated-with-older-dads/),
+[Office of Communications at Stanford Medicine Scope Blog](https://scopeblog.stanford.edu) (2018)
+- [Association of paternal age with perinatal outcomes between 2007 and 2016 in the United States: population based cohort study](https://www.bmj.com/content/363/bmj.k4372), [BMJ (previously British Medical Journal)](https://www.bmj.com)
+- [Autism risk associated with parental age and with increasing difference in age between the parents](https://www.nature.com/articles/mp201570), [Nature](https://www.nature.com/) (2015)
+- [NCHS vital statistics online Data Repository](https://www.cdc.gov/nchs/data_access/vitalstatsonline.htm),
+ [CDC National Center for Health Statistics](https://www.cdc.gov/nchs/index.htm) (2019)
+ 
+## Coding 
+
+- [Tidyverse "readr" library](https://readr.tidyverse.org)
+    - [read_delim](https://readr.tidyverse.org/reference/read_delim.html) 
+    - [read_table](https://readr.tidyverse.org/reference/read_table.html) 
+- [Ploty R library](https://plotly.com/r)
+    - [2D Histograms](https://plotly.com/r/2D-Histogram/)
+    - [Titles and text](https://plotly.com/r/text-and-annotations/)
+    - [3D Surface Plots](https://plotly.com/r/3d-surface-plots/)
+    - [3D Color Bars](https://community.plotly.com/t/3d-surface-plot-absolute-color-bar/380/5)
+    - [3D Coutours](https://plotly.com/r/contour-plots/)
+    - [3D Axis Labels](https://plotly.com/r/3d-axes/)
+    
+- [Stack Overflow](https://stackoverflow.com)
+    - [Plotly variables](https://stackoverflow.com/questions/38946218/plot-ly-doesnt-recognize-column-names)
+    - [Plotly titles/widgets Overlap](https://stackoverflow.com/questions/63162434/plotly-how-to-prevent-title-from-overlapping-the-plot)
+    - [Plotly Colorbar Titles](https://stackoverflow.com/questions/37283165/change-plotly-colorbar-title/37286201)
+    - [ggplot2 data extraction](https://stackoverflow.com/questions/25378184/extract-data-from-a-ggplot)
+    - [ggplot2 doesn't do nice 3D plots](https://stackoverflow.com/questions/45052188/how-to-plot-3d-scatter-diagram-using-ggplot)
+- [www.r-bloggers.com](https://www.r-bloggers.com/2014/09/5-ways-to-do-2d-histograms-in-r/)
+    - [ggplot 2D histograms](https://www.r-bloggers.com/2014/09/5-ways-to-do-2d-histograms-in-r/)
+- [ggplot2](http://ggplot2.tidyverse.org)
+    - [2D Histograms](https://www.rdocumentation.org/packages/ggplot2/versions/1.0.1/topics/stat_bin)
+- [The R-help Archives](https://stat.ethz.ch/pipermail/r-help/)
+    - [Rasterizing xyz columns](https://stat.ethz.ch/pipermail/r-help/2006-December/122439.html)

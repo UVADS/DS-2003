@@ -1,0 +1,361 @@
+---
+title: "Static Maps - Packages"
+class: "DS2002: Communicating with Data"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval=FALSE)
+library(tidyverse)
+library(sf)
+library(tigris) #download shp file from U.S. census website
+library(tmaptools)
+library(tmap)
+library(ggmap)
+```
+
+# Mapping packages
+
+## Package: `ggmap`
+
+## Obtain Google Maps API Keys
+
+- We need an API key to access Google Maps for these exercises.
+
+    - 1. Visit the Google API console. Click [here](https://console.developers.google.com/apis/dashboard).
+
+    - 2. Go ahead and click the "Create Project button."
+
+    - 3. Give a name and click "Create". 
+
+    - 4. Click "Enable APIS and Services".
+
+    - 5. Search for "Maps Static API" and click it. Then, press "Enable".
+
+    - 6. Search for "Geocoding API" and click it. Then, press "Enable". 
+
+    - 7. Go to "Credentials" and click "Create Credentials"
+
+    - 8. Copy your API key and use it for the exercises below.
+
+- Note that you need to create a billing account before you use your API key in R. 
+
+- For more info, see [Get an API Key and Signature](https://developers.google.com/maps/documentation/maps-static/get-api-key) and [Google Maps Platform](https://mapsplatform.google.com/pricing/).
+
+## Register Goolge Keys
+
+- Use the `register_google()` function.
+
+```{r, eval=FALSE}
+library(ggmap)
+
+# Insert your API key to get your google map for this session
+register_google(key = "")
+
+# Insert your API key to get your google map permanently
+register_google(key = "", write = TRUE)
+register_google()
+google_key()
+```
+
+
+## Plot Maps 
+
+- Use package `ggmap`. 
+
+- Three functions:
+ 
+   - `qmap()` plots a quick map
+
+   - `get_map()` gets map data for a location.
+
+   - `ggmap()` plots stored map data
+
+```{r}
+register_google()
+
+# Use qmap (quick map) to draw a city map
+qmap("Washington DC", zoom=10)
+```
+
+```{r}
+# Try different values for zooming
+qmap("Washington DC", zoom=15)
+```
+
+```{r}
+qmap("Washington DC", zoom=18)
+```
+
+```{r}
+qmap("Washington DC", zoom=7)
+```
+
+```{r}
+# Get the same map with get_map & save it to a variable
+dc_map <- get_map("Washington DC", zoom=10)
+```
+
+```{r}
+# And plot it with ggmap
+ggmap(dc_map) + xlab("Longitude") + ylab("Latitude")
+```
+
+## Geocode Points
+
+- Pinpoint specific locations on the map.
+
+- Geocoding converts a character string to a longitude and latitude location.
+
+- `geocode()` takes a location name as input and returns the latitude and longitude. 
+    
+```{r, eval=TRUE}
+# Geocode locations of interest
+dc <- geocode("Washington DC")
+dc # the longitude and latitude values
+```
+
+```{r}
+wh <- geocode("White House")
+wh
+```
+
+```{r}
+uva <- geocode("University of Virginia")
+uva
+```
+
+```{r}
+# Map a point
+uva_map <- ggmap(get_map(uva))
+uva_map
+```
+
+## Change Map Types
+
+- Terrain Map is the default map, and includes major place names and roads, but it also includes geographic terrain features. 
+
+- Use `?get_map` to see available types. 
+
+```
+maptype = c("terrain", "terrain-background", "satellite", "roadmap", "hybrid",
+    "toner", "watercolor", "terrain-labels", "terrain-lines", "toner-2010", "toner-2011",
+    "toner-background", "toner-hybrid", "toner-labels", "toner-lines", "toner-lite")
+```  
+
+- Different types of maps are useful in different situations. For example,
+
+    - Terrain maps provide useful context. But it has too much info to draw data points on the map.
+    - The toner map is useful if we need to put a lot of data on the top of the map.
+    
+```{r}
+# Try different map types
+ggmap(get_map(uva, maptype = "terrain", zoom=13))
+```
+
+```{r}
+ggmap(get_map(uva, maptype = "terrain-lines", zoom=13)) 
+```
+
+```{r}
+ggmap(get_map(uva, maptype = "satellite", zoom=13))
+```
+
+```{r}
+ggmap(get_map(uva, maptype = "roadmap", zoom=13))
+```
+
+```{r}
+ggmap(get_map(uva, maptype = "hybrid", zoom=13))
+```
+
+```{r}
+ggmap(get_map(uva, maptype = "toner-lite", zoom=13))
+```
+
+## Add Points on Map
+
+```{r, eval=TRUE}
+# Geocode locations of interest
+eus <- geocode("West Virgnia")
+dc <- geocode("Washington DC")
+
+# Create a map of the Eastern US
+ggmap(get_map(eus))
+eus_map <- ggmap(get_map(eus, zoom=5))
+eus_map
+```
+
+
+```{r, eval=TRUE}
+# Add a location on the map
+eus_map + geom_point(data=dc, mapping=aes(x=lon, y=lat), color="red")
+```
+
+```{r, eval=TRUE}
+# Add multiple datapoints
+loc_names <- c("White House", "University of Virginia", "Statue of Liberty", "Boston University")
+loc_values <- geocode(loc_names)
+loc_dat <- data.frame(name=loc_names, lat=loc_values$lat, lon=loc_values$lon)
+
+# Add multiple locations on the map
+eus_map + geom_point(data=loc_dat, mapping=aes(x=lon, y=lat), color="red")
+```
+
+```{r, eval=TRUE}
+# Add their names as text and adjust the label position
+eus_map + geom_point(data=loc_dat, mapping=aes(x=lon, y=lat), color="red") +
+  geom_text(data=loc_dat, mapping=aes(x=lon, y=lat, label=name), nudge_y=-0.5, nudge_x=1, size=2, color="red")
+```
+
+```{r, eval=TRUE}
+# Try a different map type.
+ggmap(get_map(eus, zoom=5, maptype = "terrain-background")) + 
+  geom_point(data=loc_dat, mapping=aes(x=lon, y=lat), color="red") +
+  geom_text(data=loc_dat, mapping=aes(x=lon, y=lat, label=name), nudge_y=-0.5, nudge_x=1, size=2, color="red")
+```
+
+```{r}
+ggmap(get_map(eus, zoom=5, maptype = "toner-background")) +
+  geom_point(data=loc_dat, mapping=aes(x=lon, y=lat), color="red") +
+  geom_text(data=loc_dat, mapping=aes(x=lon, y=lat, label=name), nudge_y=-0.5, nudge_x=1, size=2, color="red")
+```
+
+```{r}
+ggmap(get_map(eus, zoom=5, maptype = "watercolor")) + 
+  geom_point(data=loc_dat, mapping=aes(x=lon, y=lat), color="red") +
+  geom_text(data=loc_dat, mapping=aes(x=lon, y=lat, label=name), nudge_y=-0.5, nudge_x=1, size=2, color="red")
+```
+
+
+# Package: `ggplot2`
+
+## Get state data
+
+- `ggplot2` provides basic maps that allow for advanced visualizations.
+
+- The `map_data()` function from `ggplot2` gets the set of points that define a region's boundaries.
+
+- If you don't define the `group` aesthetic, you're drawing one single polygon that connects all the data points rather than a set of 48 different polygons from `state` map data.
+
+```{r, eval=TRUE}
+# Load the state map data 
+states <- map_data("state")
+
+# Inspect the state data
+knitr::kable(head(states)) # The data points define each state as an individual polygon.
+
+# Plot the state data
+ggplot(data=states, mapping=aes(x=long, y=lat)) + 
+  geom_polygon()
+```
+
+```{r, eval=TRUE}
+# Improve the plot
+ggplot(data=states, mapping=aes(x=long, y=lat, group=group)) + 
+  geom_polygon() +
+  coord_map() + # fix the coordinate system
+  theme_bw() + # change the background
+  labs(x='Longitude', y = 'Latitude') # add x and y labels
+```
+
+## Create Choropleth Maps
+
+- I used a dataset (created on December 6th, 2020) on state voting counts from 
+[NBC news](https://www.nbcnews.com/politics/2020-elections/president-results),
+along with States Latitudes and Longitudes from 
+[Google](https://developers.google.com/public-data/docs/canonical/states_csv).
+
+- I create voting percentages within the range of [0.4, 0.6] so that I could eventually color the map red and blue in a manner that closely reflected population political leanings.
+
+
+```{r, eval=TRUE}
+US2020_Election <- readxl::read_excel("Presidential_Results_Dec6_2020.xlsx") %>%
+  mutate(Total = Trump+Biden) %>%
+  mutate(Trump_Percent = 
+           ifelse(Trump/Total>0.6, 0.6, ifelse(Trump/Total<0.4, 0.4, Trump/Total)))
+
+US2020_Election %>% head()
+```
+
+```{r, eval=TRUE}
+states %>% head()
+```
+
+- Merge datasets
+
+```{r, eval=TRUE}
+US2020_Election$region <- tolower(US2020_Election$State_Name) # small letters
+
+mapdata <- merge(states, US2020_Election, by = "region")
+#View(mapdata)
+```
+
+- Draw a choropleth map by using "Trump_Percent" variable as the fill.
+
+```{r, eval=TRUE}
+ggplot(mapdata) +
+  geom_polygon(aes(x=long,y=lat,group=group, fill=Trump_Percent)) +
+  coord_map() + theme_bw()
+```
+
+- Change the color scheme.
+
+```{r, eval=TRUE}
+ggplot(mapdata) +
+  geom_polygon(aes(x=long,y=lat,group=group, fill=Trump_Percent)) +
+  coord_map() + theme_bw() +
+  scale_fill_gradient2(low="blue", mid='purple', high="red", midpoint=0.5,
+                          limits=c(.4,.6), name='Rep %')
+```
+
+# Package: `tmap`
+
+- `tmap` is a powerful and flexible map-making package. It has a concise syntax that allows for the creation of attractive maps with minimal code which will be familiar to `ggplot2` users. 
+
+- For more info, see [tmap-getstarted](https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html), [Making maps with R](https://geocompr.robinlovelace.net/adv-map.html#fig:tmshape), as well as [Tennekes (2018)](https://www.jstatsoft.org/article/view/v084i06).
+
+  
+```{r}
+library(sf)
+library(tigris) # download shp file from U.S. census website
+library(tmaptools)
+library(tmap)
+
+download.file("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_state_20m.zip", destfile = "states.zip")
+unzip("states.zip")
+```
+
+- Merge data, and delete the data. 
+
+    - dplyr::inner_join(): includes all rows in x and y.
+
+    - dplyr::left_join(): includes all rows in x.
+
+    - dplyr::right_join(): includes all rows in y.
+
+    - dplyr::full_join(): includes all rows in x or y.
+    
+    - To join by different variables on x and y, use a named vector. For example, by = c("a" = "b") will match x$a to y$b.
+
+```{r, eval=TRUE}
+usmap <- st_read("cb_2015_us_state_20m.shp", stringsAsFactors = FALSE)
+
+usdata <- inner_join(usmap, US2020_Election, by=c("STUSPS" = "State_Abbreviation"))
+str(usdata)
+class(usdata)
+
+usdata2 <- usdata %>% filter(!STUSPS %in% c("PR", "HI", "AK")) # delete Puerto Rico, Hawaii, and Alaska
+```
+
+- You can use `sf` class with `ggplot2`.
+
+```{r, eval=TRUE}
+ggplot(usdata2) + geom_sf(aes(fill=Trump_Percent)) + theme_bw() +
+  scale_fill_gradient(low="beige", high="red", limits=c(.4,.6), name='Rep %')
+```
+
+- Let's use package `tmap`.
+
+```{r, eval=TRUE}
+tm_shape(usdata2) + tm_polygons(col = "Trump_Percent", id="STUSPS", palette = "Reds", title = "Rep %")
+```
