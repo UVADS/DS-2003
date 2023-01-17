@@ -9,7 +9,7 @@ title: Coursework
 <br>
 <br>
 
-##Below are reference schedules for the instructor
+## Below are reference schedules for the instructor
 
 ### Reference Schedule for TuesThurs Format
 
