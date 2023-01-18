@@ -22,8 +22,6 @@ TA: Shan Xu
 
 Subject Area and Catalog Number: Data Science, DS 2003, Section 17703 -or- 19026
 
-Year, Term: 2022, Fall
-
 Class Title: Communicating with Data
 
 Level: Undergraduate
@@ -49,9 +47,9 @@ By the end of the course, I hope that you will:
 ## How You'll Know You Are Learning
 This course will be a combination of lectures and labs. As the course progresses, it will become more lab based. During lab sessions, you should expect to spend your time on your computer working through examples in small groups. The best way to become comfortable with the material is to continually practice. The idea by making this lab-based class is that you can practice in an environment where you can ask questions and trouble-shoot with peers. Every class won't go perfectly, but week after week you should be more comfortable with R and the material. 
 
-     Reflections (25%): There will be two written reflections based on the course reading, How Charts Lie. Students should draw on their own opinions and  	thoughts to answer the prompt while framing their response in what they have learned from the book.
+     Reflections (25%): There will be two written reflections based on the course reading, How Charts Lie. Students should draw on their own opinions and thoughts to answer the prompt while framing their response in what they have learned from the book.
      
-     Assignments (30%): There will be weekly assignments due. These assignments are meant to reiterate the content 	from the week. Students are asked  	to work independently on these assignments. 
+     Coding Assignments (30%): There will be weekly assignments due. These assignments are meant to reiterate the content from the week. Students are asked to work independently on these assignments. 
      
      Mid-term Project (20%): A group project will be assigned for the midterm and consist of finding and cleaning data, developing a question, and 	   	designing 2-3 charts that assist in answering the proposed question.
      
@@ -84,16 +82,18 @@ Grading Scale:
 
 * <70 F 
 
-**Summary of grading for the course**: a typical class has about 10% B+'s, 20% A's, and the rest A-'s. There may be a handful of lower grades. I tend to grade harshly on the reflection assignments and the group projects. At the end of the semester, I will start by curving the thresholds for the letter grades to initially match this distribution. I will then cross check the work of individual students near the threshold to the work and merit of previous years and the other section offered for this class. I then adjust the threshold as necessary; the ratios may change from this initial distribution. I will also consider the class participation of students near the initial grade thresholds, but I will not adjust or bump an individual student's grade over others. I will only adjust the global threshold. Over the course of the semester, if I think that you are going to get below a B+ I will reach out to you and provide extra support.
+**Summary of grading for the course**: a typical class has about 10% B+'s, 20% A's, and the rest A-'s. There may be a handful of lower grades. I tend to grade harshly on the reflection assignments and the group projects. At the end of the semester, I will start by curving the thresholds for the letter grades to initially match this distribution. I will then cross check the work of individual students near the threshold to the work and merit of previous years and the other section offered for this class. I then adjust the threshold as necessary; the ratios may change from this initial distribution. I will also consider the class participation of students near the initial grade thresholds, but I will not adjust or bump an individual student's grade over others. I will only adjust the global threshold. Over the course of the semester, if I think that you are going to get below a B+, I will reach out to you and provide extra support.
 
 My thoughts behind this:
 1. I uphold equity by identifying the students who are having trouble and providing them with extra support, along with opportunities to improve their grade. I do not want to give any grade below B+ (but I will if I absolutely must). 
 2. I uphold equality by awarding grades based on merit that is cross referenced to the other section for this class and in previous years. 
-3. I give class participation special consideration for adjusting the global threshold only.
-4. I do not bump an individual student’s grade based on class participation, or how strong of a student they are, or how much I approve of them. It is impossible to do that without my personal biases influencing the process. I refuse to do that.
+3. I give class participation special consideration for adjusting the global threshold for final letter grades.
+4. I do not bump an individual student’s grade based on class participation, or how strong of a student they are, or how much I approve of them. It is impossible to do that without my personal biases influencing the process.
 
-**Important note**: after the final project is due, I do not give students an opportunity to improve their grade. I do not "hold court" to hear their stories, nor do I bump or adjust a student's grade, nor give them an opportunity to resubmit assignments or do additional work.
+**Important note**: after the final project is due, I do not give students an opportunity to improve their grade. I do not "hold court" to hear their stories, nor do I bump or adjust a student's grade, nor give them an opportunity to resubmit assignments or do additional work. Before the final project is due, students may resubmit their coding assignments one time to improve their grade.
 <br/><br/>
+ 
+ 
  
 **University of Virginia Honor System**  
 
