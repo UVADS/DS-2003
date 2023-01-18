@@ -57,6 +57,9 @@ This course will be a combination of lectures and labs. As the course progresses
      
      Final Project (25%): The final project will also be group-based. The end product will be a Shiny interactive app which displays data and graphs. 
 
+These percents are meant as a reference and are subject to change- in reality they are done in a points based manner for the grading. If we don't get through all the assignments, I am not going to re-weigh each assignment to preserve these ratios exactly.
+
+<br/><br/>
 ## Grading 
 
 Courses carrying a Data Science subject area use the following grading system: A, A-; B+, B, B-; C+, C, C-; D+, D, D-; F. The symbol W is used when a student officially drops a course before its completion or if the student withdraws from an academic program of the University. 
@@ -81,24 +84,20 @@ Grading Scale:
 
 * <70 F 
 
-**Summary of grading for the course**: a typical class has about 10% B+'s, 20% A's, and the rest A-'s. There may be a handful of lower grades. I tend to grade harshly on the reflection assignments and the group projects. At the end of the semester, I will start by curving the thresholds for the letter grades to initially match this distribution. I will then cross check the work of individual students nears the threshold to the work and merit of previous years and the other section offered in this class. I then adjust the threshold as necessary; the ratios may change from this initial distribution. I will also consider the class participation of students near the initial threshold, but I will not adjust or bump an individual student's grade over others. I will only adjust the global threshold.
+**Summary of grading for the course**: a typical class has about 10% B+'s, 20% A's, and the rest A-'s. There may be a handful of lower grades. I tend to grade harshly on the reflection assignments and the group projects. At the end of the semester, I will start by curving the thresholds for the letter grades to initially match this distribution. I will then cross check the work of individual students near the threshold to the work and merit of previous years and the other section offered for this class. I then adjust the threshold as necessary; the ratios may change from this initial distribution. I will also consider the class participation of students near the initial grade thresholds, but I will not adjust or bump an individual student's grade over others. I will only adjust the global threshold. Over the course of the semester, if I think that you are going to get below a B+ I will reach out to you and provide extra support.
 
 My thoughts behind this:
 1. I uphold equity by identifying the students who are having trouble and providing them with extra support, along with opportunities to improve their grade. I do not want to give any grade below B+ (but I will if I absolutely must). 
-2. I uphold equality by awarding grades based on merit that is cross referenced to the other section for this class, and the class on previous years. I usually grade the 
+2. I uphold equality by awarding grades based on merit that is cross referenced to the other section for this class and in previous years. 
 3. I give class participation special consideration for adjusting the global threshold only.
-4. I do not bump an individual student’s grade based on class participation, or how strong of a student they are or how much I approve of them. It is impossible to do that without my personal biases influencing the process.
+4. I do not bump an individual student’s grade based on class participation, or how strong of a student they are, or how much I approve of them. It is impossible to do that without my personal biases influencing the process. I refuse to do that.
 
 **Important note**: after the final project is due, I do not give students an opportunity to improve their grade. I do not "hold court" to hear their stories, nor do I bump or adjust a student's grade, nor give them an opportunity to resubmit assignments or do additional work.
-
-
-
-
+<br/><br/>
  
 **University of Virginia Honor System**  
 
 All work should be pledged in the spirit of the Honor System at the University of Virginia. The instructor will indicate which assignments and activities are to be done individually and which permit collaboration. The following pledge should be written out at the end of all quizzes, examinations, individual assignments, and papers: “I pledge that I have neither given nor received help on this examination (quiz, assignment, etc.)”. The pledge must be signed by the student. For more information, visit www.virginia.edu/honor. 
-
 
 ## Required Texts 
 
