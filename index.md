@@ -94,6 +94,10 @@ My thoughts behind this:
 <br/><br/>
  
  
+ ## Teaching Style
+I try to be transparent, open, and authentic with my teaching style.
+ If I feel like I can't explain something properly, get some part of the explanation wrong, or forget the purpose of some concept in the lecture, I am not going to hide it. I will stop the lecture and try to lookup the correct explanation. If I can't find the answer, I will notify you and follow up with a class email with the answer once I find it. I will not try to "gloss over" that part of the lecture and pretend I know the material but give you a useless and opaque explanation.
+
  
 **University of Virginia Honor System**  
 
