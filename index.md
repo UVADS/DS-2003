@@ -81,10 +81,24 @@ Grading Scale:
 
 * <70 F 
 
+**Summary of grading for the course**: a typical class has about 10% B+'s, 20% A's, and the rest A-'s. There may be a handful of lower grades. I tend to grade harshly on the reflection assignments and the group projects. At the end of the semester, I will start by curving the thresholds for the letter grades to initially match this distribution. I will then cross check the work of individual students nears the threshold to the work and merit of previous years and the other section offered in this class. I then adjust the threshold as necessary; the ratios may change from this initial distribution. I will also consider the class participation of students near the initial threshold, but I will not adjust or bump an individual student's grade over others. I will only adjust the global threshold.
+
+My thoughts behind this:
+1. I uphold equity by identifying the students who are having trouble and providing them with extra support, along with opportunities to improve their grade. I do not want to give any grade below B+ (but I will if I absolutely must). 
+2. I uphold equality by awarding grades based on merit that is cross referenced to the other section for this class, and the class on previous years. I usually grade the 
+3. I give class participation special consideration for adjusting the global threshold only.
+4. I do not bump an individual student’s grade based on class participation, or how strong of a student they are or how much I approve of them. It is impossible to do that without my personal biases influencing the process.
+
+**Important note**: after the final project is due, I do not give students an opportunity to improve their grade. I do not "hold court" to hear their stories, nor do I bump or adjust a student's grade, nor give them an opportunity to resubmit assignments or do additional work.
+
+
+
+
  
 **University of Virginia Honor System**  
 
 All work should be pledged in the spirit of the Honor System at the University of Virginia. The instructor will indicate which assignments and activities are to be done individually and which permit collaboration. The following pledge should be written out at the end of all quizzes, examinations, individual assignments, and papers: “I pledge that I have neither given nor received help on this examination (quiz, assignment, etc.)”. The pledge must be signed by the student. For more information, visit www.virginia.edu/honor. 
+
 
 ## Required Texts 
 
@@ -96,6 +110,7 @@ All work should be pledged in the spirit of the Honor System at the University o
 
 * The SDS Reserve Library will also have a few copies for students to use while at the School.  
 
+
 ## Tech Stack 
 
      R/Rstudio - Environment in which we will code 
@@ -103,6 +118,7 @@ All work should be pledged in the spirit of the Honor System at the University o
      Collab – Submission of assignments, grades, class-wide communications 
 
      Github – Repository of class material 
+
 
 ## Resources
 
@@ -119,11 +135,13 @@ All work should be pledged in the spirit of the Honor System at the University o
 * [Plotly](https://images.plot.ly/plotly-documentation/images/r_cheat_sheet.pdf) 
 * [Shiny](https://shiny.rstudio.com/images/shiny-cheatsheet.pdf)
      
+     
 ## SDAC and Other Special Accommodations 
 
 If you have been identified as a Student Disability Access Center (SDAC) student, please let the Center know you are taking this class. If you suspect you should be an SDAC student, please schedule an appointment with them for an evaluation. I happily and discretely provide the recommended accommodations for those students identified by the SDAC. Please contact your instructor one week before an exam so we can make appropriate accommodations. Website: https://www.studenthealth.virginia.edu/sdac  
 
 If you are affected by a situation that falls within issues addressed by the SDAC and the instructor and staff are not informed about this in advance, this prevents us from helping during the semester, and it is unfair to request special considerations at the end of the term or after work is completed. We request you inform the instructor as early in the term as possible your circumstances. If you have other special circumstances (athletics, other university-related activities, etc.) please contact your instructor and/or TA as soon as you know these may affect you in class. 
+
 
 ## Student Mental Health and Wellbeing: 
 The University of Virginia is committed to advancing the mental health and wellbeing of its students, while acknowledging that a variety of issues, such as strained relationships, increased anxiety, alcohol/drug problems, and depression, directly impacts students’ academic performance.  If you or someone you know is feeling overwhelmed, depressed, and/or in need of support, services are available.  For help, contact Counseling and Psychological Services (CAPS) at 434-243-5150 Monday-Friday, 8:00am-4:30pm and after-hours including weekends and holidays.  For a comprehensive list of services provided by CAPS including individual therapy, group therapy, crisis services, and Outreach and Consultation, visit https://www.studenthealth.virginia.edu/caps. 
@@ -131,6 +149,8 @@ The University of Virginia is committed to advancing the mental health and wellb
 For a list of online resources students may access independently, visit  https://www.studenthealth.virginia.edu/caps-online-resources.
 
 For access to community mental health referrals, visit https://www.studenthealth.virginia.edu/community-referrals.
+
+
 
 ## Diversity and Inclusion
 
