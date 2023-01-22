@@ -31,14 +31,15 @@ In the matrix() function:
 ```{r}
 # (s2) Make a matrix of the box office earnings for the movie The Matrix
 # the first element is US box offices, the second element is non-US box offices (in millions)
-matrix <- c(171.479, 465.974 )
+matrix_mv <- c(171.479, 465.974 )
 reloaded <- c(281.576, 738.576)
 revolutions <- c(139.313, 427.300 )
 resurrections <- c(37.686, 156.467)
 
 # Use c() to combine the three vectors into one vector called this vector box_office
 
-box_office <- c(matrix, reloaded, revolutions, resurrections)
+box_office <- c(matrix_mv, reloaded, revolutions, resurrections)
+box_office
 
 ```
 
@@ -46,8 +47,8 @@ box_office <- c(matrix, reloaded, revolutions, resurrections)
 # (s3) Construct a matrix with 4 rows, where each row represents a movie. Call this matrix matrix_matrix
 
 matrix_matrix <- matrix(box_office, byrow = TRUE, nrow = 4)
-
 matrix_matrix
+
 ```
 
 ### Similar to vectors, you can add names for the rows and the columns of a matrix
@@ -59,23 +60,23 @@ matrix_matrix
 # Example: create vectors of row and column names
 
 # rows
-
-title <- c('Matrix', 'Matrix: Reloaded', 'Matrix: Revolutions', 'Matrix: Resurrections')
+my_title <- c('Matrix', 'Matrix: Reloaded', 'Matrix: Revolutions', 'Matrix: Resurrections')
+my_title
 
 # columns 
-
-region <- c('US', 'Non-US')
+my_region <- c('US', 'Non-US')
+my_region
 
 ```
 
 ```{r}
 # (s4) Use colnames() to name the columns of matrix_matrix with the region vector
 
-colnames(matrix_matrix) <- region
+colnames(matrix_matrix) <- my_region
 
 # Use rownames() to the name the columns of the matrix_matrix with the title vector
 
-rownames(matrix_matrix) <- title
+rownames(matrix_matrix) <- my_title
 
 # print the matrix_matrix
 
@@ -88,6 +89,7 @@ matrix_matrix
 # (s5) Sum the rows of the matrix_matrix and save to a vector called worldwide
 
 worldwide <- rowSums(matrix_matrix)
+worldwide
 
 ```
 
@@ -115,14 +117,17 @@ titles <- c("A New Hope",
 star_wars_matrix <- matrix(box_office, 
                            nrow = 3, byrow = TRUE,
                            dimnames = list(titles, region))
+
+star_wars_matrix
+
 ```
 
 ```{r}
 # (s7) use rbind() to merge star_wars_matrix and matrix_matrix
 
 movies_matrix <-rbind(matrix_matrix, star_wars_matrix)
-
 movies_matrix
+
 ```
 
 ### colSums() is similar rowSums() but sums down columns instead of row.
@@ -170,6 +175,7 @@ matrix1 <- matrix(1:10, nrow = 5)
 matrix2 <- matrix(11:20, nrow = 5)
 
 matrix1 * matrix2
+
 ```
 
 ###############################
@@ -192,11 +198,12 @@ matrix1 * matrix2
 # Example
 
 # create a vector of biological sex elements with 2 levels: Male & Female
-
 biological_vector <- c('Male', 'Female', 'Female', 'Male', 'Female', 'Male', 'Male')
 
 # assign biological_vector to a factor & assign to the variable factor_biological_vector
 factor_biological_vector <- factor(biological_vector)
+biological_vector
+
 ```
 
 ### Nominal categorical variable: categorical variable without an implied order
@@ -211,11 +218,13 @@ factor_biological_vector <- factor(biological_vector)
 
 nominal <- c('blue', 'orange', 'white')
 factor(nominal)
+nominal
 
 # Create a factor vector using ordinal variable and assign it to ordinal (Hint: see argument format above)
 
 ordinal <- c('good', 'better', 'best')
 factor(ordinal, order = TRUE, levels = c('good', 'better', 'best'))
+
 
 ```
 
@@ -256,27 +265,37 @@ summary(factor_biological_vector)
 # Example: create different data structures
 
 # Vector 
-vector <- 1:10 
+my_vector <- 1:10 
 
 # Matrix 
-matrix <- matrix(1:9, ncol = 3)
+my_matrix <- matrix(1:9, ncol = 3)
 
 # First 10 elements of the built-in data frame mtcars 
 # We will get to dataframes in the next lesson
 df <- mtcars[1:10,]
 
 # Put together in a list
-list(vector, matrix, df)
+my_list <- list(my_vector, my_matrix, df)
+my_list[[1]]
+my_list[[2]]
 ```
 
 ```{r}
 # Can give names to components, just like in vectos using name()
 
-list <- list(vector, matrix, df)
+my_list <- list(my_vector, my_matrix, df)
 
-names(list) <- c('v', 'm', 'd')
+names(my_list) <- c('v', 'm', 'd')
 
 # print
-list
+my_list
+my_list['v']
+my_list['m']
+my_list['d']
+
+my_list[[1]]
+my_list[[2]]
+my_list[[3]]
+
 ```
 

@@ -15,7 +15,8 @@ class number: '3'
 
 ```{r}
 # Example
-matrix(1:12, byrow = TRUE, nrow = 2)
+matrix(data = 1:12, byrow = TRUE, nrow = 2)
+
 ```
 
 In the matrix() function:
@@ -31,17 +32,20 @@ In the matrix() function:
 ```{r}
 # (s2) Make a matrix of the box office earnings for the movie The Matrix
 # the first element is US box offices, the second element is non-US box offices (in millions)
-matrix <- c(171.479, 465.974 )
+matrix_mv <- c(171.479, 465.974 )
 reloaded <- c(281.576, 738.576)
 revolutions <- c(139.313, 427.300 )
 resurrections <- c(37.686, 156.467)
 
 # Use c() to combine the three vectors into one vector called this vector box_office
+box_office <- c(matrix_mv, reloaded, revolutions, resurrections)
+box_office
 
 ```
 
 ```{r}
 # (s3) Construct a matrix with 4 rows, where each row represents a movie. Call this matrix matrix_matrix
+
 
 ```
 
@@ -54,11 +58,9 @@ resurrections <- c(37.686, 156.467)
 # Example: create vectors of row and column names
 
 # rows
-
 title <- c('Matrix', 'Matrix: Reloaded', 'Matrix: Revolutions', 'Matrix: Resurrections')
 
 # columns 
-
 region <- c('US', 'Non-US')
 
 ```
@@ -66,15 +68,21 @@ region <- c('US', 'Non-US')
 ```{r}
 # (s4) Use colnames() to name the columns of matrix_matrix with the region vector
 
+
 # Use rownames() to the name the columns of the matrix_matrix with the title vector
 
+
 # print the matrix_matrix
+
+
+
 ```
 
 ### rowSums() adds across columns and creates a new vector
 
 ```{r}
 # (s5) Sum the rows of the matrix_matrix and save to a vector called worldwide
+
 
 ```
 
@@ -84,6 +92,8 @@ region <- c('US', 'Non-US')
 
 ```{r}
 # (s6) merge matrix_matrix and worldwide using cbind() and call it all_matrix
+
+
 
 ```
 
@@ -100,10 +110,13 @@ titles <- c("A New Hope",
 star_wars_matrix <- matrix(box_office, 
                            nrow = 3, byrow = TRUE,
                            dimnames = list(titles, region))
+star_wars_matrix
+
 ```
 
 ```{r}
 # (s7) use rbind() to merge star_wars_matrix and matrix_matrix
+
 
 ```
 
@@ -111,6 +124,7 @@ star_wars_matrix <- matrix(box_office,
 
 ```{r}
 # (s8) use colSums() to sum the box office revenue for the Matrix and Star Wars movies for the US and non-US 
+
 
 ```
 
@@ -128,6 +142,7 @@ If you want to select all elements of a row or a column, no number is needed bef
 ```{r}
 # (s9) Use mean() to calculate the mean box office revenue for the US for the Matrix movies
 
+
 ```
 
 ### You can use the arithmetic operators on a matrix
@@ -135,6 +150,7 @@ If you want to select all elements of a row or a column, no number is needed bef
 
 ```{r}
 # (s10) divide the matrix_matrix by 5
+
 
 ```
 
@@ -172,7 +188,8 @@ matrix1 * matrix2
 biological_vector <- c('Male', 'Female', 'Female', 'Male', 'Female', 'Male', 'Male')
 
 # assign biological_vector to a factor & assign to the variable factor_biological_vector
-factor_biological_vector <- factor(biological_vector)
+factor_biological_vector <- factor(biological_vector, levels = c("Male", "Female"))
+factor_biological_vector
 ```
 
 ### Nominal categorical variable: categorical variable without an implied order
@@ -206,7 +223,9 @@ factor_biological_vector
 ```
 
 ```{r}
-# (s12) Try out the summary() funtion on factor_biological_vector; use ? if you need help
+# (s12) Try out the summary() function on factor_biological_vector; use ? if you need help
+
+
 
 ```
 
@@ -224,27 +243,32 @@ factor_biological_vector
 # Example: create different data structures
 
 # Vector 
-vector <- 1:10 
+my_vector <- 1:10 
 
 # Matrix 
-matrix <- matrix(1:9, ncol = 3)
+my_matrix <- matrix(1:9, ncol = 3)
 
 # First 10 elements of the built-in data frame mtcars 
 # We will get to dataframes in the next lesson
 df <- mtcars[1:10,]
 
 # Put together in a list
-list(vector, matrix, df)
+my_list <- list(my_vector, my_matrix, df)
+
 ```
 
 ```{r}
-# Can give names to components, just like in vectos using name()
+# Can give names to components, just like in vectors using name()
 
-list <- list(vector, matrix, df)
+my_list <- list(my_vector, my_matrix, df)
 
-names(list) <- c('v', 'm', 'd')
+names(my_list) <- c('v', 'm', 'd')
 
 # print
-list
+my_list
+
+
+
+
 ```
 

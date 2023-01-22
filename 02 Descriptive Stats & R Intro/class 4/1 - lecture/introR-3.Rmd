@@ -8,7 +8,7 @@ output:
 ---
 
 ################################
-# Data frames (!!!)
+# Data frames
 ################################
 
 ### In matrices we can only have one data type. In a data frame we can have a mix of data types
@@ -179,7 +179,7 @@ mtcars[position, ]
 
 ```{r}
 # find out current working directory
-#getwd()
+getwd()
 
 # set working directory to my laptop desktop
 #setwd('/Users/nataliekupperman/Desktop') # working directory on my laptop
@@ -192,7 +192,7 @@ mtcars[position, ]
 ### read in data with read.table() & sep = "\t
 ```{r}
 # read in data
-incex <- read.table('./data/income_exmpl.dat', header = T, sep = "\t") # use (..) to move up a directory
+incex <- read.table('income_exmpl.dat', header = T, sep = "\t") # use (..) to move up a directory
 
 # print the first 6 lines of data with function head()
 head(incex)       
@@ -202,7 +202,7 @@ head(incex)
 
 ```{r}
 # Example
-incex <- read.table('./data/income_exmpl.dat', header = T, sep = "\t")
+incex <- read.table('income_exmpl.dat', header = T, sep = "\t")
 ```
 
 ### if an R function requires a character string or name as an argument (e.g., the file name or path), it must be set in quotes ("name" or 'name')
@@ -210,14 +210,14 @@ incex <- read.table('./data/income_exmpl.dat', header = T, sep = "\t")
 ##COMMA separated data
 ### use read.csv()
 ```{r}
-incex.2 <- read.csv('./data/income_exmpl.csv')
+incex.2 <- read.csv('income_exmpl.csv')
 ```
 
 ### Read other data formats (e.g., SPSS, SAS, or STATA)
 *use the 'foreign'-package 
  
 ```{r}
-#install.packages('foreign', repos = 'http://cran.cnr.Berkeley.edu/') 
+install.packages('foreign', repos = 'http://cran.cnr.Berkeley.edu/')
 
 # load package (makes its functions available)
 library(foreign) 
@@ -228,7 +228,7 @@ library(help = 'foreign')
 # help on reading SPSS data files (.sav)
 ?read.spss  
 
-incex.3 <- read.spss('./data/income_exmpl.sav', to.data.frame = TRUE)
+incex.3 <- read.spss('income_exmpl.sav', to.data.frame = TRUE)
 ```
 
 
