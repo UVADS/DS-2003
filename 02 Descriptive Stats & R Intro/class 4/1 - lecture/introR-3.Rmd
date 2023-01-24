@@ -60,7 +60,7 @@ rotation <- c(58.64, -243.02, 1, 1.03,
 
 rings <- c(FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE)
 
-planets_df <- data.frame(name, type, diameter, rotation, rings)
+planets_df <- data.frame(name = name, type = type, diameter, rotation, rings)
 
 planets_df
 ```
@@ -84,6 +84,8 @@ mtcars[ , c(1, 4)]
 # Example: subset rows 20-25 & column 'mpg' of mtcars using the columns name
 
 mtcars[20:25, 'mpg']
+
+mtcars["Mazda RX4",]
 ```
 
 ```{r}
@@ -99,7 +101,7 @@ mtcars[ , 'mpg']
 ```{r}
 # select mpg and wt where cyl where cyl equals 8
 
-mtcars[mtcars$cyl == 8, c('mpg', 'wt')]  
+mtcars[mtcars$cyl == 8, c('mpg', 'wt','cyl')]  
 
 ```
 
@@ -108,6 +110,9 @@ mtcars[mtcars$cyl == 8, c('mpg', 'wt')]
 # Example: using the $ symbol
 
 mtcars$mpg
+
+mtcars[,'mpg']
+
 
 ```
 
@@ -118,21 +123,33 @@ mtcars$mpg
 mpg_10 <- subset(mtcars, mpg > 10)
 mpg_10
 
+mpg_10_v2 <- mtcars[ mtcars$mpg > 10, ]
+mpg_10_v2
+
+
+
 ```
 
 ```{r}
 # Example: Returns entries where mpg is greater than 10 and cylinders are equal to 6
 
-subset(mtcars, c(mpg > 10 & cyl == 6))
+subset(mtcars, (mpg > 10) & (cyl == 6))
 
 ```
 
 ```{r}
 # Example: Returns the columns cyl, mpg, hp for entries where cyl equals 4 and mpg is greater than 20
 
-subset(mtcars, c(cyl == 4, mpg > 20), c(cyl, mpg, hp))
+subset(x = mtcars, subset = c(cyl == 4, mpg > 20), select = c(cyl, mpg, hp))
+
+subset(mtcars, (cyl == 4) & (mpg > 20), c(cyl, mpg, hp))
+
 
 ```
+
+
+
+
 ```{r}
 # Misc
 # get dimensions of df
@@ -153,7 +170,9 @@ mtcars$mpg[-(10:20)]
 # Example: sort() - works on vectors
 # goes smallest -> largest
 
-sort(mtcars$mpg)
+sort(mtcars$mpg, decreasing = FALSE)
+
+sort(mtcars$mpg, decreasing = TRUE)
 
 ```
 
@@ -162,15 +181,19 @@ sort(mtcars$mpg)
 
 order(mtcars$mpg)
 
+sort(mtcars$mpg)
+mtcars$mpg[order( mtcars$mpg)]
+
+
 ```
 
 
 ```{r}
 # Example: order entries by mpg within dataframe
 
-position <- order(mtcars$mpg)
+# position <- order(mtcars$mpg)
 
-mtcars[position, ]
+mtcars[order(mtcars$mpg), ]
 ```
 
 ################################
@@ -200,10 +223,10 @@ head(incex)
 
 ### if the data are not located in the working directory (see setwd()) then you can read the data by specifying the full path
 
-```{r}
-# Example
-incex <- read.table('income_exmpl.dat', header = T, sep = "\t")
-```
+# ```{r}
+# # Example
+# incex <- read.table('income_exmpl.dat', header = T, sep = "\t")
+# ```
 
 ### if an R function requires a character string or name as an argument (e.g., the file name or path), it must be set in quotes ("name" or 'name')
 
@@ -217,7 +240,7 @@ incex.2 <- read.csv('income_exmpl.csv')
 *use the 'foreign'-package 
  
 ```{r}
-install.packages('foreign', repos = 'http://cran.cnr.Berkeley.edu/')
+install.packages('foreign')
 
 # load package (makes its functions available)
 library(foreign) 

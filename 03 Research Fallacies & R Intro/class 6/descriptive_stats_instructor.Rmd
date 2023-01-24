@@ -52,7 +52,7 @@ colMedians
 ```
 
 ```{r}
-# Students: use apply() to get the medians of all rows
+#****** Students: use apply() to get the medians of all rows
 colRows <- apply(mtcars,
                  MARGIN =1,
                  FUN = median)
@@ -99,7 +99,7 @@ data <- c(data, otl)
 ```
 
 ```{r}
-# Students: Create a density plot with lines for median and mean for 'data' (generated above)
+#****** Students: Create a density plot with lines for median and mean for 'data' (generated above)
 
 plot(density(data))                
 
@@ -114,11 +114,13 @@ abline(v=median(data), col="red", lwd=2 )
 
 ## MODE
 ### Can be used for categorical or numeric data
-### Not horribly useful in statistics
+### Not often useful in statistics
 ```{r}
-# with dpylr
-library(dplyr)
-mtcars %>% count(mpg, sort = TRUE)
+# with cross tabulation
+cyls <- xtabs(formula = ~ cyl, data = mtcars)
+
+my_mode <- names(cyls)[which.max(cyls)]
+my_mode
 
 ```
 
@@ -240,7 +242,7 @@ median(mtcars$mpg[mtcars$hp >= 120])
 ## Using tapply()
 ### Create group summaries based on factor levels
 ```{r}
-
+# tapply applies a function to subgroups of a dataset using a factor
 tapply(mtcars$mpg,     # x
        mtcars$cyl,     # index (factor)
        mean)           # function
@@ -293,6 +295,7 @@ xtabs(~ mpg + cyl, data = mtcars)
 xtabs(~ cyl, data = mtcars)
 
 xtabs(mpg ~ cyl, data = mtcars) # sum of mpg by cyl
+tapply(mtcars$mpg, mtcars$cyl, sum)           # alternative
 
 xtabs(mpg ~ cyl, data = mtcars) / xtabs( ~ cyl, data = mtcars) # mean mpg by cyl
 

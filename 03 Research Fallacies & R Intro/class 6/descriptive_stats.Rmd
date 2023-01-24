@@ -1,6 +1,6 @@
 ---
 course: "DS2003: Communicating with Data"
-class title: "Descriptive Statistics in R"
+class title: "Descriptive Statistics and Simple Plotting in R"
 class : "6"
 ---
 
@@ -42,6 +42,7 @@ median(mtcars$mpg)
 * The apply() function takes a data object, a function to execute, and a specified margin (rows or columns)
 
 ```{r}
+
 colMedians <- apply(mtcars,         # data object
                     MARGIN = 2,     # operate on columns (specified margin),
                     FUN = median)   # function to execute
@@ -51,11 +52,13 @@ colMedians
 
 ```{r}
 # Students: use apply() to get the medians of all rows
-colRows <- apply(mtcars,
-                 MARGIN =1,
-                 FUN = median)
+colMedians <- apply(mtcars,         # data object
+                    MARGIN = 1,     # operate on columns (specified margin),
+                    FUN = median)   # function to execute
 
-colRows
+colMedians
+
+
 ```
 
 ## Comparing Mean and Median
@@ -76,7 +79,7 @@ hist(mtcars$mpg)
 plot(density(mtcars$mpg))
 
 # plot a black line at the mean
-abline(v = mean(mtcars$mpg, lwd = 5))
+abline(v = mean(mtcars$mpg), lwd = 5)
 
 # plot a red line at the median
 abline(v = median(mtcars$mpg), col = 'red', lwd = 2)
@@ -99,11 +102,16 @@ data <- c(data, otl)
 ```{r}
 # Students: Create a density plot with lines for median and mean for 'data' (generated above)
 
-plot(density(data))                
+# use plot()
+plot(density(data))
 
-abline(v=mean(data), lwd=5)        
+# plot a black line at the mean
+abline(v = mean(data), lwd = 5)
 
-abline(v=median(data), col="red", lwd=2 )
+# plot a red line at the median
+abline(v = median(data), col = 'red', lwd = 2)
+
+
 ```
 ### Give 3 bullet points interpreting this plot
 *
@@ -112,16 +120,26 @@ abline(v=median(data), col="red", lwd=2 )
 
 ## MODE
 ### Can be used for categorical or numeric data
-### Not horribly useful in statistics
+### Not often useful in statistics
 ```{r}
-# with dpylr
-mtcars %>% count(mpg, sort = TRUE)
+# with cross tabulation
+cyls <- xtabs(formula = ~ cyl, data = mtcars)
+my_mode <- names(which.max(cyls))
+my_mode
+
+
+cyls <- table(mtcars$cyl)
+my_mode <- names(which.max(cyls))
+my_mode
+
 
 ```
 
+
 ```{r}
 # with user defined function
-mode_function <- function(data){                         # Define new function
+mode_function <- function(data) {
+  # Define new function
     data_table <- table(data)                            # Create data table
     max_index <- which.max(data_table)                   # Find max index
     if (is.numeric(data)){                               # If input is numeric data
@@ -130,14 +148,14 @@ mode_function <- function(data){                         # Define new function
     names(data_table)[max_index]            # Otherwise return output as character
 }
 
-mode_function(mtcars$mpg)
+mode_function(mtcars$cyl)
 ```
 
 
 ```{r}
 # can place user defined function into apply()
 colModes <- apply(mtcars,            
-                 MARGIN=2,               
+                 MARGIN = 2,               
                  FUN = mode_function)    # use function mode_function
 
 colModes
@@ -166,6 +184,8 @@ quantile(mtcars$mpg)
 #five number summary
 fivenum(mtcars$mpg)
 ```
+
+
 ```{r}
 # Summary() shows the five number summary + the mean
 summary(mtcars$mpg)
@@ -237,14 +257,12 @@ median(mtcars$mpg[mtcars$hp >= 120])
 ## Using tapply()
 ### Create group summaries based on factor levels
 ```{r}
-
+# tapply applies a function to subgroups of a dataset using a factor
 tapply(mtcars$mpg,     # x
-       mtcars$cyl,     # index (factor)
+       mtcars$gear,     # index (factor)
        mean)           # function
 ```
 
-
-### tapply(incex$income, list(incex$edu, incex$occ), mean)  # by education & occ. status
 
 
 ## Use with() 
@@ -253,25 +271,13 @@ tapply(mtcars$mpg,     # x
 with(mtcars, tapply(mpg, cyl, mean))
 ```
 
-## Use attach() and detach()
-```{r}
-# makes all variable of the mtcars data frame available
-attach(mtcars)    
-
-head(income)
-
-tapply(income, edu, mean) 
-
-detach(incex)        # after you are done, detach data set
-
-```
-
-### !!! WARNING: in order to avoid confusions when manipulating data avoid using attach() and detach() !!! 
-## But attaching data is useful for plotting   
 
 ## Basic Tables
 ### sapply() & apply()
 ```{r}
+# Comparison 
+sapply(1:10, sqrt)
+
 sapply(mtcars, mean)
 
 sapply(mtcars, class)
@@ -285,14 +291,22 @@ apply(mtcars, 1, function(x) sum(is.na(x)))
 
 ## CROSSTABS
 ```{r}
-xtabs(~ mpg + cyl, data = mtcars)  
+#How to calculate mean of elements in a vector split into different subgroups
+# Cross tabulation method compared to tapply
+
+xtabs(~ gear + cyl, data = mtcars)  
 
 xtabs(~ cyl, data = mtcars)
 
-xtabs(mpg ~ cyl, data = mtcars) # sum of mpg by cyl
+# sum of mpg by cyl
+xtabs(mpg ~ cyl, data = mtcars) 
+# alternative
+tapply(mtcars$mpg, mtcars$cyl, sum)           
 
-xtabs(mpg ~ cyl, data = mtcars) / xtabs( ~ cyl, data = mtcars) # mean mpg by cyl
+ # mean mpg by cyl
+xtabs(mpg ~ cyl, data = mtcars) / xtabs( ~ cyl, data = mtcars)
 
+tapply(mtcars$mpg, mtcars$cyl, mean)
 with(mtcars, tapply(mpg, cyl, mean))
 
 ```
@@ -305,16 +319,16 @@ with(mtcars, tapply(mpg, cyl, mean))    # mean
 
 with(mtcars, tapply(mpg, cyl, sd))      # standard deviation
 
-library(tidyverse)
-mtcars %>% count(cyl)
+# library(tidyverse)
+# mtcars %>% count(cyl)
 ```
 
 ```{r}
 # using boxplots
 
-boxplot(mpg ~ cyl, data = mtcars, varwidth = F, horizontal = T) #default
+boxplot(mpg ~ cyl, data = mtcars, varwidth = F, horizontal = F) #default
 
-boxplot(mpg ~ cyl, data = mtcars, varwidth = T, horizontal = T)
+boxplot(mpg ~ cyl, data = mtcars, varwidth = T, horizontal = F)
 
 #Students : what is varwidth doing?
 ```
@@ -344,10 +358,10 @@ my_mean(mtcars$mpg)
 my_sd <- function(x)
 {
    # computes standard deviation of vector x
-   sqrt(sum((x - mean.val(x))^2) / (length(x) - 1))
+   sqrt(sum((x - mean(x))^2) / (length(x) - 1))
 }
 
-my_sd(incex$income)
+my_sd(mtcars$mpg)
 
 # define your own my.summary() function
 my_summary <- function(x)
@@ -355,14 +369,16 @@ my_summary <- function(x)
    # returns mean, sd, n, and standard error
    # x ... numeric vector (no missings allowed)
 
-   m <- mean.val(x)
-   s <- sd.val(x)
+   m <- mean(x)
+   s <- sd(x)
    n <- length(x)
    se <- s / sqrt(n)  # standard error
-   c(mean = m, std.dev = s, n = n, s.e. = se)
+   return(c(mean = m, std.dev = s, n = n, s.e. = se))
 }
 
-my.summary(mtcars$mpg)
+my_summary(mtcars$mpg)
+
+
 ```
 
 
@@ -381,6 +397,9 @@ plot(~ cyl, data = mtcars)
 ### Scatter Plot
 ```{r}
 plot(mpg ~ hp, data = mtcars)
+
+plot(mtcars$hp, mtcars$mpg)
+
 ```
 
 
