@@ -250,8 +250,9 @@ mean(mtcars$mpg[mtcars$cyl == 4])  # mean for a subset
 
 
 ```{r}
-# Students: Find the median mpg for cars with horsepower greater than or equal to 120
-median(mtcars$mpg[mtcars$hp >= 120])
+#---------- Students: Find the median mpg for cars with horsepower greater than or equal to 120
+
+
 ```
 
 ## Using tapply()

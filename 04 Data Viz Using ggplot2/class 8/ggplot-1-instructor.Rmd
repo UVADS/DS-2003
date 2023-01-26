@@ -42,7 +42,7 @@ ggplot(mtcars,
   geom_smooth()
 ```
 
-#Students:
+## Student_____________________________________________________________________
  * import the income.csv dataset
  * create a scatter plot between age and income
  * create a second plot that includes a smooth line
@@ -142,7 +142,7 @@ ggplot(mtcars,
 
 
 
-Student:
+## Student_____________________________________________________________________
 * color the points on your age x income plot to signify education level
 
 ```{r}
@@ -178,8 +178,8 @@ ggplot(mtcars,
   geom_point(aes(shape = fcyl)) 
 ```
 
-Students:
-* Use shape to denote participant's gender
+## Student_____________________________________________________________________
+* Use shape to denote participant's biological sex
 
 ```{r}
 ggplot(income, aes(age, income, color = fedu)) +       
@@ -250,10 +250,19 @@ ggplot(mtcars,
            label = fcyl)) +       
   geom_text()                 # Note change in geom layer
 ```
-Students:
+
+
+## Student_____________________________________________________________________
 * Choose a few of the above visual properties from above and alter your income x age plot using aesthetic mappings
 ```{r}
 ?shape
+
+ggplot(income, aes(age, income, color = fedu)) +       
+  geom_point(aes(shape = sex, alpha = oexp)) + theme_classic() 
+
+ggplot(income, aes(oexp, income, color = fedu)) +       
+  geom_point(aes(shape = sex)) + theme_classic() 
+
 
 ```
 
@@ -534,7 +543,7 @@ ggplot(mtcars, aes(fcyl)) +
 ```
 
 
-Student:
+## Student_____________________________________________________________________
 * using income, make a bar plot charting number of observations per education level
 
 ```{r}

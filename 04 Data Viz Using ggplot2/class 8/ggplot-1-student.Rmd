@@ -27,10 +27,10 @@ str(mtcars)
 
 ```{r}
 # Basic scatter plot with 1 geom
-ggplot(mtcars,               #data source
-       aes(x = wt,           # mapping wt to x
-           y = mpg)) +       # mapping mpg to y
-  geom_point()               # add geom layer
+ggplot(data = mtcars, mapping = aes(x = wt, y = mpg)) +       # mapping mpg to y
+  geom_point() +           # add geom layer 
+  theme_minimal()
+
 ```
 
 ```{r}
@@ -42,20 +42,30 @@ ggplot(mtcars,
   geom_smooth()
 ```
 
-#Students:
+## Student_____________________________________________________________________
  * import the income.csv dataset
  * create a scatter plot between age and income
  * create a second plot that includes a smooth line
  
 ```{r}
 
-```
 
-```{r}
 
 ```
 
 ```{r}
+
+
+
+
+```
+
+```{r}
+
+
+
+
+
 
 ```
 
@@ -87,6 +97,7 @@ ggplot(mtcars,
 mtcars$fcyl <- as.factor(mtcars$cyl)
 ```
 
+
 ```{r}
 ggplot(mtcars,               
        aes(x = wt,           
@@ -99,6 +110,8 @@ From lecture: When should we put aesthetics in base layer and when should we put
 
 ```{r}
 # Color refers to the outline of the shape.
+mtcars$fcarb <- factor(mtcars$carb)
+
 ggplot(mtcars,               
        aes(x = wt,           
            y = mpg,
@@ -113,8 +126,9 @@ ggplot(mtcars,
        aes(x = wt,           
            y = mpg,
            color = fcyl)) +       
-  geom_point() 
+  geom_point(shape = 24, fill = "black") 
 ```
+
 
 ```{r}
 # Fill refers to the inside color
@@ -134,10 +148,13 @@ ggplot(mtcars,
   geom_point(shape = 21, color  = 'white', size = 12) 
 ```
 
-Student:
+## Student_____________________________________________________________________
 * color the points on your age x income plot to signify education level
 
 ```{r}
+
+
+
 
 ```
 
@@ -166,10 +183,14 @@ ggplot(mtcars,
   geom_point(aes(shape = fcyl)) 
 ```
 
-Students:
-* Use shape to denote participant's gender
+## Student_____________________________________________________________________
+* Use shape to denote participant's biological sex assigned at birth
 
 ```{r}
+
+
+
+
 
 ```
 
@@ -181,7 +202,7 @@ ggplot(mtcars,
        aes(x = wt,           
            y = mpg,
            fill = fcyl)) +       
-  geom_point(shape = 21, color  = 'white', size = 12) 
+  geom_point(shape = 21, color  = 'white', size = 2) 
 ```
 
 
@@ -220,6 +241,7 @@ ggplot(mtcars,
            linetype = fcyl)) +       
   geom_line()                   # Note change in geom layer
 ```
+
 ```{r}
 # as an attribute
 ggplot(mtcars,               
@@ -233,14 +255,19 @@ ggplot(mtcars,
 ggplot(mtcars,               
        aes(x = wt,           
            y = mpg,
-           label = fcyl)) +       
+           label = fcyl)) +  
+  geom_point() + 
   geom_text()                 # Note change in geom layer
 ```
 
-Students:
+## Student_____________________________________________________________________
 * Choose a few of the above visual properties from above and alter your income x age plot using aesthetic mappings
 
 ```{r}
+
+
+
+
 
 ```
 
@@ -389,7 +416,7 @@ ggplot(iris,     # new dataset
 ```{r}
 # All position arguments can also be used as functions. Helps with consistency across graphs
 
-preset_jitter <- position_jitter (0.1, seed = 123) # how much noise
+preset_jitter <- position_jitter(0.1, seed = 123) # how much noise
 
 ggplot(iris,     # new dataset               
        aes(x = Sepal.Length,           
@@ -499,7 +526,7 @@ ggplot(mtcars_summary_long, aes(fcyl, avg)) +
   geom_col() + # plots actual values
   geom_errorbar(aes(ymin = avg - sd,
                     ymax = avg + sd),
-                width = 0.1, 
+                width = 0.1,
                 color = 'orange')
 ```
 
@@ -510,10 +537,13 @@ ggplot(mtcars, aes(fcyl)) +
   stat_count()
 ```
 
-Student:
+## Student_____________________________________________________________________
 * using income, make a bar plot charting number of observations per education level
 
 ```{r}
+
+
+
 
 ```
 
@@ -548,13 +578,15 @@ ggplot(mtcars, aes(mpg)) +
 
 ```{r}
 # geom layers from 2 different data sets
-mtcars %>%
+cars_summary <- mtcars %>%
   group_by(fcyl) %>%
-  summarise_all(mean) -> cars_summary
+  summarise_all(mean)
+cars_summary
+
 ```
 
 ```{r}
-ggplot(mtcars, aes(mpg, wt, color = fcyl)) +
+ggplot(mtcars, aes(x = mpg, y = wt, color = fcyl)) +
   geom_point(shape = 1) +
   geom_point(data = cars_summary, size = 5)
   
