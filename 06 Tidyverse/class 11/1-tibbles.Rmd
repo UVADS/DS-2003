@@ -53,21 +53,21 @@ a <- "Hello"
 b <- "World"
 
 var1 <- c(a, b)
-var2 <- paste(var1)
+var2 <- paste(var1, collapse = " ")
 print(var2)
 ```
 
 Or this:
 
 ```{r}
-print(paste(c(a,b)))
+print(paste(c(a,b), collapse = " "))
 ```
 
 We can do:
 
 ```{r}
 c(a, b) %>%
-  paste() %>%
+  paste(collapse = " ") %>%
   print()
 ```
 
@@ -155,6 +155,8 @@ tribble(
   "a", 2, 3.6,
   "b", 1, 8.5
 )
+
+tibble(x = c("a","b"), y = c(2,1), z = c(3.6, 8.5))
 ```
 
 Finally, if you have a regular `data frame` you can turn it into to a tibble with `as_tibble()`:
@@ -210,6 +212,15 @@ tibble(
   d = runif(1e3),
   e = sample(letters, 1e3, replace = TRUE)
 )
+
+data.frame(
+  a = lubridate::now() + runif(1e3) * 86400,
+  b = lubridate::today() + runif(1e3) * 30,
+  c = 1:1e3,
+  d = runif(1e3),
+  e = sample(letters, 1e3, replace = TRUE)
+)
+
 ```
 
 Where possible, **tibbles also use color** to draw your eye to important differences.
@@ -232,7 +243,7 @@ First, you can explicitly `print()` the data frame and control the number of row
 ```{r}
 library(nycflights13)
 flights %>%
-  print(n = 10, width = Inf)
+  print(n = 20, width = Inf)
 ```
 
 You can also **control the default print behavior** by setting options:
@@ -266,11 +277,14 @@ tb <- tibble(
   x1  = 1:5,
   y1  = 6:10
 )
+tb
 ```
 
 ```{r}
 tb %>%  
   pull(x1) # by name
+
+pull(tb, x1)
 ```
 
 ```{r}

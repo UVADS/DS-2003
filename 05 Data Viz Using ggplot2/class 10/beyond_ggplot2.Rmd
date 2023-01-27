@@ -25,6 +25,7 @@ p_load(tidyverse)
 ```{r}
 # import data
 df <- read.csv('data.csv')
+df
 ```
 
 ## Examples
@@ -35,12 +36,17 @@ df <- read.csv('data.csv')
 p_load(gridExtra)
 
 p1 <- ggplot(df) + geom_bar(aes(x = occ, fill=sex)) # barplot
+p1
 
 p2 <- ggplot(df) + geom_histogram(aes(x=income), bins=10) # histogram
+p2
 
 p3 <- ggplot(df) + geom_point(aes(x = age, y=income)) # scatterplot
+p3
+
 
 grid.arrange(p1, p2, p3, nrow=1)
+
 ```
 
 ```{r}
@@ -57,7 +63,7 @@ p1 + p2 + p3
 
 ```{r}
 # Patchwork division operator for ggplot objects means a new line.
-( p1 + p2 ) / p3
+p3 / ( p1 + p2 )
 ```
 
 
@@ -70,12 +76,13 @@ ggpairs(df[, c('income', 'oexp', 'age', 'edu')])
 ```
 
 ```{r}
-# The data can be seperated based on another factor by calling ggplot aes()
+# The data can be separated based on another factor by calling ggplot aes()
 # No aesthetic
 ggpairs(df, columns = c(6,2)) 
-# Edu used as aesthetic
-ggpairs(df, columns = c(6,2), ggplot2::aes(colour = edu)) 
+# Edu used as aesthetic, example of direct package access to function
 ggpairs(df, columns = c(6,2), aes(colour = edu)) 
+# Same output as
+ggpairs(df, columns = c(6,2), ggplot2::aes(colour = edu)) 
 ```
 
 
@@ -95,13 +102,14 @@ ggcorr(df)
 # Default behavior 
 ggpairs(
   df[, c(6, 1, 3, 2)],
-)
+ progress = FALSE)
 
 # Upper and lower arguments can force certain types of plots
 ggpairs(
   df[, c(6, 1, 3, 2)],
   upper = list(continuous = "density", combo = "box_no_facet"),
-  lower = list(continuous = "points", combo = "dot_no_facet")
+  lower = list(continuous = "points", combo = "dot_no_facet"),
+  progress = FALSE
 )
 ```
 
