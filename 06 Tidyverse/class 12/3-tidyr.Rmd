@@ -18,7 +18,8 @@ Based on Hadley Wickham's [Tidy Data](https://vita.had.co.nz/papers/tidy-data.pd
 Data is said to be tidy if it meets the following conditions:
 
 * Each variable forms a column.
-* Each observation forms a row.
+* Each observation forms a row (see wide versus long datasets)
+  https://www.statology.org/long-vs-wide-data/
 * Each type of observational unit forms a table.
 
 Example:
@@ -35,7 +36,7 @@ This data is untidy due to the following common issues of untidy data:
 * The column headers `term 1`, `term 2` and `term 3` are values. These need not to be column headers but values within another column like term.
 
 *Multiple variables are stored in one column*
-The column `gender_age` has two variables. For example Mike’s value for this column is m_12, meaning that he is a 12 year old male. The sex and age values should be in different columns.
+The column `sex_age` has two variables. For example Mike’s value for this column is m_12, meaning that he is a 12 year old male. The sex and age values should be in different columns.
 
 *Variables are stored in both rows and columns*
 The `test number` column is not a variable, it stores names of variables test 1 and test 2. Therefore, test 1 and test 2 need to be headers of columns as they are variables.
@@ -56,12 +57,12 @@ student_results_clean <- student_results %>%
 student_results_clean
 ```
 
-2. Split 'gender_age' variable
+2. Split 'sex_age' variable
 * use `separate()` from tidyr
 
 ```{r}
 student_results_clean <- student_results_clean %>%
-  separate(gender_age, c('gender', 'age'), '_')
+  separate(sex_age, c('sex', 'age'), '_')
 
 student_results_clean
 ```
@@ -81,7 +82,7 @@ student_results_clean
 
 ```{r}
 student <- student_results_clean %>%
-  select('id', 'name', 'phone', 'gender', 'age')
+  select('id', 'name', 'phone', 'sex', 'age') %>% distinct()
 
 student
 ```
@@ -93,26 +94,53 @@ test <- student_results_clean %>%
 test
 ```
 
-Students:
+## Students in-class lab:
 * Import `dogs.csv'
 * Review data and transform to tidy data using tidyverse methods
 
+Import csv file
 ```{r}
 
-# Fill in values for patient, breed, address, gaurdian, for all rows (fill down same value to next value)
 
-# pivot longer to combine height, length, width columns
-
-# split weight between "weight" and "weight_units"
-
-# Convert weight to lbs only and add new column "weight_lbs"
-
-# Split visit_date to visit and date
-
-# Separate dataframe into dog_tb and guardian_tb
+```
 
 
+Fill in values for patient, breed, address, guardian, for all rows (fill down same value to next value)
+Hint: fill() expects NA for fills
+```{r}
 
+```
+
+
+Pivot longer to combine height, length, width columns to dimension
+```{r}
+
+```
+
+
+split weight between "weight" and "weight_units"
+```{r}
+
+```
+
+
+Split visit_date to visit_num and date
+```{r}
+
+```
+
+
+Separate previous dataframe into 
+* guardian_df (guardian and address)
+* dog_df (all other columns)
+```{r}
+
+
+```
+
+
+Display only dog visits from dog_df that is the first visit (should have 3 rows)
+```{r}
 
 
 ```

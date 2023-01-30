@@ -78,6 +78,16 @@ Load the data into R using the `readRDS()` function.
 chicago <- readRDS("chicago.rds")
 ```
 
+Dataset columns
+1. city: name of city
+2. tmpd: pollutant
+3. dptp: dew point temperature (useful for weather/ fog predictions)
+4. date: time of measurement
+5. pm25tomean2: particulate concentration less than 2.5 microns, mean subtracted
+6. pm10tomean2: particulate concentration less than 10 microns, mean subtracted
+7. 03tomean2: concentration of ozone, mean subtracted
+8. n02tmean2: nitrogen dioxide concentration, , mean subtracted
+
 You can see some basic characteristics of the dataset with the `dim()` and `str()` functions.
 
 ```{r}
@@ -104,6 +114,9 @@ We could for example use numerical indices.
 
 ```{r}
 names(chicago)[1:3]
+
+chicago[,names(chicago)[1:3]]
+
 ```
 
 But we can also use the names directly.
@@ -111,6 +124,10 @@ But we can also use the names directly.
 ```{r}
 chicago %>%
   select(city:dptp)
+
+# Equivalent statement
+# select(chicago, city:dptp)
+
 ```
 
 Note the use of `:` inside the `select()` --- you can use it to specify a range of variable names.
@@ -209,6 +226,10 @@ Here we order the rows of the data frame by date in ascending order:
 chicago_by_date <- chicago %>%
   arrange(date)
 chicago_by_date
+
+# Equivalent statement, base R
+# chicago[order(chicago$date),]
+
 ```
 
 We can now check the first few rows
@@ -302,7 +323,7 @@ So **the stratum is the year**, which we can derive from the `date` variable.
 
 **In conjunction with the `group_by()` function we often use the `summarize()` function.** \> Or `summarise()` for some parts of the world.
 
-The general operation here is a combination of **splitting** a tabel into separate pieces defined by a variable or group of variables (`group_by()`), and then **applying** a summary function across those subsets (`summarize()`), then **combining** back into another table.
+The general operation here is a combination of **splitting** a table into separate pieces defined by a variable or group of variables (`group_by()`), and then **applying** a summary function across those subsets (`summarize()`), then **combining** back into another table.
 
 > This pattern is called **split, apply, and combine**.
 > It is a fundamental pattern in data processing.
