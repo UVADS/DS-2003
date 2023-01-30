@@ -1,74 +1,196 @@
 ---
 course: 'DS2003: Communicating with Data'
-class title: 'Introduction to R: Part 3'
+title: 'Introduction to R: Part 3'
 class number: '4'
+output: html_notebook
 ---
 
 #LAB: DATAFRAMES in R
 ### You may work in groups of 2-3
 
-```{r}
-# Load the data 'income_exmpl.csv'
+```{r 1}
+# Load the data 'income_exmpl.csv' and assign to variable name "income_df"
 
 
 ```
 
-```{r}
+
+
+```{r 2}
+# Using a built-in function, display a summary of income_df column names, their
+# Datatype, and values at the beginning of each column
+
+
+```
+
+```{r 3}
+# Using a built-in function, display a summary each column of income_df that 
+# displays quartiles and mean if the column is continuous; and the number of rows
+# and datatype if the column is char (we talked about this function but only used
+# it on vectors so far)
+
+
+```
+
+
+```{r 4}
 # Show the first 6 rows of the dataframe
 
 
 ```
 
-```{r}
-# Select the first row
+
+```{r 5}
+# Convert the columns that should be factors into factors
+# Pay attention to whether the categorical variables are nominal or ordinal, and 
+# convert them to the correct type of factor. Make sure ordinal factors have 
+# levels in the correct order
 
 
 
 ```
 
+```{r 6}
+# Based on the notation for Levels printed when a factor is displayed, how do 
+# you tell if a factor is nominal or ordinal? (Write answer as code comment)
 
-```{r}
+# Ordinal levels has a "<" character between them to specify to order
+```
+
+
+```{r 7}
+# Select the first row
+
+
+```
+
+
+
+```{r 8}
 # select the first column
 
 
 ```
 
 
-```{r}
+```{r 9}
 # Select the first column by name
 
 
 ```
 
-```{r}
-# Select the third row and the second column
 
+```{r 10}
+# Select the third row and the second column
 
 
 ```
 
-```{r}
+
+```{r 11}
 # Select rows 5-25 row of the 'income' & 'age' column
 
 
 ```
 
-```{r}
-# sort the above output by smallest-largest age - keep data in a dataframe
 
-```
-
-```{r}
-# using the full dataset, subset the data for females at or over age 35 with low or med education 
-
+```{r 12}
+# using the full dataset (income_df), subset the data for females at or over age 35 with low or med education 
 
 
 ```
 
-```{r}
+
+
+```{r 13}
 # determine amount of missing data in column 'age' - may need to Google
 
 
 
 ```
 
+```{r 14}
+# Sort the original income_df by age in descending direction, create a new 
+# dataframe sorted_df
+
+
+```
+
+
+```{r 15}
+# export sorted_df to a csv file names "sorted_income.csv", and then check that 
+# file exists with a built-in function (use google to find)
+
+ 
+
+```
+
+
+
+```{r 16}
+# Make a list, my_list, of three elements: the sorted_df dataframe, a vector, and a character vector
+
+
+```
+
+
+```{r 17}
+# Name each element of the list: "one","two","three"
+
+```
+
+
+```{r 18}
+# Access the second element of the list by index, and then by name.
+# Return the vector itself (and not a list with the vector inside)
+
+```
+
+```{r 19}
+# Create a new df, number_df, that is income_df with all factor columns removed
+
+```
+
+
+```{r 20}
+# Name the rows of number_df according to the row number
+
+
+```
+
+
+```{r 21}
+# Calculate sum of columns and rows of number_df
+
+
+```
+
+```{r 22}
+# Calculate quintiles of income in number_df, assign to qt_income
+
+```
+
+
+```{r 23}
+# Calculate mean income of individuals in the second quintile of income 
+# (use quintiles in previous question as thresholds)
+
+
+
+```
+
+
+```{r 24}
+# add a row of all 1's to number_df, and then add a column of all 1's
+# Look up rep() for a way to add repeating values
+
+
+```
+
+
+```{r 25}
+# Reassign (low medium high) to (lo, med, hi) in income_df
+
+
+  
+```
