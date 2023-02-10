@@ -1,17 +1,35 @@
+---
+title: "geom_bar_hints"
+author: "Bruce Corliss"
+date: "2023-02-10"
+output: html_document
+---
 
 
+
+```{r}
+library(ggplot2)
 
 # Using geombar stat count
 dfr <- data.frame(letter = factor(c("a","b","c","d")), y = c(1,2,3,4))
 
+```
+
+```{r}
+ggplot(dfr, aes(y=y)) +
+  geom_bar(stat = "count")
 
 ggplot(dfr, aes(x=letter)) +
   geom_bar(stat = "count")
 
+```
 
+```{r}
 ggplot(dfr, aes(x=letter, y=y)) +
   geom_bar(stat = "identity")
+```
 
-
+```{r}
 ggplot(dfr, aes(x='', y=y, fill = y)) +
   geom_bar(stat = "identity" )
+```
