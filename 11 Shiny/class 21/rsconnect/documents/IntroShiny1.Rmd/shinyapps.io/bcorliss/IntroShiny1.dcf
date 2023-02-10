@@ -1,0 +1,13 @@
+name: IntroShiny1
+title: IntroShiny1
+username:
+account: bcorliss
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 8228617
+bundleId: 6812605
+url: https://bcorliss.shinyapps.io/IntroShiny1/
+when: 1675627574.39104
+lastSyncTime: 1675627574.39105
+asMultiple: FALSE
+asStatic: FALSE

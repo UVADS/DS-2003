@@ -1,0 +1,48 @@
+---
+title: "Untitled"
+author: "Bruce Corliss"
+date: "2023-02-10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Please follow the video posted at.
+
+#Run this code to follow along
+
+```{r}
+install.packages("dplr")
+library("dplyr")
+
+data1 <- data.frame(ID = 1:2, x1 = c("a1","a2"), stringsAsFactors = FALSE)
+data2 <- data.frame(ID = 2:3, x1 = c("b1","b2"), stringsAsFactors = FALSE)
+```
+
+```{r}
+inner_join(data1, data2, by = "ID")
+```
+
+
+```{r}
+left_join(data1, data2, by = "ID")
+```
+
+```{r}
+right_join(data1, data2, by = "ID")
+```
+
+```{r}
+full_join(data1, data2, by = "ID")
+```
+
+```{r}
+semi_join(data1, data2, by = "ID")
+```
+
+```{r}
+anti_join(data1, data2, by = "ID")
+```

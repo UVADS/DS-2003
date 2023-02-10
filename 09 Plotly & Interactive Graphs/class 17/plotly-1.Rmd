@@ -55,7 +55,7 @@ Let's look at a static graph comparing `flavanoids` to `proline`
 
 ```{r}
 static_plot <- wine %>%
-  ggplot(aes(Flavanoids, Proline, color = Type)) +
+  ggplot(aes(x = Flavanoids, y = Proline, color = Type)) +
   geom_point() +
   theme_minimal() +
   scale_color_manual(values = c("#00AFBB", "#E7B800", "#FC4E07"))
@@ -69,6 +69,9 @@ static_plot
   
    + transforming a ggplot2 object with `ggplotly()` 
    + setting up aesthetics mappings with `plot_ly()` directly
+     * Use ggplot style attribute to subset the data (can be harder to control attributes)
+     * Manually subset data for each trace (maximum control of attributes)
+     
 
 ## Today's focus `ggplotly()`
 
@@ -112,8 +115,8 @@ ggplotly(g.5)
 ```{r}
 g2 <- ggplot(wine, aes(x = Flavanoids, fill = as.factor(Type))) + 
       geom_histogram(bins = 15, alpha = 0.6) +
-      theme_minimal() +
-      scale_fill_manual(values = c("#00AFBB", "#E7B800", "#FC4E07")) 
+      theme_minimal() 
+      scale_fill_manual(values = c("#00AFBB", "#E7B800", "#FC4E07"))
 
 ggplotly(g2)
 ```
@@ -151,9 +154,9 @@ library(plotly)
 
 ### Bar plot
 ```{r}
-wine %>% mutate(fType = as.factor(Type)) %>%
-  count(fType) %>% #using dplyr create frequency table
-  plot_ly(x = ~fType, y = ~n) %>% # initialize graph in plotly, use ~ for aes mappings
+wine %>% 
+  count(Type) %>% #using dplyr create frequency table
+  plot_ly(x = ~Type, y = ~n) %>% # initialize graph in plotly, use ~ for aes mappings
   add_bars() %>% #set graph as bar chart
   layout(title = "Freq. of Wine Soil Type",
          xaxis = list(title = "Type"),
@@ -163,10 +166,10 @@ wine %>% mutate(fType = as.factor(Type)) %>%
 ### Reorder columns
 
 ```{r}
-wine %>% mutate(fType = as.factor(Type)) %>%
-  count(fType) %>% #using dplyr create frequency table
-  mutate(fType = fct_reorder(fType, n, .desc = TRUE)) %>% #order for largest to smallest
-  plot_ly(x = ~fType, y = ~n) %>% # initialize graph in plotly, use ~ for aes mappings
+wine %>% 
+  count(Type) %>% #using dplyr create frequency table
+  mutate(Type = fct_reorder(Type, n, .desc = TRUE)) %>% #order for largest to smallest
+  plot_ly(x = ~Type, y = ~n) %>% # initialize graph in plotly, use ~ for aes mappings
   add_bars() %>% #set graph as bar chart
   layout(title = "Freq. of Wine Soil Type",
          xaxis = list(title = "Type"),
@@ -175,7 +178,7 @@ wine %>% mutate(fType = as.factor(Type)) %>%
 
 ### Basic Histogram
 ```{r}
-g6 <- plot_ly(wine, x = ~Flavanoids, type = "histogram")
+g6 <- wine %>% plot_ly(x = ~ Flavanoids, type = "histogram")
 
 g6
 ```
@@ -183,31 +186,23 @@ g6
 ### Flavanoids by Type Histogram
 
 ```{r}
+# Lets split up the data to illustrate the manual way of making the plots
 Type1 <- wine %>% filter(Type == 1)
-Type2 <- wine %>% filter(Type ==2)
+Type2 <- wine %>% filter(Type == 2)
 Type3 <- wine %>% filter(Type == 3)
 
-```
-
-```{r}
-
-g7 <- plot_ly(alpha = 0.4) %>%
-  add_histogram(x = ~Type1$Flavanoids,
-                name = 'Type 1',
-                opacity = 0.6, 
+# Full Manual method without for loop, subsetting data before
+g7a <- plot_ly(alpha = 0.4) %>%
+  add_histogram(x = ~Type1$Flavanoids, name = 'Type 1', opacity = 0.6, 
                 marker = list(color = "#00AFBB",
                               alpha = 0.6,
                               line = list(color = "lightgray",
                               width = 2))) %>%
-  add_histogram(x = ~Type2$Flavanoids,
-                name = 'Type 2',
-                opacity = 0.6,
+  add_histogram(x = ~Type2$Flavanoids, name = 'Type 2', opacity = 0.6,
                 marker = list(color = "#E7B800",
                               line = list(color = "lightgray",
                               width = 2))) %>%
-  add_histogram(x = ~Type3$Flavanoids, 
-                name = 'Type 3',
-                opacity = 0.6,
+  add_histogram(x = ~Type3$Flavanoids, name = 'Type 3', opacity = 0.6,
                 marker = list(color = "#FC4E07",
                               line = list(color = "lightgray",
                               width = 2))) %>%
@@ -217,140 +212,135 @@ g7 <- plot_ly(alpha = 0.4) %>%
                       zeroline = FALSE),
          yaxis = list(title = 'count'))
 
-g7
+g7a
 
 ```
+
+
+```{r}
+# Manual method with for-loop that temp subsets data by soil type on the fly
+my_colors <- c("#00AFBB","#E7B800","#FC4E07")
+g7b <- wine %>% 
+  plot_ly() # initialize graph in plotly, use ~ for aes mappings
+
+  for (n in 1:(length(levels(wine$Type)))) {
+    temp <- subset(wine, Type == levels(wine$Type)[n])
+
+    g7b <-  add_histogram(g7b, data = temp, x = ~Flavanoids, name = paste0("Type ", n), 
+                          opacity = 0.6, marker = list(color = my_colors[n], line = list(color = "lightgray",
+                              width = 2)))
+  }
+ g7b <- g7b %>% layout(barmode = 'overlay',
+         title = 'Histogram of flavanoids by soil type',
+         xaxis = list(title = 'flavanoids',
+                      zeroline = FALSE),
+         yaxis = list(title = 'count'))
+g7b
+
+```
+
+
+```{r}
+# Automated method, ggplot style
+g7c <- wine %>% 
+  # initialize graph in plotly, use ~ for aes mappings
+  plot_ly(x = ~Flavanoids, color = ~Type, colors = c("#00AFBB","#E7B800","#FC4E07")) %>% 
+  
+ add_histogram(opacity = 0.6, marker = list(line = list(color = "lightgray", width = 2))) %>%
+  
+ layout(barmode = 'overlay',
+         title = 'Histogram of flavanoids by soil type',
+         xaxis = list(title = 'flavanoids',
+                      zeroline = FALSE),
+         yaxis = list(title = 'count'))
+g7c
+
+
+```
+
+
+
+
 ## Scatter plot
 
 ```{r}
-fig <- plot_ly(type = 'scatter', mode = 'markers') 
-
-fig <- fig %>%
-  add_trace(
-    x = Type1$Flavanoids,
-    y = Type1$Proline,
-    opacity = 0.5,
-    marker = list(
-      color = "#00AFBB",
-      size = 7,
-      line = list(
-        color = 'lightgray',
-        width = .5
-      )
-    ),
-    name = 'Type 1'
-  ) 
-
-fig <- fig %>%
-  add_trace(
-    x = Type2$Flavanoids,
-    y = Type2$Proline,
-    marker = list(
-      color = "#E7B800",
-      size = 7,
-      line = list(
-        color = 'lightgray',
-        width = .5
-      )
-    ),
-    name = 'Type 2'
-  )
-
-fig <- fig %>%
-  add_trace(
-    x = Type3$Flavanoids,
-    y = Type3$Proline,
-    marker = list(
-      color = "#FC4E07",
-      size = 7,
-      line = list(
-        color = 'lightgray',
-        width = .5
-      )
-    ),
-    name = 'Type 3'
-  )
-
-fig <- fig %>%
+# Manual subset method with more control for formatting
+# Using dataframe subsets Type1, Type2, Type3 we generated earlier
+g8a <- plot_ly(type = 'scatter', mode = 'markers')  %>%
+  add_trace(x = Type1$Flavanoids,y = Type1$Proline,opacity = 0.5, 
+      marker = list(color = "#00AFBB", size = 7,line = list(color = 'lightgray',
+        width = .5)),name = 'Type 1') %>%
+  
+  add_trace(x = Type2$Flavanoids,y = Type2$Proline,
+    marker = list( color = "#E7B800", size = 7,line = list(color = 'lightgray',
+        width = .5)), name = 'Type 2')  %>%
+  
+  add_trace(x = Type3$Flavanoids, y = Type3$Proline, 
+      marker = list(color = "#FC4E07",size = 7, line = list(color = 'lightgray',
+        width = .5)), name = 'Type 3') %>%
+  
   layout(title = 'Scatterplot of Flavanoids & Proline',
          xaxis = list(title = 'flavanoids',
                       zeroline = FALSE),
          yaxis = list(title = 'proline'))
-fig
+g8a
 ```
+
+
+```{r}
+# Automated method, ggplot style
+g8b <- wine %>% 
+  plot_ly(x = ~Flavanoids, y = ~Proline, color = ~Type, colors = c("#00AFBB", "#E7B800", "#FC4E07"),
+          type = 'scatter', mode = 'markers') %>%  # initialize graph in plotly, use ~ for aes mappings
+ layout(title = 'Scatterplot of Flavanoids & Proline',
+         xaxis = list(title = 'flavanoids',
+                      zeroline = FALSE),
+         yaxis = list(title = 'proline'))
+
+g8b
+```
+
+
+
 
 ### 3D Scatterplot
+
 ```{r}
-fig2 <- plot_ly(type = 'scatter3d', mode = 'markers') 
-fig2 <- fig2 %>%
-  add_trace(
-    x = Type1$Flavanoids,
-    y = Type1$Proline,
-    z = Type1$Alcalinity,
-    opacity = 0.5,
-    marker = list(
-      color = "#00AFBB",
-      size = 7,
-      line = list(
-        color = 'lightgray',
-        width = .5
-      )
-    ),
-    name = 'Type 1'
-  ) 
-
-fig2 <- fig2 %>%
-  add_trace(
-    x = Type2$Flavanoids,
-    y = Type2$Proline,
-    z = Type2$Alcalinity,
-    marker = list(
-      color = "#E7B800",
-      size = 7,
-      line = list(
-        color = 'lightgray',
-        width = .5
-      )
-    ),
-    name = 'Type 2'
-  )
-
-fig2 <- fig2 %>%
-  add_trace(
-    x = Type3$Flavanoids,
-    y = Type3$Proline,
-    z = Type3$Alcalinity,
-    marker = list(
-      color = "#FC4E07",
-      size = 7,
-      line = list(
-        color = 'lightgray',
-        width = .5
-      )
-    ),
-    name = 'Type 3'
-  )
-
-axx <- list(
-  title = "flavanoids"
-)
-
-axy <- list(
-  title = "proline"
-)
-
-axz <- list(
-  title = "alcalinity"
-)
-
-fig2 <- fig2 %>%
+g9a <- plot_ly(type = 'scatter3d', mode = 'markers') 
+g9a <- g9a %>%
+  add_trace(x = Type1$Flavanoids, y = Type1$Proline, z = Type1$Alcalinity, opacity = 0.5, 
+    marker = list( color = "#00AFBB", size = 7,
+      line = list(color = 'lightgray', width = .5)), name = 'Type 1')  %>%
+  
+  add_trace( x = Type2$Flavanoids, y = Type2$Proline, z = Type2$Alcalinity,
+    marker = list( color = "#E7B800", size = 7, 
+                   line = list( color = 'lightgray',width = .5)),name = 'Type 2') %>%
+  
+  add_trace( x = Type3$Flavanoids, y = Type3$Proline, z = Type3$Alcalinity,
+    marker = list( color = "#FC4E07", size = 7,
+      line = list( color = 'lightgray', width = .5 )), name = 'Type 3') %>%
+  
   layout(title = 'Scatterplot of Flavanoids, Proline & Alcalinity',
-         scene = list(xaxis = axx,
-                      yaxis = axy,
-                      zaxis = axz))
-
-fig2
+         scene = list(xaxis = list(title = "flavanoids"),
+                      yaxis = list(title = "proline"),
+                      zaxis = list(title = "alcalinity")))
+g9a
 ```
+
+
+```{r}
+g9b <- wine %>% plot_ly( opacity = 0.5, type = 'scatter3d', mode = 'markers') %>% 
+  add_trace(x = ~Flavanoids, y = ~Proline, z = ~Alcalinity, color = ~Type,
+            marker = list(size = 7,line = list(width = .5)))  %>%
+  
+  layout(title = 'Scatterplot of Flavanoids, Proline & Alcalinity',
+         scene = list(xaxis = list(title = "flavanoids"),
+                      yaxis = list(title = "proline"),
+                      zaxis = list(title = "alcalinity")))
+g9b
+```
+
+
 
 ## Line Plot
 (From plotly examples)
@@ -361,12 +351,12 @@ tg <- ddply(ToothGrowth, c("supp", "dose"), summarise, length=mean(len))
 
 
 # create figure
-fig <- plot_ly(tg, x = ~dose, y = ~length, type = 'scatter', mode = 'lines', linetype = ~supp, color = I('black')) 
-
-fig <- fig %>% layout(title = 'The Effect of Vitamin C on Tooth Growth in Guinea Pigs by Supplement Type',
+g10 <- plot_ly(tg, x = ~dose, y = ~length, type = 'scatter', mode = 'lines', 
+               linetype = ~supp, color = I('black'))  %>% 
+  layout(title = 'The Effect of Vitamin C on Tooth Growth in Guinea Pigs by Supplement Type',
          xaxis = list(title = 'Dose in milligrams/day'),
          yaxis = list (title = 'Tooth length'))
 
-fig
+g10
 ```
 

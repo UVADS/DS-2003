@@ -25,10 +25,12 @@ library(shiny)
 
 ```{r}
 ui <- fluidPage(
+  # Input
   selectInput("n_breaks", label = "Number of bins:",
               choices = c(10, 20, 35, 50), selected = 20),
-  sliderInput("bw_adjust", label = "Bandwidth adjustment:",
+  sliderInput("bw_adjust", label = "Span adjustment:",
               min = 0.2, max = 2, value = 1, step = 0.2),
+  # Ouput
   plotOutput("irisplot"))
 
 server <- function(input, output){
@@ -43,6 +45,7 @@ server <- function(input, output){
 shinyApp(ui = ui, server = server, options = list(height = 600)) 
 ```
 
+
 ## Interdependent controls
 
 - But, some input elements may depend on other input elements.
@@ -53,29 +56,32 @@ shinyApp(ui = ui, server = server, options = list(height = 600))
 
 ```{r}
 ui <- fluidPage(
+  # Independent Input Objects
   selectInput("n_breaks2", label = "Number of bins:",
               choices = c(10, 20, 35, 50), selected = 20),
+  # Dependent input Objects (created as GUI output objects)
   uiOutput("bw_adjust_ui"),
+  
+  # Output Objects
   plotOutput("irisplot"))
 
 server <- function(input, output){
   
+  # Update dependent Input object
   output$bw_adjust_ui <- renderUI({
-      
-      if(is.null(input$n_breaks2)){
-        return()
-      }
+    # Prevents errors when app renders at start
+      if(is.null(input$n_breaks2)) { return()}
     
      sliderInput("bw_adjust2", label = "Bandwidth adjustment:",
-              min = 0.2, max = as.numeric(input$n_breaks2)/10, value = (0.2 + as.numeric(input$n_breaks2)/10)/2, step = 0.2)
+              min = 0.2, max = as.numeric(input$n_breaks2)/10, 
+              value = (0.2 + as.numeric(input$n_breaks2)/10)/2, step = 0.2)
     })
 
+  # Update Output object
     output$irisplot <- renderPlot({
-      
-     if(is.null(input$n_breaks2)){
-        return()
-      }  
-      
+     # Prevents errors when app renders at start
+     if(is.null(input$n_breaks2) || is.null(input$bw_adjust2)){ return() }
+
       hist(iris$Sepal.Length, probability = TRUE, breaks = as.numeric(input$n_breaks2),
        xlab = "Sepal Length", main = "Histogram and Density of Sepal Length from Iris Data")
   
@@ -106,6 +112,8 @@ if(is.null(input$...)) {
 
 ## without reactive expressions
 
+ - input noise to mathpre2 refreshed when 'input$span' *or*() 'input$sd' is changed
+ 
 ```{r}
 scs <- read.spss('SCS_QE.sav', to.data.frame=T)
 
@@ -124,21 +132,26 @@ ui <- fluidPage(
 
 server <- function(input, output){
    
+  
    output$scsplot <- renderPlot({
      
      scs$mathpre2 <- scs$mathpre + rnorm(nrow(scs), mean = 0, sd = input$sd) # add noise
      
-    ggplot(scs, aes(x=mars, y=mathpre2)) + geom_point(alpha=0.3) + geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span) + theme_bw() + ylim(-1, 20) + xlim(20, 130)
+    ggplot(scs, aes(x=mars, y=mathpre2)) + geom_point(alpha=0.3) + 
+      geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span) + 
+      theme_bw() + ylim(-1, 20) + xlim(20, 130)
     })}
 
 shinyApp(ui = ui, server = server) 
 ```
 
+
+
 ## with reactive expressions
 
-- We want to re-evaluate the `mathpre2` with noise whenever *input$sd* is updated.
-
-- Using reactive expressions it's possible to control when the `mathpre2` is invalidated.
+ - input noise to mathpre2 refreshed when 'input$sd2' is changed, but not when 
+ 'input$span2' is changed
+ 
 
 ```{r}
 ui <- fluidPage(
@@ -156,13 +169,17 @@ ui <- fluidPage(
 
 server <- function(input, output){
    
+  # Only executes when input$sd2 is changed
     scs_data <- reactive({
      scs$mathpre2 <- scs$mathpre + rnorm(nrow(scs), mean = 0, sd = input$sd2) # add noise
      scs
     })
       
+    # Only executes when input$span2 is changed
    output$scsplot <- renderPlot({
-      ggplot(scs_data(), aes(x=mars, y=mathpre2)) + geom_point(alpha=0.3) + geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span2)  + theme_bw() + ylim(-1, 20) + xlim(22, 128)
+      ggplot(scs_data(), aes(x=mars, y=mathpre2)) + geom_point(alpha=0.3) + 
+       geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span2)  +
+       theme_bw() + ylim(-1, 20) + xlim(22, 128)
      })}
 
 shinyApp(ui = ui, server = server) 
@@ -215,7 +232,8 @@ server <- function(input, output){
     
     output$irisplot <- renderPlot({
     ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width)) + geom_point() +  
-     geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span_adj) + theme_bw()
+     geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span_adj) + 
+        theme_bw()
     })
     
     output$span_val <- renderText({
@@ -260,7 +278,8 @@ server <- function(input, output){
     
     output$irisplot <- renderPlot({
     ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width)) + geom_point() +  
-     geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span_adj2) + theme_bw()
+     geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span_adj2) + 
+        theme_bw()
     })
     
     output$span_val <- renderText({
@@ -318,7 +337,8 @@ server <- function(input, output){
     
     output$irisplot <- renderPlot({
     ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width)) + geom_point() +  
-     geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span_adj3) + theme_bw()
+     geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span_adj3) + 
+        theme_bw()
     })
     
     output$span_val <- renderText({
@@ -339,7 +359,9 @@ server <- function(input, output){
     })
       
    output$scsplot <- renderPlot({
-      ggplot(scs_data(), aes(x=mars, y=mathpre2)) + geom_point(alpha=0.3) + geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span3)  + theme_bw() + ylim(-1, 20) + xlim(22, 128)
+      ggplot(scs_data(), aes(x=mars, y=mathpre2)) + geom_point(alpha=0.3) + 
+       geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span3)  + 
+       theme_bw() + ylim(-1, 20) + xlim(22, 128)
      })
 }
 
@@ -420,11 +442,15 @@ server <- function(input, output){
     })
       
    output$scsplot <- renderPlot({
-      ggplot(scs_data(), aes(x=mars, y=mathpre2)) + geom_point(alpha=0.3) + geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span4)  + theme_bw() + ylim(-1, 20) + xlim(22, 128)
+      ggplot(scs_data(), aes(x=mars, y=mathpre2)) + geom_point(alpha=0.3) + 
+       geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span4)  + 
+       theme_bw() + ylim(-1, 20) + xlim(22, 128)
      })
    
   output$scsplot2 <- renderPlot({
-      ggplot(scs_data2(), aes(x=mars, y=mathpre2)) + geom_point(alpha=0.3) + geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span5, col="red")  + theme_bw() + ylim(-1, 20) + xlim(22, 128)
+      ggplot(scs_data2(), aes(x=mars, y=mathpre2)) + geom_point(alpha=0.3) + 
+      geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span5, col="red")  + 
+      theme_bw() + ylim(-1, 20) + xlim(22, 128)
      })
 }
 
@@ -633,7 +659,9 @@ shinyApp(
   server = function(input, output){
     output$irisplot <- renderPlotly({
       
-    p <- ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width)) + geom_point() + geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span_p) + theme_bw()
+    p <- ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width)) + geom_point() + 
+      geom_smooth(method="loess", formula=y~x, se=FALSE, span=input$span_p) + 
+      theme_bw()
     
     ggplotly(p)
     

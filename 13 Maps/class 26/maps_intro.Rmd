@@ -13,7 +13,6 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, eval=FALSE)
 library(tidyverse)
 library(sf)
 library(tigris) #download shp file from U.S. census website
@@ -45,3 +44,61 @@ interactive response web page title ["Try to impeach this? Challenge accepted!"]
 - Centers for Disease Control and Prevention provide a weekly influenza surveillance report using a choropleth map. 
 
 - Check [Weekly US Map: Influenza Summary Update](https://www.cdc.gov/flu/weekly/usmap.htm)
+
+
+# Mapping packages
+
+## Package: `ggmap`
+
+## Obtain Google Maps API Keys
+
+- We need an API key to access Google Maps for these exercises.
+
+    - 1. Visit the Google API console. Click [here](https://console.developers.google.com/apis/dashboard).
+
+    - 2. Go ahead and click the "Create Project button."
+
+    - 3. Give a name and click "Create". 
+
+    - 4. Click "Enable APIS and Services".
+
+    - 5. Search for "Maps Static API" and click it. Then, press "Enable".
+
+    - 6. Search for "Geocoding API" and click it. Then, press "Enable". 
+
+    - 7. Go to "Credentials" and click "Create Credentials"
+
+    - 8. Copy your API key and use it for the exercises below.
+
+- Note that you need to create a billing account before you use your API key in R. 
+
+- For more info, see [Get an API Key and Signature](https://developers.google.com/maps/documentation/maps-static/get-api-key) and [Google Maps Platform](https://mapsplatform.google.com/pricing/).
+
+## Register Goolge Keys
+
+- Use the `register_google()` function.
+
+```{r, eval=FALSE}
+library(ggmap)
+
+google_key = "AIzaSyDCSByXShr7nqZN1_6WLxHnLIGCmBVyvI0"
+
+# Insert your API key to get your google map for this session
+# -------------------------------------------------------------
+register_google(key = google_key)
+
+
+# Insert your API key to get your google map permanently
+# -------------------------------------------------------------
+register_google(key = google_key, write = TRUE)
+# register_google()
+google_key()
+```
+
+
+```{r}
+# register_google()
+
+# Use qmap (quick map) to draw a city map
+qmap("Washington DC", zoom=10)
+```

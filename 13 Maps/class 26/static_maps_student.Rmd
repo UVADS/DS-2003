@@ -19,42 +19,15 @@ library(ggmap)
 
 ## Obtain Google Maps API Keys
 
-- We need an API key to access Google Maps for these exercises.
-
-    - 1. Visit the Google API console. Click [here](https://console.developers.google.com/apis/dashboard).
-
-    - 2. Go ahead and click the "Create Project button."
-
-    - 3. Give a name and click "Create". 
-
-    - 4. Click "Enable APIS and Services".
-
-    - 5. Search for "Maps Static API" and click it. Then, press "Enable".
-
-    - 6. Search for "Geocoding API" and click it. Then, press "Enable". 
-
-    - 7. Go to "Credentials" and click "Create Credentials"
-
-    - 8. Copy your API key and use it for the exercises below.
-
-- Note that you need to create a billing account before you use your API key in R. 
-
-- For more info, see [Get an API Key and Signature](https://developers.google.com/maps/documentation/maps-static/get-api-key) and [Google Maps Platform](https://mapsplatform.google.com/pricing/).
-
-## Register Goolge Keys
-
-- Use the `register_google()` function.
 
 ```{r, eval=FALSE}
 library(ggmap)
 
-# Insert your API key to get your google map for this session
-register_google(key = "")
+# Confirm that you have a registered google key
+if (!has_google_key()) {stop("You need a google API key for this exercise")}
 
-# Insert your API key to get your google map permanently
-register_google(key = "", write = TRUE)
-register_google()
-google_key()
+# If it error please follow the instructions with maps intro
+
 ```
 
 
@@ -93,6 +66,7 @@ qmap("Washington DC", zoom=7)
 ```{r}
 # Get the same map with get_map & save it to a variable
 dc_map <- get_map("Washington DC", zoom=10)
+dc_map
 ```
 
 ```{r}
@@ -188,7 +162,7 @@ eus_map
 
 ```{r, eval=TRUE}
 # Add a location on the map
-eus_map + geom_point(data=dc, mapping=aes(x=lon, y=lat), color="red")
+ggmap(get_map(eus, zoom=5)) + geom_point(data=dc, mapping=aes(x=lon, y=lat), color="red")
 ```
 
 ```{r, eval=TRUE}
@@ -251,7 +225,7 @@ ggplot(data=states, mapping=aes(x=long, y=lat)) +
 
 ```{r, eval=TRUE}
 # Improve the plot
-ggplot(data=states, mapping=aes(x=long, y=lat, group=group)) + 
+ggplot(data=states, mapping=aes(x=long, y=lat, group=group, fill = group)) + 
   geom_polygon() +
   coord_map() + # fix the coordinate system
   theme_bw() + # change the background
@@ -272,7 +246,8 @@ along with States Latitudes and Longitudes from
 US2020_Election <- readxl::read_excel("Presidential_Results_Dec6_2020.xlsx") %>%
   mutate(Total = Trump+Biden) %>%
   mutate(Trump_Percent = 
-           ifelse(Trump/Total>0.6, 0.6, ifelse(Trump/Total<0.4, 0.4, Trump/Total)))
+           ifelse(Trump/Total>0.6, 0.6, ifelse(Trump/Total<0.4, 0.4, Trump/Total))) %>%
+  mutate(Trump_Percent_All = Trump/Total)
 
 US2020_Election %>% head()
 ```
@@ -287,7 +262,8 @@ states %>% head()
 US2020_Election$region <- tolower(US2020_Election$State_Name) # small letters
 
 mapdata <- merge(states, US2020_Election, by = "region")
-#View(mapdata)
+
+View(mapdata)
 ```
 
 - Draw a choropleth map by using "Trump_Percent" variable as the fill.
@@ -305,8 +281,19 @@ ggplot(mapdata) +
   geom_polygon(aes(x=long,y=lat,group=group, fill=Trump_Percent)) +
   coord_map() + theme_bw() +
   scale_fill_gradient2(low="blue", mid='purple', high="red", midpoint=0.5,
-                          limits=c(.4,.6), name='Rep %')
+                          limits=c(.3,.7), name='Rep %')
 ```
+
+```{r, eval=TRUE}
+ggplot(mapdata) +
+  geom_polygon(aes(x=long,y=lat,group=group, fill=Trump_Percent_All)) +
+  coord_map() + theme_bw() +
+  scale_fill_gradient2(low="blue", mid='purple', high="red", midpoint=0.5,
+                          limits=c(.3,.7), name='Rep %')
+```
+
+
+
 
 # Package: `tmap`
 
