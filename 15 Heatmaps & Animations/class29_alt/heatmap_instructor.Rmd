@@ -48,8 +48,18 @@ head(cormat)
 Using the reshape2 library, we can subsequently use the melt function to convert our data frame into the long format and to stretch the data frame. This transformed dataset will be used in all the subsequent examples.
 
 ```{r}
+# Option 1: reshape package
 library(reshape2)
 melted_cormat <- melt(cormat)
+
+
+# Option 2: add column for rownames and use pivot_longer
+library(tidyr)
+df_cormat <- as.data.frame(cormat)
+df_cormat$vars <- row.names(df_cormat)
+long_cormat <- pivot_longer(data = df_cormat, cols = !vars, names_to = "var2", values_to = "value")
+
+head(long_cormat)
 head(melted_cormat)
 ```
 
@@ -71,11 +81,12 @@ ggplot(data = melted_cormat, aes(x=Var1, y=Var2, fill=value)) +
 ```
 
 ## Example 2: Scale_fill_gradient in Heatmap
-The Scale_fill_gradient is used to add the color gradient to the heatmap plot. It has got to parameters namely high and low to assign the gradient scale.
+The Scale_fill_gradient is used to add the color gradient to the heatmap plot. 
+It has two parameters (high and low) to assign the gradient scale.
 
 ```{r}
 ggplot(data=melted_cormat,aes(x = Var1, y = Var2, fill = value))+
-  geom_tile()+scale_fill_gradient(high = "red", low = "white")
+  geom_tile() + scale_fill_gradient(high = "red", low = "white")
 ```
 
 ## Example 3: Adding Title to the Heatmap
@@ -92,11 +103,14 @@ Each cell here depicts the relationship between the intersecting variables, such
 
 ```{r}
 ggplot(data=melted_cormat,aes(x = Var1, y = Var2, fill = value))+
-  geom_tile()+scale_fill_gradient(high = "green", low = "red")+
+  geom_tile() + 
+  scale_fill_gradient(high = "green", low = "red") +
+  scale_fill_continuous(low = "red", high = "lightgreen") +
   ggtitle("Heart dataset")+ 
   theme(plot.title = element_text(size = 20, face = "bold"))+
-  geom_text(aes(label = round(value, 3)))+
-  scale_fill_continuous(low = "red", high = "lightgreen")
+  geom_text(aes(label = round(value, 3)))
+  
+  
 ```
 
 
@@ -109,7 +123,7 @@ library(hexbin)
 # Plot X,Y for reference
 ggplot(df,aes(Chol, MaxHR))+ geom_hex()
 # Default plot 
-ggplot(df,aes(Chol, MaxHR))+ geom_hex()
+# ggplot(df,aes(Chol, MaxHR))+ geom_hex()
 # Change the number of bins
 ggplot(df,aes(Chol, MaxHR)) + geom_hex(bins = 10)
 ```
@@ -118,6 +132,7 @@ ggplot(df,aes(Chol, MaxHR)) + geom_hex(bins = 10)
 The function geom_bin2d() produces a scatter plot with rectangular bins. The number of observations is counted in each bin and displayed as a heatmap.
 
 ```{r}
+library(ggplot2)
 # Default plot 
 ggplot(df,aes(Chol, MaxHR)) + geom_bin2d()
 # Change the number of bins

@@ -94,55 +94,65 @@ test <- student_results_clean %>%
 test
 ```
 
-## Students in-class lab:
-* Import `dogs.csv'
-* Review data and transform to tidy data using tidyverse methods
+## Part 2: The Doggo Dataset
+### Review tidyr functions to tidy a dataframe. Let's tidy this dataframe!
 
-Import csv file
+Import csv file and replace any values with "" with NA instead
 ```{r}
-
+visit_df <- read.csv("dogs.csv")
+visit_df[visit_df==""]<-NA
+visit_df
 
 ```
 
 
-Fill in values for patient, breed, address, guardian, for all rows (fill down same value to next value)
-Hint: fill() expects NA for fills
+Fill() in values for (patient), (breed), (address), and (guardian), for all rows
+(fill down same value to next value)
+** Hint: fill() expects NA for fills **
 ```{r}
+fill_visit_df <- visit_df %>% fill(patient, breed, address , guardian, .direction = "down") 
+fill_visit_df
 
 ```
 
 
-Pivot longer to combine height, length, width columns to dimension
+Use pivot_longer() to combine (height), (length), and (width) columns to (dimension)
 ```{r}
+fill_visit_df %>% pivot_longer(c(height, length, width), names_to = "dimension")
+fill_visit_df
 
 ```
 
 
-split weight between "weight" and "weight_units"
+Split (weight) between (weight) and (weight_units) using (separate)
 ```{r}
-
+weight_split_df <- fill_visit_df %>%
+    separate(weight, c('weight', 'weight_units'), ' ')
+weight_split_df
 ```
 
 
-Split visit_date to visit_num and date
+Split (visit_date) to (visit_num) and (date) using separate() function
 ```{r}
-
+date_split_df <- weight_split_df %>%
+    separate(visit_date, c('visit_num', 'date'), '-')
+date_split_df$visit_num <- as.numeric(date_split_df$visit_num)
+date_split_df
 ```
 
 
 Separate previous dataframe into 
 * guardian_df (guardian and address)
 * dog_df (all other columns)
+using the select() function
 ```{r}
-
+guadian_df <- date_split_df %>% select(c(guardian, address)) %>% distinct()
+guadian_df
+dog_df <- date_split_df %>% select(-c(guardian, address))
+dog_df
 
 ```
 
 
-Display only dog visits from dog_df that is the first visit (should have 3 rows)
-```{r}
-
-
-```
 
 

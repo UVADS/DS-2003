@@ -152,46 +152,49 @@ library(plotly)
 library(shiny)
 library(shinythemes)
 
+states <- map_data("state") # from ggplot2
+
+US2020_Election$region <- tolower(US2020_Election$State_Name) # small letters
+
+# Merge datasets
+mapdata <- merge(states, US2020_Election, by = "region")
+
+# Add hover text
+mapdata$hover <- with(mapdata, paste(State_Name, '<br>', "Trump Percent:", format(round(Trump_Percent, 2), 2)))
+
+# Make state borders red
+borders <- list(color = toRGB("red"))
+
+# Change some mapping options
+map_options <- list(
+  scope = 'usa',
+  projection = list(type = 'albers usa'),
+  showlakes = TRUE,
+  lakecolor = toRGB('white')
+)
+
+
+
 ui = fluidPage(theme = shinytheme("united"),
-  sliderInput(inputId = "percent", "Rep %", min = 0.4, max = 0.6, step = 0.05, value = 0.5),
-      plotlyOutput(outputId = "map")
-  )
+               sliderInput(inputId = "percent", "Rep %", min = 0.4, max = 0.6, step = 0.05, value = 0.5),
+               plotlyOutput(outputId = "map")
+)
 
 server = function(input, output) {
   
-  states <- map_data("state") # from ggplot2
-
-  US2020_Election$region <- tolower(US2020_Election$State_Name) # small letters
-
-  # Merge datasets
-  mapdata <- merge(states, US2020_Election, by = "region")
-
-  # Add hover text
-  mapdata$hover <- with(mapdata, paste(State_Name, '<br>', "Trump Percent:", format(round(Trump_Percent, 2), 2)))
-
-  # Make state borders red
-  borders <- list(color = toRGB("red"))
-
-  # Change some mapping options
-  map_options <- list(
-    scope = 'usa',
-    projection = list(type = 'albers usa'),
-    showlakes = TRUE,
-    lakecolor = toRGB('white')
-  )
-
- output$map = renderPlotly({
+  output$map = renderPlotly({
     
-    plot_ly(mapdata[mapdata$Trump_Percent <= input$percent, ], z = ~Trump_Percent, text = ~hover, locations = ~State_Abbreviation, 
-        type = 'choropleth', locationmode = 'USA-states', 
-        color = ~Trump_Percent, 
-        colors = 'Reds', 
-        marker = list(line = borders)) %>%
-     layout(title = 'Trump Impeachment in 2020', geo = map_options) %>% 
-     colorbar(title = "Rep %", limits = c(0.4, 0.6)) # fix the range of colorbar
- })
+    plot_ly(mapdata[mapdata$Trump_Percent <= input$percent, ], z = ~Trump_Percent, 
+            text = ~hover, locations = ~State_Abbreviation, 
+            type = 'choropleth', locationmode = 'USA-states', 
+            color = ~Trump_Percent, 
+            colors = 'Reds', 
+            marker = list(line = borders)) %>%
+      layout(title = 'Trump 2020', geo = map_options) %>% 
+      colorbar(title = "Rep %", limits = c(0.4, 0.6)) # fix the range of colorbar
+  })
 }
- 
+
 shinyApp(ui, server, options = list(height=600))       
 ```
 
