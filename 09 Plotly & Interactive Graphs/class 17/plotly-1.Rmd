@@ -346,11 +346,11 @@ g9b
 (From plotly examples)
 ```{r}
 
-#create date
+# Obtain data from subset of tooth growth dataset
 tg <- ddply(ToothGrowth, c("supp", "dose"), summarise, length=mean(len))
 
 
-# create figure
+# Create plotly figure
 g10 <- plot_ly(tg, x = ~dose, y = ~length, type = 'scatter', mode = 'lines', 
                linetype = ~supp, color = I('black'))  %>% 
   layout(title = 'The Effect of Vitamin C on Tooth Growth in Guinea Pigs by Supplement Type',
